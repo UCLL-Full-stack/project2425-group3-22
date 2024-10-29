@@ -1,12 +1,30 @@
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@styles/Login.module.css';
 import { FormEvent } from 'react';
 
 const Login: React.FC = () => {
+    const [slogan, setSlogan] = useState('');
+    const fullSlogan = "Because every poop tells a story.";
+
+    useEffect(() => {
+        const typeSlogan = async () => {
+            for (let i = 0; i < fullSlogan.length; i++) {
+                setSlogan((prev) => prev + fullSlogan.charAt(i));
+                await new Promise((resolve) => setTimeout(resolve, 40));
+            }
+        };
+
+        typeSlogan();
+
+        return () => {
+            setSlogan('');
+        };
+    }, []);
+    
     const login = (e: FormEvent) => {
         e.preventDefault();
-        // Add your login logic here
     };
 
     return (
@@ -18,7 +36,7 @@ const Login: React.FC = () => {
                 <div className={styles.container}>
                     <div className={styles.titleContainer}>
                         <h1>Poopedia</h1>
-                        <h3>Because every poop tells a story.</h3>
+                        <h3>{slogan}</h3>
                     </div>
                     <div>
                         <form onSubmit={login} className={styles.loginForm}>
