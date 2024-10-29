@@ -7,7 +7,7 @@ const Home: React.FC = () => {
                 <title>Home</title>
             </Head>
             <main>
-                <p>test</p>
+                <p>home</p>
             </main>
         </>
     );
