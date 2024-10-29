@@ -9,19 +9,19 @@ const Login: React.FC = () => {
     const fullSlogan = "Because every poop tells a story.";
 
     useEffect(() => {
-        const typeSlogan = async () => {
-            for (let i = 0; i < fullSlogan.length; i++) {
-                setSlogan((prev) => prev + fullSlogan.charAt(i));
-                await new Promise((resolve) => setTimeout(resolve, 40));
-            }
-        };
-
         typeSlogan();
 
         return () => {
             setSlogan('');
         };
     }, []);
+
+    const typeSlogan = async () => {
+        for (let i = 0; i < fullSlogan.length; i++) {
+            setSlogan((prev) => prev + fullSlogan.charAt(i));
+            await new Promise((resolve) => setTimeout(resolve, 40));
+        }
+    };
     
     const login = (e: FormEvent) => {
         e.preventDefault();
