@@ -45,3 +45,7 @@
     width: 50%;
     border-radius: 3px;
 }
+
+.container .registerForm button:hover {
+    background-color: rgb(196, 122, 122);
+}
