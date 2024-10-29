@@ -1,0 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: column;       
+    height: 100vh;               
+    margin: auto;                
+    width: 65%;  
+    align-items: center;
+    justify-content: center;
+}
+
+.container .titleContainer {
+    text-align: center;
+}
+
+.container h1 {
+    color: brown;
+    font-family: "Chakra Petch", sans-serif;
+    letter-spacing: -1px;
+    font-size: 4rem;
+}
+
+.container .loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px; 
+    align-items: center;
+    width: 300px;
+    margin: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+}
+
+.container .loginForm input {
+    text-align: left;
+    padding: 3px 10px;
+    width: 90%;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+
+.container .loginForm button {
+    background-color: rgb(165, 42, 42);
+    transition: background-color 0.3s;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    width: 50%;
+    border-radius: 3px;
+}
+
+.container .loginForm button:hover {
+    background-color: rgb(196, 122, 122);
+}
+
+@media (min-width: 769px) {
+    .container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .container .titleContainer {
+        text-align: left;
+    }
+
+    .container .loginForm {
+        width: 400px;
+    }
+}
