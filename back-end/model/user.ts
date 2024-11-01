@@ -7,6 +7,7 @@ export class User {
     private password: string;
     private role: Role;
 
+    //TODO: add validation
     constructor(user: {
         userID: number;
         username: string;
@@ -21,5 +22,24 @@ export class User {
         this.role = user.role;
     }
 
-    //TODO: add getters and setters
+    //TODO: add setters?
+    getUserID(): number | undefined {
+        return this.userID;
+    }
+
+    getUsername(): string | undefined {
+        return this.username;
+    }
+
+    getEmail(): string | undefined {
+        return this.email;
+    }
+
+    getPassword(): string | undefined {
+        return this.password;
+    }
+
+    getRole(): string | undefined {
+        return this.role;
+    }
 }
