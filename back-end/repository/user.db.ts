@@ -8,9 +8,20 @@ const users: Array<User> = [
         email: 'atmin@poopedia.com',
         password: 'toBeHashed',
         role: 'Admin',
+        poops: [],
     }),
     // TODO: create some more dummy users
 ];
+
+const getUserByID = async ({ userID }: { userID: number }): Promise<User | null> => {
+    try {
+        return users.find((user) => user.getUserID() === userID) || null;
+    } catch (err: any) {
+        console.log(err.message);
+        //TODO: change error when deploying
+        throw new Error('Error occured in repository/user.db.ts/getUserByID');
+    }
+};
 
 const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
     try {
@@ -29,11 +40,12 @@ const getUserByEmailAndPassword = async ({
 }: {
     email: string;
     password: string;
-}): Promise<User | null> => {
+}): Promise<number | null> => {
     try {
         return (
-            users.find((user) => user.getEmail() === email && user.getPassword() === password) ||
-            null
+            users
+                .find((user) => user.getEmail() === email && user.getPassword() === password)
+                ?.getUserID() || null
         );
     } catch (err: any) {
         console.log(err.message);
@@ -42,7 +54,29 @@ const getUserByEmailAndPassword = async ({
     }
 };
 
+const createUser = async ({
+    username,
+    email,
+    password,
+}: {
+    username: string;
+    email: string;
+    password: string;
+}): Promise<number | undefined> => {
+    const newUser = new User({
+        userID: users.length + 1,
+        username,
+        email,
+        password,
+        role: 'User',
+    });
+    users.push(newUser);
+    return users[users.length - 1].getUserID();
+};
+
 export default {
+    getUserByID,
     getUserByEmail,
     getUserByEmailAndPassword,
+    createUser,
 };

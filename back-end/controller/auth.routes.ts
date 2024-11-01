@@ -24,6 +24,15 @@
  *                  type: string
  *              password:
  *                  type: string
+ *        RegisterInput:
+ *          type: object
+ *          properties:
+ *              username:
+ *                  type: string
+ *              email:
+ *                  type: string
+ *              password:
+ *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
@@ -34,7 +43,41 @@ const authRouter = express.Router();
 
 /**
  * @swagger
- * /auth:
+ * /auth/register:
+ *   post:
+ *      summary: Register with a username, an email and a password
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/RegisterInput'
+ *      responses:
+ *         200:
+ *            description: The logged in user.
+ *            content:
+ *              application/json:
+ *                userID:
+ *                  type: number
+ *                  format: int64
+ */
+authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const RegisterInput = <RegisterInput>req.body;
+        const userID = await userService.createUser(
+            RegisterInput.username,
+            RegisterInput.email,
+            RegisterInput.password
+        );
+        res.status(200).json(userID);
+    } catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+/**
+ * @swagger
+ * /auth/login:
  *   post:
  *      summary: Login with an email and a password
  *      requestBody:
@@ -51,7 +94,7 @@ const authRouter = express.Router();
  *                schema:
  *                  $ref: '#/components/schemas/User'
  */
-authRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const loginInput = <LoginInput>req.body;
         const result = await userService.getUserByEmailAndPassword(

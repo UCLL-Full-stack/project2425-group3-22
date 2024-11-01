@@ -1,16 +1,34 @@
 import { User } from '../model/user';
 import userDb from '../repository/user.db';
 
-const getUserByEmail = async (email: string): Promise<User> => {
-    const user = await userDb.getUserByEmail({ email });
-    if (!user) throw new Error(`User with email ${email} does not exist`);
+const getUserByID = async (userID: number): Promise<User> => {
+    const user = await userDb.getUserByID({ userID });
+    if (!user) throw new Error(`User with ID ${userID} does not exist`);
     return user;
 };
 
-const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
-    const user = await userDb.getUserByEmailAndPassword({ email, password });
-    if (!user) throw new Error(`Password or email is incorrect`);
-    return user;
+const getUserByEmailAndPassword = async (email: string, password: string): Promise<number> => {
+    const userID = await userDb.getUserByEmailAndPassword({ email, password });
+    if (!userID) throw new Error(`Password or email is incorrect`);
+    return userID;
 };
 
-export default { getUserByEmail, getUserByEmailAndPassword };
+const createUser = async (
+    username: string,
+    email: string,
+    password: string
+): Promise<number | undefined> => {
+    const emailInUse = checkEmailInUse(email);
+    const userID = await userDb.createUser({ username, email, password });
+    return userID;
+};
+
+const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
+    if (email) {
+        const user = await userDb.getUserByEmail({ email });
+        return user ? false : true;
+    }
+    return false;
+};
+
+export default { getUserByID, getUserByEmailAndPassword, createUser };

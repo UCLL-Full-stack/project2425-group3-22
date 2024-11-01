@@ -1,5 +1,6 @@
 import { User } from './user';
 
+// TODO: add validation & create types for type, size & rating (fe 1-5)?
 export class Poop {
     private poopID: number;
     private type: number;
@@ -36,5 +37,83 @@ export class Poop {
         this.user = poop.user;
     }
 
-    //TODO: add getters and setters
+    getPoopID(): number | undefined {
+        return this.poopID;
+    }
+
+    setPoopID(poopID: number) {
+        this.poopID = poopID;
+    }
+
+    getType(): number | undefined {
+        return this.type;
+    }
+
+    setType(type: number) {
+        this.type = type;
+    }
+
+    getSize(): number | undefined {
+        return this.size;
+    }
+
+    setSize(size: number) {
+        this.size = size;
+    }
+
+    getColorID(): number | undefined {
+        return this.colorID;
+    }
+
+    setColorID(colorID: number) {
+        this.colorID = colorID;
+    }
+
+    getDateTime(): Date | undefined {
+        return this.dateTime;
+    }
+
+    setDateTime(dateTime: Date) {
+        this.dateTime = dateTime;
+    }
+
+    getTitle(): string | undefined {
+        return this.title;
+    }
+
+    setTitle(title: string) {
+        this.title = title;
+    }
+
+    getRating(): number | undefined {
+        return this.rating;
+    }
+
+    setRating(rating: number) {
+        this.rating = rating;
+    }
+
+    getLatitude(): number | undefined {
+        return this.latitude;
+    }
+
+    setLatitude(latitude: number) {
+        this.latitude = latitude;
+    }
+
+    getLongitude(): number | undefined {
+        return this.longitude;
+    }
+
+    setLongitude(longitude: number) {
+        this.longitude = longitude;
+    }
+
+    getUser(): User | undefined {
+        return this.user;
+    }
+
+    setUser(user: User) {
+        this.user = user;
+    }
 }
