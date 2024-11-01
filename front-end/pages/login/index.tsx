@@ -3,9 +3,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@styles/Login.module.css';
 import { FormEvent } from 'react';
+import AuthService from '@services/authService';
 
 const Login: React.FC = () => {
     const [slogan, setSlogan] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
     const fullSlogan = "Because every poop tells a story.";
 
     useEffect(() => {
@@ -23,8 +28,21 @@ const Login: React.FC = () => {
         }
     };
     
-    const login = (e: FormEvent) => {
-        e.preventDefault();
+    const login = async (e: FormEvent) => {
+        e.preventDefault(); 
+        const loginResponse = await AuthService.loginUser({
+            email,
+            password
+        });
+
+        if (!loginResponse.ok) {
+            const errorData = await loginResponse.json();
+            setError(errorData.message || "An error occurred. Please try again later.");
+        } else {
+            const response = await loginResponse.json();
+            console.log("Succesfully logged in");
+            console.log(response)
+        }
     };
 
     return (
@@ -41,9 +59,10 @@ const Login: React.FC = () => {
                     <div>
                         <form onSubmit={login} className={styles.loginForm}>
                             <h2>Login</h2>
-                            <input type="email" name="email" placeholder='Email' required />
-                            <input type="password" name="password" placeholder='Password' required />
+                            <input type="email" name="email" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            <input type="password" name="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
                             <button type="submit">LOGIN</button>
+                            {error && <p className={styles.error}>{error}</p>}
                             <p>
                                 Don't have an account? <Link href="/register">Register here</Link>
                             </p>

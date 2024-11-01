@@ -49,3 +49,8 @@
 .container .registerForm button:hover {
     background-color: rgb(196, 122, 122);
 }
+
+.container .registerForm .error {
+    color: red;
+    margin-bottom: 0;
+}
