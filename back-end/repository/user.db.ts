@@ -1,5 +1,4 @@
 import { User } from '../model/user';
-import { UserResponse } from '../types';
 
 const users: Array<User> = [
     new User({
@@ -10,7 +9,14 @@ const users: Array<User> = [
         role: 'Admin',
         poops: [],
     }),
-    // TODO: create some more dummy users
+    new User({
+        userID: 2,
+        username: 'moteraiter',
+        email: 'moteraiter@poopedia.com',
+        password: 'toBeHashed',
+        role: 'Moderator',
+        poops: [],
+    }),
 ];
 
 const getUserByID = async ({ userID }: { userID: number }): Promise<User | null> => {
@@ -23,6 +29,16 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
     }
 };
 
+const getUserByUsername = async ({ username }: { username: string }): Promise<User | null> => {
+    try {
+        return users.find((user) => user.getUsername() === username) || null;
+    } catch (err: any) {
+        console.log(err.message);
+        //TODO: change error when deploying
+        throw new Error('Error occured in repository/user.db.ts/getUserByUsername');
+    }
+};
+
 const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
     try {
         return users.find((user) => user.getEmail() === email) || null;
@@ -30,6 +46,27 @@ const getUserByEmail = async ({ email }: { email: string }): Promise<User | null
         console.log(err.message);
         //TODO: change error when deploying
         throw new Error('Error occured in repository/user.db.ts/getUserByEmail');
+    }
+};
+
+//TODO: do not return full user since it includes the password, return a DTO instead
+const getUserByUsernameAndPassword = async ({
+    username,
+    password,
+}: {
+    username: string;
+    password: string;
+}): Promise<number | null> => {
+    try {
+        return (
+            users
+                .find((user) => user.getUsername() === username && user.getPassword() === password)
+                ?.getUserID() || null
+        );
+    } catch (err: any) {
+        console.log(err.message);
+        //TODO: change error when deploying!
+        throw new Error('Error occured in repository/user.db.ts/getUserByUsernameAndPassword');
     }
 };
 
@@ -50,7 +87,7 @@ const getUserByEmailAndPassword = async ({
     } catch (err: any) {
         console.log(err.message);
         //TODO: change error when deploying!
-        throw new Error('Error occured in repository/user.db.ts/getUserByEmail');
+        throw new Error('Error occured in repository/user.db.ts/getUserByEmailAndPassword');
     }
 };
 
@@ -62,7 +99,7 @@ const createUser = async ({
     username: string;
     email: string;
     password: string;
-}): Promise<number | undefined> => {
+}): Promise<number> => {
     const newUser = new User({
         userID: users.length + 1,
         username,
@@ -71,12 +108,19 @@ const createUser = async ({
         role: 'User',
     });
     users.push(newUser);
-    return users[users.length - 1].getUserID();
+
+    const createdUser = users.find((user) => user.getEmail() === email);
+    if (createdUser) {
+        return createdUser.getUserID();
+    }
+    throw new Error('Error occured creating user');
 };
 
 export default {
     getUserByID,
+    getUserByUsername,
     getUserByEmail,
+    getUserByUsernameAndPassword,
     getUserByEmailAndPassword,
     createUser,
 };

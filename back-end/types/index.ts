@@ -7,7 +7,7 @@ type RegisterInput = {
 };
 
 type LoginInput = {
-    email: string;
+    usernameOrEmail: string;
     password: string;
 };
 

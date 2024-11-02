@@ -20,7 +20,7 @@
  *        LoginInput:
  *          type: object
  *          properties:
- *              email:
+ *              usernameOrEmail:
  *                  type: string
  *              password:
  *                  type: string
@@ -37,7 +37,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { RegisterInput, LoginInput } from '../types';
-import { json } from 'body-parser';
 
 const authRouter = express.Router();
 
@@ -97,10 +96,16 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
 authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const loginInput = <LoginInput>req.body;
-        const result = await userService.getUserByEmailAndPassword(
-            loginInput.email,
-            loginInput.password
-        );
+
+        const result = loginInput.usernameOrEmail.includes('@')
+            ? await userService.getUserByEmailAndPassword(
+                  loginInput.usernameOrEmail,
+                  loginInput.password
+              )
+            : await userService.getUserByUsernameAndPassword(
+                  loginInput.usernameOrEmail,
+                  loginInput.password
+              );
         res.status(200).json(result);
     } catch (err: any) {
         res.status(400).json({ message: err.message });

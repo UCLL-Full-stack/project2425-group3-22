@@ -27,24 +27,18 @@ export class User {
     }) {
         this.userID = userID;
 
-        if (username.length > 3 && username.length < 25 && !username.includes('@')) {
-            this.username = username;
-        } else {
-            throw new Error('username must be between 3 and 25 characters and cannot contain an @');
-        }
+        if (username.includes('@')) throw new Error('username cannot contain an @');
+        if (username.length < 3 || username.length > 25)
+            throw new Error('username must be between 3 and 25 characters');
+        this.username = username;
 
-        if (this.isEmailValid(email)) {
-            this.email = email;
-        } else {
+        if (!this.isEmailValid(email))
             throw new Error('email must be in email format (name@domain.com)');
-        }
+        this.email = email;
 
         //TODO: password hashing functionality! (here or in user.service)
-        if (password.length > 8) {
-            this.password = password;
-        } else {
-            throw new Error('password must be longer than 8 characters');
-        }
+        if (password.length < 9) throw new Error('password must be longer than 8 characters');
+        this.password = password;
 
         if (role) {
             this.role = role;
@@ -62,11 +56,11 @@ export class User {
         return regexp.test(email);
     }
 
-    getUserID(): number | undefined {
+    getUserID(): number {
         return this.userID;
     }
 
-    getUsername(): string | undefined {
+    getUsername(): string {
         return this.username;
     }
 
@@ -74,7 +68,7 @@ export class User {
         this.username = username;
     }
 
-    getEmail(): string | undefined {
+    getEmail(): string {
         return this.email;
     }
 
@@ -82,7 +76,7 @@ export class User {
         this.email = email;
     }
 
-    getPassword(): string | undefined {
+    getPassword(): string {
         return this.password;
     }
 
@@ -90,7 +84,7 @@ export class User {
         this.password = password;
     }
 
-    getRole(): Role | undefined {
+    getRole(): Role {
         return this.role;
     }
 

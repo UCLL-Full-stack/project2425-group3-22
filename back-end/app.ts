@@ -29,7 +29,7 @@ const swaggerOpts = {
     apis: ['./controller/*.routes.ts'],
 };
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
-app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //#endregion
 
 app.listen(port || 3000, () => {
