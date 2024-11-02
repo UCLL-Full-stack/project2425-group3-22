@@ -1,16 +1,14 @@
-import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Home: React.FC = () => {
-    return ( 
-        <>
-            <Head>
-                <title>Home</title>
-            </Head>
-            <main>
-                <p>home</p>
-            </main>
-        </>
-    );
-}
+    const router = useRouter();
+
+    useEffect(() => {
+        router.replace('/login');
+    }, [router]);
+
+    return null;
+};
 
 export default Home;

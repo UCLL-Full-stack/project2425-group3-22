@@ -3,8 +3,11 @@ import Link from 'next/link';
 import styles from '@styles/Register.module.css';
 import { FormEvent, useState } from 'react';
 import AuthService from '@services/authService';
+import { useRouter } from 'next/router';
 
 const Register: React.FC = () => {
+    const router = useRouter();
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -12,19 +15,19 @@ const Register: React.FC = () => {
 
     const register = async (e: FormEvent) => {
         e.preventDefault(); 
-        const loginResponse = await AuthService.registerUser({
+        const registerResponse = await AuthService.registerUser({
             username,
             email,
             password
         });
 
-        if (!loginResponse.ok) {
-            const errorData = await loginResponse.json();
+        if (!registerResponse.ok) {
+            const errorData = await registerResponse.json();
             setError(errorData.message || "An error occurred. Please try again later.");
         } else {
-            const response = await loginResponse.json();
+            const response = await registerResponse.json();
             console.log("Succesfully registered");
-            console.log(response)
+            router.push('/' + response);
         }
     };
 

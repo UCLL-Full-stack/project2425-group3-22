@@ -4,8 +4,11 @@ import Link from 'next/link';
 import styles from '@styles/Login.module.css';
 import { FormEvent } from 'react';
 import AuthService from '@services/authService';
+import { useRouter } from 'next/router';
 
 const Login: React.FC = () => {
+    const router = useRouter();
+
     const [slogan, setSlogan] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -41,7 +44,8 @@ const Login: React.FC = () => {
         } else {
             const response = await loginResponse.json();
             console.log("Succesfully logged in");
-            console.log(response)
+            router.push('/' + response);
+
         }
     };
 
