@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     const router = useRouter();
 
     const [slogan, setSlogan] = useState('');
-    const [email, setEmail] = useState('');
+    const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
     const login = async (e: FormEvent) => {
         e.preventDefault(); 
         const loginResponse = await AuthService.loginUser({
-            email,
+            usernameOrEmail,
             password
         });
 
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
                     <div>
                         <form onSubmit={login} className={styles.loginForm}>
                             <h2>Login</h2>
-                            <input type="email" name="email" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                            <input type="text" name="text" placeholder='Username / email' value={usernameOrEmail} onChange={(e) => setUsernameOrEmail(e.target.value)} required />
                             <input type="password" name="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required />
                             <button type="submit">LOGIN</button>
                             {error && <p className={styles.error}>{error}</p>}
