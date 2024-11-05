@@ -37,7 +37,7 @@ export class User {
         this.email = email;
 
         //TODO: password hashing functionality! (here or in user.service)
-        if (password.length < 9) throw new Error('password must be longer than 8 characters');
+        if (password.length < 8) throw new Error('password must be 8 characters or longer');
         this.password = password;
 
         if (role) {
