@@ -44,7 +44,8 @@ const Login: React.FC = () => {
         } else {
             const response = await loginResponse.json();
             console.log("Succesfully logged in");
-            router.push('/' + response);
+            sessionStorage.setItem('userID', response);
+            router.push('/');
 
         }
     };

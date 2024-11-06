@@ -1,14 +1,38 @@
+import ProfileSidebar from '@components/profile/profileSidebar';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
     const router = useRouter();
+    const [userID, setUserID] = useState('');
 
     useEffect(() => {
-        router.replace('/login');
+        const storedUserID = sessionStorage.getItem('userID')?.toString() || '';
+        setUserID(storedUserID);
+
+        if (!storedUserID) {
+            router.replace('/login');
+        }
     }, [router]);
 
-    return null;
+    return (
+        <>
+            <Head>
+                <title>Home</title>
+            </Head>
+            <main>
+                <ProfileSidebar />
+                <p>test</p>
+                {userID && (
+                    <p>
+                        homepage <br />
+                        userID: {userID}
+                    </p>
+                )}
+            </main>
+        </>
+    );
 };
 
 export default Home;
