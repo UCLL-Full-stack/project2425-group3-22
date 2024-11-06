@@ -106,6 +106,9 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
                   loginInput.usernameOrEmail,
                   loginInput.password
               );
+
+        //TODO: temporary uses simple cookie for subsequent requests
+        res.cookie('tempIdentification', result, { httpOnly: true, maxAge: 360000 });
         res.status(200).json(result);
     } catch (err: any) {
         res.status(400).json({ message: err.message });

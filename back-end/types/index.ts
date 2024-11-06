@@ -18,4 +18,15 @@ type UserResponse = {
     role: Role;
 };
 
+type PoopInput = {
+    type: number;
+    size: number;
+    colorID?: number;
+    dateTime: Date;
+    title?: string;
+    rating?: number;
+    latitude?: number;
+    longitude?: number;
+};
+
 export { Role, RegisterInput, LoginInput, UserResponse };
