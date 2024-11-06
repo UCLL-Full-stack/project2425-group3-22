@@ -51,6 +51,17 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
         });
     }
 });
+app.get('/currentUserID', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        return res.status(200).json({
+            message: `current user\'s ID is: ${res.locals.userID}`,
+        });
+    } catch (err: any) {
+        return res.status(400).json({
+            message: "error occured gettiong current user's ID",
+        });
+    }
+});
 
 app.use('/poop', poopRouter);
 //#endregion
