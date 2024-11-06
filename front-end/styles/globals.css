@@ -8,4 +8,5 @@ html, body {
 
 main {
     background: radial-gradient(circle, #fff, #e4e5eb);
+    display: flex;
 }
