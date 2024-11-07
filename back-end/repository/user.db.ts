@@ -3,16 +3,16 @@ import { User } from '../model/user';
 const users: Array<User> = [
     new User({
         userID: 1,
-        username: 'atmin',
-        email: 'atmin@poopedia.com',
+        username: 'admin',
+        email: 'admin@poopedia.com',
         password: 'toBeHashed',
         role: 'Admin',
         poops: [],
     }),
     new User({
         userID: 2,
-        username: 'moteraiter',
-        email: 'moteraiter@poopedia.com',
+        username: 'moderator',
+        email: 'moderator@poopedia.com',
         password: 'toBeHashed',
         role: 'Moderator',
         poops: [],

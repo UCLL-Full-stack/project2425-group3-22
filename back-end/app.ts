@@ -31,38 +31,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //#region Routers
 app.use('/auth', authRouter);
-
-//TODO: temporary uses simple cookie for subsequent requests, change to JWT later
-app.use(async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const cookieArray: Array<string> | undefined = req.headers.cookie?.split(' ');
-        if (!cookieArray)
-            return res.status(400).json({ message: 'please login to use the application' });
-        const userID = cookieArray
-            .find((cookie) => cookie.includes('tempIdentification'))
-            ?.split('=')[1]
-            .replace(';', ' ');
-
-        res.locals.userID = userID;
-        next();
-    } catch (err: any) {
-        return res.status(400).json({
-            message: `error occured searching cookies for jwt and validating it (${err.message})`,
-        });
-    }
-});
-app.get('/currentUserID', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        return res.status(200).json({
-            message: `current user\'s ID is: ${res.locals.userID}`,
-        });
-    } catch (err: any) {
-        return res.status(400).json({
-            message: "error occured gettiong current user's ID",
-        });
-    }
-});
-
 app.use('/poop', poopRouter);
 //#endregion
 
