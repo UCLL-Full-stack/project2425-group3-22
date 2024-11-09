@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 const Home: React.FC = () => {
     const router = useRouter();
     const [userID, setUserID] = useState('');
+    const [isValidated, setIsValidated] = useState(false);
 
     useEffect(() => {
         const storedUserID = sessionStorage.getItem('userID')?.toString() || '';
@@ -14,7 +15,15 @@ const Home: React.FC = () => {
         if (!storedUserID) {
             router.replace('/login');
         }
+        else {
+            setIsValidated(true);
+        }
     }, [router]);
+
+
+    if (!isValidated) {
+        return null;
+    }
 
     return (
         <>
