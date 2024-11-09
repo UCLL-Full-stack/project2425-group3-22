@@ -4,8 +4,8 @@ import { User } from '../model/user';
 const poops: Array<Poop> = [
     new Poop({
         poopID: 1,
-        type: 0,
-        size: 0,
+        type: 4,
+        size: 50,
         dateTime: new Date(),
         user: new User({
             userID: 1,
@@ -16,15 +16,15 @@ const poops: Array<Poop> = [
             poops: [],
         }),
         colorID: 0,
-        title: '',
-        rating: 0,
+        title: 'poop1',
+        rating: 4,
         longitude: 0,
         latitude: 0,
     }),
     new Poop({
         poopID: 2,
-        type: 0,
-        size: 0,
+        type: 2,
+        size: 80,
         dateTime: new Date(),
         user: new User({
             userID: 1,
@@ -35,8 +35,8 @@ const poops: Array<Poop> = [
             poops: [],
         }),
         colorID: 0,
-        title: '',
-        rating: 0,
+        title: 'Big poop',
+        rating: 2,
         longitude: 0,
         latitude: 0,
     }),
