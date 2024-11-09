@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Friends as FriendsPrisma, User as UserPrisma } from '@prisma/client';
 
 // TODO: add validation
 export class Friends {
@@ -25,4 +26,8 @@ export class Friends {
     setUser2(user2: User) {
         this.user2 = user2;
     }
+
+    // static from({ user1, user2 }: FriendsPrisma & { user1: UserPrisma; user2: UserPrisma }) {
+    //     return new Friends({ user1: User.from(user1), user2: User.from(user2) });
+    // }
 }

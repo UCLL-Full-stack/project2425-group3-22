@@ -1,3 +1,5 @@
+import { Achievement as AchievementPrisma } from '@prisma/client';
+
 //TODO: add validation & make type for level?
 export class Achievement {
     private achievementID: number;
@@ -48,4 +50,8 @@ export class Achievement {
     setLevel(level: number) {
         this.level = level;
     }
+
+    // static from({ achievementID, name, description, level }: AchievementPrisma) {
+    //     return new Achievement({ achievementID, name, description, level });
+    // }
 }

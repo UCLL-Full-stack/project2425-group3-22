@@ -1,5 +1,6 @@
 import { Role } from '../types';
 import { Poop } from './poop';
+import { User as UserPrisma, Poop as PoopPrisma } from '@prisma/client';
 
 //TODO: add other necessary validation
 export class User {
@@ -99,4 +100,25 @@ export class User {
     setPoops(poops: Poop[]) {
         this.poops = poops;
     }
+
+    // static from({
+    //     userID,
+    //     username,
+    //     email,
+    //     password,
+    //     role,
+    // }: //poops,
+    // UserPrisma & {
+    //     /*role: Role*/
+    //     /*poops: PoopPrisma[];*/
+    // }) {
+    //     return new User({
+    //         userID,
+    //         username,
+    //         email,
+    //         password,
+    //         //role,
+    //         //poops: poops.map((poop) => Poop.from(poop)),
+    //     });
+    // }
 }

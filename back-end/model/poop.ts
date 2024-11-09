@@ -1,40 +1,41 @@
 import { User } from './user';
+import { Poop as PoopPrisma, User as UserPrisma } from '@prisma/client';
 
 // TODO: add validation & create types for type, size & rating (fe 1-5)?
 export class Poop {
     private poopID: number;
     private type: number;
     private size: number;
-    private colorID?: number;
     private dateTime: Date;
+    private user: User;
+    private colorID?: number;
     private title?: string;
     private rating?: number;
     private latitude?: number;
     private longitude?: number;
-    private user: User;
 
     constructor({
         poopID,
         type,
         size,
-        colorID,
         dateTime,
+        user,
+        colorID,
         title,
         rating,
         latitude,
         longitude,
-        user,
     }: {
         poopID: number;
         type: number;
         size: number;
-        colorID?: number;
         dateTime: Date;
+        user: User;
+        colorID?: number;
         title?: string;
         rating?: number;
         latitude?: number;
         longitude?: number;
-        user: User;
     }) {
         this.poopID = poopID;
 
@@ -46,6 +47,9 @@ export class Poop {
             throw new Error('size must be a number from 0 to 100 (0 and 100 included)');
         this.size = size;
 
+        // TODO: find out what the format from front-end is first
+        this.dateTime = dateTime;
+
         // TODO: think about the color system (with coloring the poop in the front-end in mind)
         if (colorID) {
             this.colorID = colorID;
@@ -53,8 +57,7 @@ export class Poop {
             this.colorID = 0; //TODO: add default colorID here
         }
 
-        // TODO: find out what the format from front-end is first
-        this.dateTime = dateTime;
+        this.user = user;
 
         if (title) {
             if (title.length > 100) throw new Error('title cannot be longer than 100 characters');
@@ -80,8 +83,6 @@ export class Poop {
         } else {
             this.longitude = undefined;
         }
-
-        this.user = user;
     }
 
     getPoopID(): number | undefined {
@@ -108,20 +109,28 @@ export class Poop {
         this.size = size;
     }
 
-    getColorID(): number | undefined {
-        return this.colorID;
-    }
-
-    setColorID(colorID: number) {
-        this.colorID = colorID;
-    }
-
     getDateTime(): Date | undefined {
         return this.dateTime;
     }
 
     setDateTime(dateTime: Date) {
         this.dateTime = dateTime;
+    }
+
+    getUser(): User | undefined {
+        return this.user;
+    }
+
+    setUser(user: User) {
+        this.user = user;
+    }
+
+    getColorID(): number | undefined {
+        return this.colorID;
+    }
+
+    setColorID(colorID: number) {
+        this.colorID = colorID;
     }
 
     getTitle(): string | undefined {
@@ -156,11 +165,29 @@ export class Poop {
         this.longitude = longitude;
     }
 
-    getUser(): User | undefined {
-        return this.user;
-    }
-
-    setUser(user: User) {
-        this.user = user;
-    }
+    // static from({
+    //     poopID,
+    //     type,
+    //     size,
+    //     colorID,
+    //     dateTime,
+    //     title,
+    //     rating,
+    //     latitude,
+    //     longitude,
+    //     user,
+    // }: PoopPrisma & { user: UserPrisma }) {
+    //     return new Poop({
+    //         poopID,
+    //         type,
+    //         size,
+    //         colorID,
+    //         dateTime,
+    //         title,
+    //         rating,
+    //         latitude,
+    //         longitude,
+    //         user: User.from(user),
+    //     });
+    // }
 }

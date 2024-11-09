@@ -24,8 +24,7 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
         return users.find((user) => user.getUserID() === userID) || null;
     } catch (err: any) {
         console.log(err.message);
-        //TODO: change error when deploying
-        throw new Error('Error occured in repository/user.db.ts/getUserByID');
+        throw new Error('Database error, check log for more information.');
     }
 };
 
@@ -34,8 +33,7 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
         return users.find((user) => user.getUsername() === username) || null;
     } catch (err: any) {
         console.log(err.message);
-        //TODO: change error when deploying
-        throw new Error('Error occured in repository/user.db.ts/getUserByUsername');
+        throw new Error('Database error, check log for more information.');
     }
 };
 
@@ -44,8 +42,7 @@ const getUserByEmail = async ({ email }: { email: string }): Promise<User | null
         return users.find((user) => user.getEmail() === email) || null;
     } catch (err: any) {
         console.log(err.message);
-        //TODO: change error when deploying
-        throw new Error('Error occured in repository/user.db.ts/getUserByEmail');
+        throw new Error('Database error, check log for more information.');
     }
 };
 
@@ -65,8 +62,7 @@ const getUserByUsernameAndPassword = async ({
         );
     } catch (err: any) {
         console.log(err.message);
-        //TODO: change error when deploying!
-        throw new Error('Error occured in repository/user.db.ts/getUserByUsernameAndPassword');
+        throw new Error('Database error, check log for more information.');
     }
 };
 
@@ -86,8 +82,7 @@ const getUserByEmailAndPassword = async ({
         );
     } catch (err: any) {
         console.log(err.message);
-        //TODO: change error when deploying!
-        throw new Error('Error occured in repository/user.db.ts/getUserByEmailAndPassword');
+        throw new Error('Database error, check log for more information.');
     }
 };
 
@@ -100,20 +95,24 @@ const createUser = async ({
     email: string;
     password: string;
 }): Promise<number> => {
-    const newUser = new User({
-        userID: users.length + 1,
-        username,
-        email,
-        password,
-        role: 'User',
-    });
-    users.push(newUser);
+    try {
+        const userID = users.length + 1;
+        const newUser = new User({
+            userID,
+            username,
+            email,
+            password,
+            role: 'User',
+        });
+        users.push(newUser);
 
-    const createdUser = users.find((user) => user.getEmail() === email);
-    if (createdUser) {
+        const createdUser = users.find((user) => user.getUserID() === userID);
+        if (!createdUser) throw new Error('Error occured creating user');
         return createdUser.getUserID();
+    } catch (err: any) {
+        console.log(err.message);
+        throw new Error('Database error, check log for more information.');
     }
-    throw new Error('Error occured creating user');
 };
 
 export default {

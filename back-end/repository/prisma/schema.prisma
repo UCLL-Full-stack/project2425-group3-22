@@ -1,0 +1,72 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Achievement {
+    achievementID Int                @id @default(autoincrement())
+    name          String             @unique
+    description   String
+    level         Int
+    users         UserAchievements[]
+}
+
+model FriendRequest {
+    sender     User @relation(name: "isSender", fields: [senderID], references: [userID], onDelete: Cascade)
+    senderID   Int
+    receiver   User @relation(name: "isReceiver", fields: [receiverID], references: [userID], onDelete: Cascade)
+    receiverID Int
+
+    @@id([senderID, receiverID])
+}
+
+model Friends {
+    user1   User @relation(name: "isUser1", fields: [user1ID], references: [userID], onDelete: Cascade)
+    user1ID Int
+    user2   User @relation(name: "isUser2", fields: [user2ID], references: [userID], onDelete: Cascade)
+    user2ID Int
+
+    @@id([user1ID, user2ID])
+}
+
+model Poop {
+    poopID    Int      @id @default(autoincrement())
+    type      Int
+    size      Int
+    colorID   Int
+    dateTime  DateTime
+    title     String
+    rating    Int
+    latitude  Int
+    longitude Int
+    user      User     @relation(fields: [userID], references: [userID], onDelete: Cascade)
+    userID    Int
+}
+
+model User {
+    userID       Int                @id @default(autoincrement())
+    username     String             @unique
+    email        String             @unique
+    password     String
+    role         String
+    poops        Poop[]
+    achievements UserAchievements[]
+    isSender     FriendRequest[]    @relation(name: "isSender")
+    isReceiver   FriendRequest[]    @relation(name: "isReceiver")
+    isUser1      Friends[]          @relation(name: "isUser1")
+    isUser2      Friends[]          @relation(name: "isUser2")
+}
+
+model UserAchievements {
+    user          User        @relation(fields: [userID], references: [userID])
+    userID        Int
+    achievement   Achievement @relation(fields: [achievementID], references: [achievementID])
+    achievementID Int
+    achievedAt    DateTime    @default(now())
+
+    @@id([userID, achievementID])
+}

@@ -62,11 +62,11 @@ const authRouter = express.Router();
  */
 authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const RegisterInput = <RegisterInput>req.body;
+        const registerInput = <RegisterInput>req.body;
         const userID = await userService.createUser(
-            RegisterInput.username,
-            RegisterInput.email,
-            RegisterInput.password
+            registerInput.username,
+            registerInput.email,
+            registerInput.password
         );
         res.status(200).json(userID);
     } catch (err: any) {

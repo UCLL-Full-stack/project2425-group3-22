@@ -1,4 +1,5 @@
 import { User } from './user';
+import { FriendRequest as FriendRequestPrisma, User as UserPrisma } from '@prisma/client';
 
 // TODO: add validation
 export class FriendRequest {
@@ -25,4 +26,11 @@ export class FriendRequest {
     setReceiver(receiver: User) {
         this.receiver = receiver;
     }
+
+    // static from({
+    //     sender,
+    //     receiver,
+    // }: FriendRequestPrisma & { sender: UserPrisma; receiver: UserPrisma }) {
+    //     return new FriendRequest({ sender: User.from(sender), receiver: User.from(receiver) });
+    // }
 }
