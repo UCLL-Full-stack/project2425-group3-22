@@ -1,0 +1,31 @@
+.poopItem {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 3px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    width: 50%;
+}
+
+.poopItem .nameContainer {
+    display: flex;
+}
+
+.poopItem .nameContainer p {
+    margin-bottom: 0;
+}
+
+.poopItem .nameContainer .userIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgb(150, 108, 74);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 8px;
+    border: 2px solid rgb(109, 35, 35);
+    margin: auto 16px auto 0;
+}

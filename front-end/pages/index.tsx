@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import ProfileService from '@services/profileService';
 import PoopPanel from '@components/profile/poopPanel';
+import styles from '@styles/Home.module.css';
+import MainNavigation from '@components/profile/mainNavigation';
 
 const Home: React.FC = () => {
     const router = useRouter();
@@ -52,9 +54,11 @@ const Home: React.FC = () => {
                 <Head>
                     <title>Home</title>
                 </Head>
+                <MainNavigation isAdmin={false} />
                 <main>
                     <ProfileSidebar />
-                    <div>
+
+                    <div className={styles.poopContainer}>
                         {poops.length > 0 ? (
                             poops.map((poop, index) => <PoopPanel key={index} poop={poop} />)
                         ) : (
