@@ -8,15 +8,14 @@ type Props = {
 };
 
 const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
-    const username = 'Lander Dirix'; // TODO get hardcoded username from backend
-    const firstLetter = username.charAt(0).toUpperCase();
+    const firstLetter = poop.user.username.charAt(0).toUpperCase();
 
     return (
         <div className={styles.poopItem}>
             <div className={styles.nameContainer}>
                 <div className={styles.userIcon}>{firstLetter}</div>
                 <div>
-                    <p>{username}</p>
+                    <p>{poop.user.username}</p>
                     <p>
                         {new Date(poop.dateTime).toLocaleString('en-GB', {
                             day: '2-digit',

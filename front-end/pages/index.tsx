@@ -3,15 +3,17 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import ProfileService from '@services/profileService';
-import PoopPanel from '@components/profile/poopPanel';
+import PoopPanel from '@components/poopPanel';
 import styles from '@styles/Home.module.css';
-import MainNavigation from '@components/profile/mainNavigation';
+import MainNavigation from '@components/mainNavigation';
+import Link from 'next/link';
 
 const Home: React.FC = () => {
     const router = useRouter();
     const [userID, setUserID] = useState<number | null>(null);
     const [isValidated, setIsValidated] = useState(false);
     const [poops, setPoops] = useState([]);
+    const [isAtTop, setIsAtTop] = useState(true);
 
     useEffect(() => {
         const storedUserID = sessionStorage.getItem('userID')?.toString() || '';
@@ -46,6 +48,22 @@ const Home: React.FC = () => {
         }
     }, [userID]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsAtTop(window.scrollY === 0);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     if (!isValidated) {
         return null;
     } else
@@ -56,8 +74,6 @@ const Home: React.FC = () => {
                 </Head>
                 <MainNavigation isAdmin={false} />
                 <main>
-                    <ProfileSidebar />
-
                     <div className={styles.poopContainer}>
                         {poops.length > 0 ? (
                             poops.map((poop, index) => <PoopPanel key={index} poop={poop} />)
@@ -66,6 +82,15 @@ const Home: React.FC = () => {
                         )}
                     </div>
                 </main>
+                <Link href="/add" className={styles.addPoopButton}>
+                    +
+                </Link>
+                <button
+                    className={`${styles.scrollToTop} ${isAtTop ? styles.hidden : ''}`}
+                    onClick={scrollToTop}
+                >
+                    ^
+                </button>
             </>
         );
 };
