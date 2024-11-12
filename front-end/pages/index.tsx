@@ -7,6 +7,7 @@ import PoopPanel from '@components/poopPanel';
 import styles from '@styles/Home.module.css';
 import MainNavigation from '@components/mainNavigation';
 import Link from 'next/link';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home: React.FC = () => {
     const router = useRouter();
@@ -83,13 +84,13 @@ const Home: React.FC = () => {
                     </div>
                 </main>
                 <Link href="/add" className={styles.addPoopButton}>
-                    +
+                    <FontAwesomeIcon icon="plus" />
                 </Link>
                 <button
                     className={`${styles.scrollToTop} ${isAtTop ? styles.hidden : ''}`}
                     onClick={scrollToTop}
                 >
-                    ^
+                    <FontAwesomeIcon icon="angle-up" />
                 </button>
             </>
         );

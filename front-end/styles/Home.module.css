@@ -17,8 +17,7 @@
     color: white;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
-    padding-bottom: 12px;
+    font-size: 40px;
     transition: 0.2s;
     font-weight: bold;
     text-decoration: none;
@@ -42,11 +41,9 @@
     color:rgb(109, 35, 35);
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+    font-size: 40px;
     transition: 0.2s;
     font-weight: bold;
-    padding-top: 4px;
-
 }
 
 .scrollToTop:hover {

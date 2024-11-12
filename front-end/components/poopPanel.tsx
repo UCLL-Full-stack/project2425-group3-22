@@ -28,11 +28,12 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 container: mapContainerRef.current,
                 style: 'mapbox://styles/landeriscool/cltul3bhu00fr01p7h0e70gbc',
                 center: [poop.longitude, poop.latitude],
-                zoom: 4,
+                zoom: 10,
                 attributionControl: false,
             });
 
-            new mapboxgl.Marker({ color: 'brown' }).setLngLat([poop.longitude, poop.latitude]).addTo(map);
+
+            const marker = new mapboxgl.Marker({ color: 'brown' }).setLngLat([poop.longitude, poop.latitude]).addTo(map);
 
             return () => map.remove();
         }

@@ -18,8 +18,8 @@ const poops: Array<Poop> = [
         colorID: 0,
         title: 'poop1',
         rating: 4,
-        longitude: 45,
-        latitude: 45,
+        longitude: 4.724166822996737, 
+        latitude: 50.880434297929774,
     }),
     new Poop({
         poopID: 2,
@@ -37,8 +37,8 @@ const poops: Array<Poop> = [
         colorID: 0,
         title: 'Big poop',
         rating: 2,
-        longitude: 0,
-        latitude: 0,
+        longitude: 4.731953220736576,
+        latitude: 50.93708586970979,
     }),
     new Poop({
         poopID: 3,

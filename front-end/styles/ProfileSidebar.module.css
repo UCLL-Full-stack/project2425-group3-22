@@ -1,6 +1,5 @@
 .sidebar {
     display: inline-flex;
-    position: fixed;
     flex-direction: column;
     background-color: white;
     width: 250px;

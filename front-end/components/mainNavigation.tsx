@@ -15,7 +15,7 @@ const MainNavigation: React.FC<Props> = ({ isAdmin }: Props) => {
 
     return (
         <div className={styles.mainNavigation}>
-            
+            <Link className={styles.logo} href="/">Poopedia</Link>
         </div>
     );
 };
