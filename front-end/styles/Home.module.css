@@ -45,6 +45,8 @@
     font-size: 48px;
     transition: 0.2s;
     font-weight: bold;
+    padding-top: 4px;
+
 }
 
 .scrollToTop:hover {
@@ -54,4 +56,9 @@
 
 .scrollToTop.hidden {
     opacity: 0;
+}
+
+.map {
+    height: 300px;
+    width: 100%;
 }
