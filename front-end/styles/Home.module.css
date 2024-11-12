@@ -57,8 +57,3 @@
 .scrollToTop.hidden {
     opacity: 0;
 }
-
-.map {
-    height: 300px;
-    width: 100%;
-}

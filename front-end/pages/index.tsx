@@ -43,7 +43,7 @@ const Home: React.FC = () => {
                     console.error(error.message);
                 }
             };
-
+            
             fetchProfilePoopsData();
         }
     }, [userID]);

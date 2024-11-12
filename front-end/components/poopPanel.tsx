@@ -13,6 +13,8 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const firstLetter = poop.user.username.charAt(0).toUpperCase();
 
+    console.log(poop)
+
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
 
@@ -27,11 +29,10 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 style: 'mapbox://styles/landeriscool/cltul3bhu00fr01p7h0e70gbc',
                 center: [poop.longitude, poop.latitude],
                 zoom: 4,
+                attributionControl: false,
             });
 
-            new mapboxgl.Marker()
-                .setLngLat([poop.longitude, poop.latitude])
-                .addTo(map);
+            new mapboxgl.Marker({ color: 'brown' }).setLngLat([poop.longitude, poop.latitude]).addTo(map);
 
             return () => map.remove();
         }
