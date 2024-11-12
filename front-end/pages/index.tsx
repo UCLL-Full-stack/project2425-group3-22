@@ -83,11 +83,11 @@ const Home: React.FC = () => {
                         )}
                     </div>
                 </main>
-                <Link href="/add" className={styles.addPoopButton}>
+                <Link href="/add" className={`${styles.addPoopButton} ${styles.button}`}>
                     <FontAwesomeIcon icon="plus" />
                 </Link>
                 <button
-                    className={`${styles.scrollToTop} ${isAtTop ? styles.hidden : ''}`}
+                    className={`${styles.scrollToTop} ${styles.button} ${isAtTop ? styles.hidden : ''}`}
                     onClick={scrollToTop}
                 >
                     <FontAwesomeIcon icon="angle-up" />

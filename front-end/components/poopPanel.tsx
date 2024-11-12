@@ -4,6 +4,7 @@ import styles from '@styles/poopPanel.module.css';
 import { useRouter } from 'next/router';
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
     poop: poopItem;
@@ -13,7 +14,6 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const firstLetter = poop.user.username.charAt(0).toUpperCase();
 
-    console.log(poop)
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
@@ -55,6 +55,7 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                         })}
                     </p>
                 </div>
+                <button className={styles.optionsButton}><FontAwesomeIcon icon="ellipsis-vertical"/></button>
             </div>
             <h2>{poop.title}</h2>
 
