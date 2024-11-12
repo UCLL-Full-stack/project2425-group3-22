@@ -68,7 +68,7 @@ export class Poop {
 
         this.rating = rating;
 
-        if (latitude) {
+        if (latitude !== undefined) {
             if (latitude < -90 || latitude > 90)
                 throw new Error('latitude must be a number between -90 and 90');
             this.latitude = latitude;
@@ -76,7 +76,7 @@ export class Poop {
             this.latitude = undefined;
         }
 
-        if (longitude) {
+        if (longitude !== undefined) {
             if (longitude < -180 || longitude > 180)
                 throw new Error('longitude must be a number between -180 and 180');
             this.longitude = longitude;

@@ -30,6 +30,13 @@ First, install all required node dependencies using npm (node package manager):
 > npm install
 ```
 
+Then, add these lines to the .env file:
+
+```
+APP_PORT = <<PORT>>
+DATABASE_URL = "postgresql://<<USER>>:<<PASSWORD>>@<<DOMAIN>>:<<PORT>>/<<DB-NAME>>?schema=public"
+```
+
 Then, to start the backend server execute:
 
 ```console

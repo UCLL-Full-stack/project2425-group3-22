@@ -107,18 +107,18 @@ export class User {
     //     email,
     //     password,
     //     role,
-    // }: //poops,
-    // UserPrisma & {
-    //     /*role: Role*/
-    //     /*poops: PoopPrisma[];*/
-    // }) {
+    //     poops,
+    // }: UserPrisma & {
+    //     role: Role;
+    //     poops: PoopPrisma[];
+    // }): any {
     //     return new User({
     //         userID,
     //         username,
     //         email,
     //         password,
-    //         //role,
-    //         //poops: poops.map((poop) => Poop.from(poop)),
+    //         role,
+    //         poops: poops.map((poop) => Poop.from(poop)),
     //     });
     // }
 }
