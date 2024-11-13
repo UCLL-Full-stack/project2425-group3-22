@@ -66,7 +66,7 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
             // set timeout to prevent the click event from closing the popup immediately
             setTimeout(() => {
                 window.addEventListener('click', handleClickOutsidePopup);
-            }, 100);
+            }, 0);
         }
 
         return () => {
@@ -77,60 +77,53 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
     }, [showPopup]);
 
     const handleOptionsClick = (event: React.MouseEvent) => {
-        console.log('open popup');
         const { clientX, clientY } = event;
         setPopupPosition({ x: clientX, y: clientY });
         setShowPopup(true);
     };
 
     return (
-        <>
-            <div className={styles.poopItem}>
-                <div className={styles.nameContainer}>
-                    <div className={styles.userIcon}>{firstLetter}</div>
-                    <div>
-                        <p>{poop.user.username}</p>
-                        <p>
-                            {new Date(poop.dateTime).toLocaleString('en-GB', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                            })}
-                        </p>
-                    </div>
-                    <button className={styles.optionsButton} onClick={handleOptionsClick}>
-                        <FontAwesomeIcon icon="ellipsis-vertical" />
-                    </button>
+        <div className={styles.poopItem}>
+            <div className={styles.nameContainer}>
+                <div className={styles.userIcon}>{firstLetter}</div>
+                <div>
+                    <p>{poop.user.username}</p>
+                    <p>
+                        {new Date(poop.dateTime).toLocaleString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })}
+                    </p>
                 </div>
-                <h2>{poop.title}</h2>
-
-                <p>rating: {poop.rating}</p>
-                <p>size: {poop.size}</p>
-                <p>colorID: {poop.colorID}</p>
-                <p>type: {poop.type}</p>
-
-                <div ref={mapContainerRef} className={styles.map}></div>
+                <button className={styles.optionsButton} onClick={handleOptionsClick}>
+                    <FontAwesomeIcon icon="ellipsis-vertical" />
+                </button>
             </div>
+            <h2>{poop.title}</h2>
+            <p>rating: {poop.rating}</p>
+            <p>size: {poop.size}</p>
+            <p>colorID: {poop.colorID}</p>
+            <p>type: {poop.type}</p>
+            <div ref={mapContainerRef} className={styles.map}></div>
             {showPopup && popupPosition && (
                 <div
-                    className={styles.popup}
+                    className="popup"
                     ref={popupRef}
                     style={{
                         left: `${popupPosition.x}px`,
                         top: `${popupPosition.y}px`,
                     }}
                 >
-                    <ul>
-                        <li>Edit</li>
-                        <li>Delete</li>
-                        <li>Remove Friend</li>
-                        <li>Another thing</li>
-                    </ul>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                    <button>Remove Friend</button>
+                    <button>Another thing</button>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 
