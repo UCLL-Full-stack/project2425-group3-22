@@ -1,8 +1,51 @@
 .mainNavigation {
+    display: flex;
     position: fixed;
     background-color: white;
     width: 100%;
     height: 75px;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
     z-index: 100;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.mainNavigation .logo {
+    color: brown;
+    font-family: "Chakra Petch", sans-serif;
+    letter-spacing: -1px;
+    font-size: 2rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.mainNavigation .spacer {
+    flex-grow: 1;
+}
+
+.mainNavigation .profileButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.mainNavigation .profileButton .userIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: brown;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(150, 108, 74);
+    color: white;
+
+    font-weight: bold;
+    margin-right: 8px;
+    border: 2px solid rgb(109, 35, 35);
+    margin: 0;
 }
