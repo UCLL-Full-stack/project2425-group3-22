@@ -11,9 +11,9 @@ const getUserByUsernameAndPassword = async (
     username: string,
     password: string
 ): Promise<number> => {
-    const userID = await userDb.getUserByUsernameAndPassword({ username, password });
-    if (!userID) throw new Error(`Password or username is incorrect`);
-    return userID;
+    const user = await userDb.getUserByUsernameAndPassword({ username, password });
+    if (!user) throw new Error(`Password or username is incorrect`);
+    return user.getUserID();
 };
 
 const getUserByEmailAndPassword = async (email: string, password: string): Promise<number> => {

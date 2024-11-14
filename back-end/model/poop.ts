@@ -165,29 +165,29 @@ export class Poop {
         this.longitude = longitude;
     }
 
-    // static from({
-    //     poopID,
-    //     type,
-    //     size,
-    //     colorID,
-    //     dateTime,
-    //     title,
-    //     rating,
-    //     latitude,
-    //     longitude,
-    //     user,
-    // }: PoopPrisma & { user: UserPrisma }) {
-    //     return new Poop({
-    //         poopID,
-    //         type,
-    //         size,
-    //         colorID,
-    //         dateTime,
-    //         title,
-    //         rating,
-    //         latitude,
-    //         longitude,
-    //         user: User.from(user),
-    //     });
-    // }
+    static from({
+        poopID,
+        type,
+        size,
+        colorID,
+        dateTime,
+        title,
+        rating,
+        latitude,
+        longitude,
+        user,
+    }: PoopPrisma & { user?: UserPrisma }) {
+        return new Poop({
+            poopID,
+            type,
+            size,
+            colorID,
+            dateTime,
+            title,
+            rating,
+            latitude,
+            longitude,
+            user: user ? User.from(user) : undefined,
+        });
+    }
 }

@@ -51,7 +51,7 @@ export class Achievement {
         this.level = level;
     }
 
-    // static from({ achievementID, name, description, level }: AchievementPrisma) {
-    //     return new Achievement({ achievementID, name, description, level });
-    // }
+    static from({ achievementID, name, description, level }: AchievementPrisma) {
+        return new Achievement({ achievementID, name, description, level });
+    }
 }

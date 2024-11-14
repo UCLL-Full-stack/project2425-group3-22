@@ -52,7 +52,7 @@ model User {
     username     String             @unique
     email        String             @unique
     password     String
-    role         String
+    role         Role               @default(USER)
     poops        Poop[]
     achievements UserAchievements[]
     isSender     FriendRequest[]    @relation(name: "isSender")
@@ -69,4 +69,10 @@ model UserAchievements {
     achievedAt    DateTime    @default(now())
 
     @@id([userID, achievementID])
+}
+
+enum Role {
+    USER
+    MODERATOR
+    ADMIN
 }

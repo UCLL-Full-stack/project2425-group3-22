@@ -1,4 +1,5 @@
 import { User } from '../model/user';
+import database from './database';
 
 const users: Array<User> = [
     new User({
@@ -21,7 +22,12 @@ const users: Array<User> = [
 
 const getUserByID = async ({ userID }: { userID: number }): Promise<User | null> => {
     try {
-        return users.find((user) => user.getUserID() === userID) || null;
+        const userPrisma = await database.user.findUnique({
+            where: { userID: userID },
+        });
+
+        if (!userPrisma) throw new Error('User not found');
+        return User.from(userPrisma);
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -53,13 +59,20 @@ const getUserByUsernameAndPassword = async ({
 }: {
     username: string;
     password: string;
-}): Promise<number | null> => {
+}): Promise<User | null> => {
     try {
-        return (
-            users
-                .find((user) => user.getUsername() === username && user.getPassword() === password)
-                ?.getUserID() || null
-        );
+        const userPrisma = await database.user.findUnique({
+            where: { username: username, password: password },
+            include: { poops: false },
+        });
+        if (!userPrisma) throw new Error('User not found');
+        return User.from(userPrisma);
+
+        // return (
+        //     users
+        //         .find((user) => user.getUsername() === username && user.getPassword() === password)
+        //         ?.getUserID() || null
+        // );
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');

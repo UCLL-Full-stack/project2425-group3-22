@@ -27,10 +27,10 @@ export class FriendRequest {
         this.receiver = receiver;
     }
 
-    // static from({
-    //     sender,
-    //     receiver,
-    // }: FriendRequestPrisma & { sender: UserPrisma; receiver: UserPrisma }) {
-    //     return new FriendRequest({ sender: User.from(sender), receiver: User.from(receiver) });
-    // }
+    static from({
+        sender,
+        receiver,
+    }: FriendRequestPrisma & { sender: UserPrisma; receiver: UserPrisma }) {
+        return new FriendRequest({ sender: User.from(sender), receiver: User.from(receiver) });
+    }
 }
