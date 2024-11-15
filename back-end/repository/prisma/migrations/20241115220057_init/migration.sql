@@ -30,14 +30,14 @@ CREATE TABLE "Friends" (
 -- CreateTable
 CREATE TABLE "Poop" (
     "poopID" SERIAL NOT NULL,
+    "dateTime" TIMESTAMP(3) NOT NULL,
     "type" INTEGER NOT NULL,
     "size" INTEGER NOT NULL,
-    "colorID" INTEGER NOT NULL,
-    "dateTime" TIMESTAMP(3) NOT NULL,
-    "title" TEXT NOT NULL,
+    "colorID" INTEGER,
     "rating" INTEGER NOT NULL,
-    "latitude" INTEGER NOT NULL,
-    "longitude" INTEGER NOT NULL,
+    "title" TEXT,
+    "latitude" INTEGER,
+    "longitude" INTEGER,
     "userID" INTEGER NOT NULL,
 
     CONSTRAINT "Poop_pkey" PRIMARY KEY ("poopID")

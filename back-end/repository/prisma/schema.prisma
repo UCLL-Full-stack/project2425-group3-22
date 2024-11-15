@@ -35,14 +35,14 @@ model Friends {
 
 model Poop {
     poopID    Int      @id @default(autoincrement())
+    dateTime  DateTime
     type      Int
     size      Int
-    colorID   Int
-    dateTime  DateTime
-    title     String
+    colorID   Int?
     rating    Int
-    latitude  Int
-    longitude Int
+    title     String?
+    latitude  Int?
+    longitude Int?
     user      User     @relation(fields: [userID], references: [userID], onDelete: Cascade)
     userID    Int
 }

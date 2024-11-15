@@ -8,47 +8,53 @@
  *              poopID:
  *                  type: number
  *                  format: int64
+ *              dateTime:
+ *                  type: string
+ *                  format: date
  *              type:
  *                  type: number
  *              size:
  *                  type: number
- *              colorID:
- *                  type: number
- *              dateTime:
- *                  type: string
- *                  format: date
- *              title:
- *                  type: string
  *              rating:
  *                  type: number
+ *              userID:
+ *                  type: number
+ *              username:
+ *                  type: string
+ *              colorID:
+ *                  type: number
+ *              title:
+ *                  type: string
  *              latitude:
  *                  type: number
  *              longitude:
  *                  type: number
- *              user:
- *                  type: object
  *        PoopInput:
  *          type: object
  *          properties:
+ *              dateTime:
+ *                  type: string
+ *                  format: date-time
  *              type:
  *                  type: number
  *              size:
  *                  type: number
- *              dateTime:
- *                  type: string
- *                  format: date-time
  *              userID:
  *                  type: number
  *              colorID:
  *                  type: number
- *              title:
- *                  type: string
  *              rating:
  *                  type: number
+ *                  required: false
+ *              title:
+ *                  type: string
+ *                  required: false
  *              latitude:
  *                  type: number
+ *                  required: false
  *              longitude:
  *                  type: number
+ *                  required: false
  */
 import express, { NextFunction, Request, Response } from 'express';
 import poopService from '../service/poop.service';
@@ -73,8 +79,8 @@ const poopRouter = express.Router();
  */
 poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const response = await poopService.getAllPoops();
-        return res.status(200).json(response);
+        const result = await poopService.getAllPoops();
+        return res.status(200).json(result);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
@@ -106,8 +112,8 @@ poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
 poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params['userID'];
-        const response = await poopService.getPoopsByUser(Number(userID));
-        return res.status(200).json(response);
+        const result = await poopService.getPoopsByUser(Number(userID));
+        return res.status(200).json(result);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
@@ -132,14 +138,24 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  *                  schema:
  *                      $ref: '#/components/schemas/Poop'
  */
-// poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const poopInput = <PoopInput>req.body;
-//         const result = await poopService.createPoop();
-//         return res.status(200).json(result);
-//     } catch (err: any) {
-//         res.status(400).json({ message: err.message });
-//     }
-// });
+poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const poopInput = <PoopInput>req.body;
+        const result = await poopService.createPoop(
+            poopInput.dateTime,
+            poopInput.type,
+            poopInput.size,
+            poopInput.rating,
+            poopInput.userID,
+            poopInput.colorID,
+            poopInput.title,
+            poopInput.latitude,
+            poopInput.longitude
+        );
+        return res.status(200).json(result);
+    } catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+});
 
 export { poopRouter };

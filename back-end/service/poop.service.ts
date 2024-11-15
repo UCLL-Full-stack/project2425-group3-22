@@ -1,6 +1,6 @@
-import poopDb from '../repository/poop.db';
 import { Poop } from '../model/poop';
-import userService from './user.service';
+import poopDb from '../repository/poop.db';
+import userDb from '../repository/user.db';
 
 const getAllPoops = async (): Promise<Array<Poop>> => {
     const poops = await poopDb.getAllPoops();
@@ -15,20 +15,37 @@ const getPoopsByUser = async (userID: number): Promise<Array<Poop>> => {
     return poops;
 };
 
-// const createPoop = async (
-//     type: number,
-//     size: number,
-//     dateTime: Date,
-//     userID: number,
-//     colorID?: number,
-//     title?: string,
-//     rating?: number,
-//     latitude?: number,
-//     longitude?: number
-// ): Promise<Poop> => {
-//     const user = await userService.getUserByID(userID);
-//     const newPoop = await poopDb.createPoop({});
-//     return newPoop;
-// };
+const createPoop = async (
+    dateTime: Date,
+    type: number,
+    size: number,
+    rating: number,
+    userID: number,
+    colorID?: number,
+    title?: string,
+    latitude?: number,
+    longitude?: number
+): Promise<Poop> => {
+    //TODO: user should be clear from JWT
+    const user = await userDb.getUserByID({ userID });
+    if (!user) throw new Error('User does not exist.');
 
-export default { getAllPoops, getPoopsByUser /*createPoop*/ };
+    const poop = await poopDb.createPoop(
+        new Poop({
+            poopID: 0,
+            dateTime,
+            type,
+            size,
+            rating,
+            userID,
+            colorID,
+            title,
+            latitude,
+            longitude,
+        })
+    );
+    if (!poop) throw new Error('Error occured creating poop.');
+    return poop;
+};
+
+export default { getAllPoops, getPoopsByUser, createPoop };

@@ -53,28 +53,28 @@ const main = async () => {
 
     await prisma.poop.create({
         data: {
+            dateTime: new Date(),
             type: 4,
             size: 50,
-            dateTime: new Date(),
-            user: { connect: { userID: user1.userID } },
+            rating: 4,
             colorID: 0,
             title: 'poop1',
-            rating: 4,
             longitude: 4.724166822996737,
             latitude: 50.880434297929774,
+            user: { connect: { userID: user1.userID } },
         },
     });
     await prisma.poop.create({
         data: {
+            dateTime: new Date(),
             type: 2,
             size: 80,
-            dateTime: new Date(),
-            user: { connect: { userID: user2.userID } },
+            rating: 2,
             colorID: 0,
             title: 'Big poop',
-            rating: 2,
             longitude: 4.731953220736576,
             latitude: 50.93708586970979,
+            user: { connect: { userID: user2.userID } },
         },
     });
 };

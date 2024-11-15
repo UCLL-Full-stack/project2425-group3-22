@@ -1,5 +1,5 @@
 import { Role } from '../types';
-import { User as UserPrisma, Role as RolePrisma } from '@prisma/client';
+import { User as UserPrisma } from '@prisma/client';
 
 //TODO: add other necessary validation
 export class User {
@@ -40,7 +40,7 @@ export class User {
         if (role) {
             this.role = role;
         } else {
-            this.role = 'User';
+            this.role = 'USER';
         }
     }
 
@@ -87,15 +87,7 @@ export class User {
         return regexp.test(email);
     }
 
-    static from({
-        userID,
-        username,
-        email,
-        password,
-        role,
-    }: UserPrisma & {
-        role: RolePrisma;
-    }) {
+    static from({ userID, username, email, password, role }: UserPrisma) {
         return new User({
             userID,
             username,

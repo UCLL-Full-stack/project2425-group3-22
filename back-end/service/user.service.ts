@@ -2,6 +2,12 @@ import { User } from '../model/user';
 import userDb from '../repository/user.db';
 import { hashPassword, validatePassword } from '../util/hash';
 
+const getAllUsers = async (): Promise<Array<User>> => {
+    const users = await userDb.getAllUsers();
+    if (!users) throw new Error('No users found.');
+    return users;
+};
+
 const getUserByID = async (userID: number): Promise<User> => {
     const user = await userDb.getUserByID({ userID });
     if (!user) throw new Error('User not found.');
@@ -31,7 +37,9 @@ const createUser = async (username: string, email: string, password: string): Pr
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
     const hashedPassword = await hashPassword(password);
-    const user = await userDb.createUser({ username, email, password: hashedPassword });
+    const user = await userDb.createUser(
+        new User({ userID: 0, username, email, password: hashedPassword })
+    );
     if (!user) throw new Error('Error occured creating user.');
     user.setPassword('');
     return user;
@@ -53,4 +61,10 @@ const checkUsernameInUse = async (username: string | undefined): Promise<boolean
     return false;
 };
 
-export default { getUserByID, getUserByUsernameAndPassword, getUserByEmailAndPassword, createUser };
+export default {
+    getAllUsers,
+    getUserByID,
+    getUserByUsernameAndPassword,
+    getUserByEmailAndPassword,
+    createUser,
+};

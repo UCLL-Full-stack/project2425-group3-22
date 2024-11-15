@@ -1,5 +1,4 @@
 import { Poop } from '../model/poop';
-import { User } from '../model/user';
 import database from './database';
 
 const getAllPoops = async (): Promise<Array<Poop> | null> => {
@@ -8,7 +7,7 @@ const getAllPoops = async (): Promise<Array<Poop> | null> => {
             include: { user: true },
         });
 
-        if (!poopsPrisma) return null;
+        if (poopsPrisma.length < 1) return null;
         return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
         console.log(err.message);
@@ -18,20 +17,37 @@ const getAllPoops = async (): Promise<Array<Poop> | null> => {
 
 const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poop> | null> => {
     try {
-        const poopArray: Array<Poop> = [];
-        // poops.forEach((poop) => {
-        //     if (poop.getUser()?.getUserID() === userID) poopArray.push(poop);
-        // });
-        return poopArray ?? null;
+        const poopsPrisma = await database.poop.findMany({
+            where: { userID: userID },
+            include: { user: true },
+        });
+
+        if (poopsPrisma.length < 1) return null;
+        return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
     }
 };
 
-const createPoop = async ({}: {}): Promise<Poop | null> => {
+const createPoop = async (poop: Poop): Promise<Poop | null> => {
     try {
-        return null;
+        const poopPrisma = await database.poop.create({
+            data: {
+                dateTime: poop.getDateTime(),
+                type: poop.getType(),
+                size: poop.getSize(),
+                rating: poop.getRating(),
+                user: { connect: { userID: poop.getUserID() } },
+                colorID: poop.getColorID(),
+                title: poop.getTitle(),
+                latitude: poop.getLatitude(),
+                longitude: poop.getLongitude(),
+            },
+            include: { user: true },
+        });
+        if (!poopPrisma) return null;
+        return Poop.from(poopPrisma);
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');

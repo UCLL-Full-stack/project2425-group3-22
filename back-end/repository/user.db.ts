@@ -1,6 +1,21 @@
-import { Role } from '@prisma/client';
 import { User } from '../model/user';
 import database from './database';
+
+const getAllUsers = async (): Promise<Array<User> | null> => {
+    try {
+        const usersPrisma = await database.user.findMany();
+
+        if (usersPrisma.length < 1) return null;
+        return usersPrisma.map((userPrisma) => {
+            const user = User.from(userPrisma);
+            user.setPassword('');
+            return user;
+        });
+    } catch (err: any) {
+        console.log(err.message);
+        throw new Error('Database error, check log for more information.');
+    }
+};
 
 const getUserByID = async ({ userID }: { userID: number }): Promise<User | null> => {
     try {
@@ -44,22 +59,14 @@ const getUserByEmail = async ({ email }: { email: string }): Promise<User | null
     }
 };
 
-const createUser = async ({
-    username,
-    email,
-    password,
-}: {
-    username: string;
-    email: string;
-    password: string;
-}): Promise<User | null> => {
+const createUser = async (user: User): Promise<User | null> => {
     try {
         const userPrisma = await database.user.create({
             data: {
-                username: username,
-                email: email,
-                password: password,
-                role: Role.USER,
+                username: user.getUsername(),
+                email: user.getEmail(),
+                password: user.getPassword(),
+                role: user.getRole(),
             },
         });
         if (!userPrisma) return null;
@@ -71,6 +78,7 @@ const createUser = async ({
 };
 
 export default {
+    getAllUsers,
     getUserByID,
     getUserByUsername,
     getUserByEmail,
