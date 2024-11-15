@@ -35,13 +35,15 @@ Then, add these lines to the .env file:
 ```
 APP_PORT = <<PORT>>
 DATABASE_URL = "postgresql://<<USER>>:<<PASSWORD>>@<<DOMAIN>>:<<PORT>>/<<DB-NAME>>?schema=public"
+SALT_ROUNDS = <<A NUMBER OF SALT ROUNDS FOR BCRYPT HASHING>>
 ```
 
 Then, to setup the postges DB execute:
 
 ```console
->npx prisma migrate dev
->npx prisma generate
+> npx prisma migrate dev
+> npx prisma generate
+> npx ts-node util/feed.ts (optional, creates dummy data)
 ```
 
 Then, to start the backend server execute:
