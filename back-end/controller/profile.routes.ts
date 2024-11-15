@@ -77,8 +77,6 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 profileRouter.post('/poops', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = res.locals.userID;
-
-        
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }

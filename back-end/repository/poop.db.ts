@@ -1,95 +1,27 @@
 import { Poop } from '../model/poop';
 import { User } from '../model/user';
-
-const poops: Array<Poop> = [
-    new Poop({
-        poopID: 1,
-        type: 4,
-        size: 50,
-        dateTime: new Date(),
-        user: new User({
-            userID: 1,
-            username: 'admin',
-            email: 'admin@poopedia.com',
-            password: 'toBeHashed',
-            role: 'Admin',
-            poops: [],
-        }),
-        colorID: 0,
-        title: 'poop1',
-        rating: 4,
-        longitude: 4.724166822996737, 
-        latitude: 50.880434297929774,
-    }),
-    new Poop({
-        poopID: 2,
-        type: 2,
-        size: 80,
-        dateTime: new Date(),
-        user: new User({
-            userID: 1,
-            username: 'admin',
-            email: 'admin@poopedia.com',
-            password: 'toBeHashed',
-            role: 'Admin',
-            poops: [],
-        }),
-        colorID: 0,
-        title: 'Big poop',
-        rating: 2,
-        longitude: 4.731953220736576,
-        latitude: 50.93708586970979,
-    }),
-    new Poop({
-        poopID: 3,
-        type: 0,
-        size: 0,
-        dateTime: new Date(),
-        user: new User({
-            userID: 2,
-            username: 'moderator',
-            email: 'moderator@poopedia.com',
-            password: 'toBeHashed',
-            role: 'Moderator',
-            poops: [],
-        }),
-        colorID: 0,
-        title: '',
-        rating: 0,
-        longitude: 0,
-        latitude: 0,
-    }),
-    new Poop({
-        poopID: 4,
-        type: 0,
-        size: 0,
-        dateTime: new Date(),
-        user: new User({
-            userID: 2,
-            username: 'moderator',
-            email: 'moderator@poopedia.com',
-            password: 'toBeHashed',
-            role: 'Moderator',
-            poops: [],
-        }),
-        colorID: 0,
-        title: '',
-        rating: 0,
-        longitude: 0,
-        latitude: 0,
-    }),
-];
+import database from './database';
 
 const getAllPoops = async (): Promise<Array<Poop> | null> => {
-    return poops ?? null;
+    try {
+        const poopsPrisma = await database.poop.findMany({
+            include: { user: true },
+        });
+
+        if (!poopsPrisma) return null;
+        return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
+    } catch (err: any) {
+        console.log(err.message);
+        throw new Error('Database error, check log for more information.');
+    }
 };
 
 const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poop> | null> => {
     try {
         const poopArray: Array<Poop> = [];
-        poops.forEach((poop) => {
-            if (poop.getUser()?.getUserID() === userID) poopArray.push(poop);
-        });
+        // poops.forEach((poop) => {
+        //     if (poop.getUser()?.getUserID() === userID) poopArray.push(poop);
+        // });
         return poopArray ?? null;
     } catch (err: any) {
         console.log(err.message);
@@ -97,46 +29,9 @@ const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poo
     }
 };
 
-const createPoop = async ({
-    type,
-    size,
-    colorID,
-    dateTime,
-    title,
-    rating,
-    latitude,
-    longitude,
-    user,
-}: {
-    type: number;
-    size: number;
-    dateTime: Date;
-    user: User;
-    colorID?: number;
-    title?: string;
-    rating?: number;
-    latitude?: number;
-    longitude?: number;
-}): Promise<Poop> => {
+const createPoop = async ({}: {}): Promise<Poop | null> => {
     try {
-        const poopID = poops.length + 1;
-        const newPoop = new Poop({
-            poopID,
-            type,
-            size,
-            colorID,
-            dateTime,
-            title,
-            rating,
-            latitude,
-            longitude,
-            user,
-        });
-        poops.push(newPoop);
-
-        const createdPoop = poops.find((poop) => poop.getPoopID() === poopID);
-        if (!createdPoop) throw new Error('Error occured creating poop.');
-        return createdPoop;
+        return null;
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');

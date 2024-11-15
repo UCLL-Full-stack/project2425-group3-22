@@ -1,24 +1,6 @@
+import { Role } from '@prisma/client';
 import { User } from '../model/user';
 import database from './database';
-
-const users: Array<User> = [
-    new User({
-        userID: 1,
-        username: 'admin',
-        email: 'admin@poopedia.com',
-        password: 'toBeHashed',
-        role: 'Admin',
-        poops: [],
-    }),
-    new User({
-        userID: 2,
-        username: 'moderator',
-        email: 'moderator@poopedia.com',
-        password: 'toBeHashed',
-        role: 'Moderator',
-        poops: [],
-    }),
-];
 
 const getUserByID = async ({ userID }: { userID: number }): Promise<User | null> => {
     try {
@@ -26,7 +8,7 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
             where: { userID: userID },
         });
 
-        if (!userPrisma) throw new Error('User not found');
+        if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
         console.log(err.message);
@@ -36,7 +18,12 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
 
 const getUserByUsername = async ({ username }: { username: string }): Promise<User | null> => {
     try {
-        return users.find((user) => user.getUsername() === username) || null;
+        const userPrisma = await database.user.findUnique({
+            where: { username: username },
+        });
+
+        if (!userPrisma) return null;
+        return User.from(userPrisma);
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -45,54 +32,12 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
 
 const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
     try {
-        return users.find((user) => user.getEmail() === email) || null;
-    } catch (err: any) {
-        console.log(err.message);
-        throw new Error('Database error, check log for more information.');
-    }
-};
-
-//TODO: do not return full user since it includes the password, return a DTO instead
-const getUserByUsernameAndPassword = async ({
-    username,
-    password,
-}: {
-    username: string;
-    password: string;
-}): Promise<User | null> => {
-    try {
         const userPrisma = await database.user.findUnique({
-            where: { username: username, password: password },
-            include: { poops: false },
+            where: { email: email },
         });
-        if (!userPrisma) throw new Error('User not found');
+
+        if (!userPrisma) return null;
         return User.from(userPrisma);
-
-        // return (
-        //     users
-        //         .find((user) => user.getUsername() === username && user.getPassword() === password)
-        //         ?.getUserID() || null
-        // );
-    } catch (err: any) {
-        console.log(err.message);
-        throw new Error('Database error, check log for more information.');
-    }
-};
-
-//TODO: do not return full user since it includes the password, return a DTO instead
-const getUserByEmailAndPassword = async ({
-    email,
-    password,
-}: {
-    email: string;
-    password: string;
-}): Promise<number | null> => {
-    try {
-        return (
-            users
-                .find((user) => user.getEmail() === email && user.getPassword() === password)
-                ?.getUserID() || null
-        );
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -107,21 +52,18 @@ const createUser = async ({
     username: string;
     email: string;
     password: string;
-}): Promise<number> => {
+}): Promise<User | null> => {
     try {
-        const userID = users.length + 1;
-        const newUser = new User({
-            userID,
-            username,
-            email,
-            password,
-            role: 'User',
+        const userPrisma = await database.user.create({
+            data: {
+                username: username,
+                email: email,
+                password: password,
+                role: Role.USER,
+            },
         });
-        users.push(newUser);
-
-        const createdUser = users.find((user) => user.getUserID() === userID);
-        if (!createdUser) throw new Error('Error occured creating user');
-        return createdUser.getUserID();
+        if (!userPrisma) return null;
+        return User.from(userPrisma);
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -132,7 +74,5 @@ export default {
     getUserByID,
     getUserByUsername,
     getUserByEmail,
-    getUserByUsernameAndPassword,
-    getUserByEmailAndPassword,
     createUser,
 };

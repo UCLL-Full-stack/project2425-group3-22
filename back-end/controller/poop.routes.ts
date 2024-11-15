@@ -132,24 +132,14 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  *                  schema:
  *                      $ref: '#/components/schemas/Poop'
  */
-poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const poopInput = <PoopInput>req.body;
-        const result = await poopService.createPoop(
-            poopInput.type,
-            poopInput.size,
-            poopInput.dateTime,
-            poopInput.userID,
-            poopInput.colorID,
-            poopInput.title,
-            poopInput.rating,
-            poopInput.latitude,
-            poopInput.longitude
-        );
-        return res.status(200).json(result);
-    } catch (err: any) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const poopInput = <PoopInput>req.body;
+//         const result = await poopService.createPoop();
+//         return res.status(200).json(result);
+//     } catch (err: any) {
+//         res.status(400).json({ message: err.message });
+//     }
+// });
 
 export { poopRouter };

@@ -63,12 +63,12 @@ const authRouter = express.Router();
 authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const registerInput = <RegisterInput>req.body;
-        const userID = await userService.createUser(
+        const user = await userService.createUser(
             registerInput.username,
             registerInput.email,
             registerInput.password
         );
-        res.status(200).json(userID);
+        res.status(200).json(user);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
@@ -97,7 +97,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     try {
         const loginInput = <LoginInput>req.body;
 
-        const result = loginInput.usernameOrEmail.includes('@')
+        const user = loginInput.usernameOrEmail.includes('@')
             ? await userService.getUserByEmailAndPassword(
                   loginInput.usernameOrEmail,
                   loginInput.password
@@ -107,7 +107,7 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
                   loginInput.password
               );
 
-        res.status(200).json(result);
+        res.status(200).json(user);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }

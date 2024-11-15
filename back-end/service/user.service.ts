@@ -1,33 +1,40 @@
 import { User } from '../model/user';
 import userDb from '../repository/user.db';
+import { hashPassword, validatePassword } from '../util/hash';
 
 const getUserByID = async (userID: number): Promise<User> => {
     const user = await userDb.getUserByID({ userID });
-    if (!user) throw new Error(`User with id ${userID} does not exist`);
+    if (!user) throw new Error('User not found.');
     return user;
 };
 
-const getUserByUsernameAndPassword = async (
-    username: string,
-    password: string
-): Promise<number> => {
-    const user = await userDb.getUserByUsernameAndPassword({ username, password });
-    if (!user) throw new Error(`Password or username is incorrect`);
-    return user.getUserID();
+const getUserByUsernameAndPassword = async (username: string, password: string): Promise<User> => {
+    const user = await userDb.getUserByUsername({ username });
+    if (!user) throw new Error('User not found.');
+    const valid = await validatePassword(password, user.getPassword());
+    if (!valid) throw new Error('Username or password incorrect.');
+    user.setPassword('');
+    return user;
 };
 
-const getUserByEmailAndPassword = async (email: string, password: string): Promise<number> => {
-    const userID = await userDb.getUserByEmailAndPassword({ email, password });
-    if (!userID) throw new Error(`Password or email is incorrect`);
-    return userID;
+const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
+    const user = await userDb.getUserByEmail({ email });
+    if (!user) throw new Error('User not found.');
+    const valid = await validatePassword(password, user.getPassword());
+    if (!valid) throw new Error('Email or password incorrect.');
+    user.setPassword('');
+    return user;
 };
 
-const createUser = async (username: string, email: string, password: string): Promise<number> => {
-    if (await checkUsernameInUse(username)) throw new Error('Username is already in use');
-    if (await checkEmailInUse(email)) throw new Error('Email is already in use');
+const createUser = async (username: string, email: string, password: string): Promise<User> => {
+    if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
+    if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
-    const userID = await userDb.createUser({ username, email, password });
-    return userID;
+    const hashedPassword = await hashPassword(password);
+    const user = await userDb.createUser({ username, email, password: hashedPassword });
+    if (!user) throw new Error('Error occured creating user.');
+    user.setPassword('');
+    return user;
 };
 
 const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {

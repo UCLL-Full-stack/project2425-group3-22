@@ -37,6 +37,13 @@ APP_PORT = <<PORT>>
 DATABASE_URL = "postgresql://<<USER>>:<<PASSWORD>>@<<DOMAIN>>:<<PORT>>/<<DB-NAME>>?schema=public"
 ```
 
+Then, to setup the postges DB execute:
+
+```console
+>npx prisma migrate dev
+>npx prisma generate
+```
+
 Then, to start the backend server execute:
 
 ```console

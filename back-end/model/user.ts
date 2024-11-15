@@ -1,6 +1,5 @@
 import { Role } from '../types';
-import { Poop } from './poop';
-import { User as UserPrisma, Role as RolePrisma, Poop as PoopPrisma } from '@prisma/client';
+import { User as UserPrisma, Role as RolePrisma } from '@prisma/client';
 
 //TODO: add other necessary validation
 export class User {
@@ -9,7 +8,6 @@ export class User {
     private email: string;
     private password: string;
     private role: Role;
-    private poops?: Poop[];
 
     constructor({
         userID,
@@ -17,28 +15,26 @@ export class User {
         email,
         password,
         role,
-        poops,
     }: {
         userID: number;
         username: string;
         email: string;
         password: string;
         role?: Role;
-        poops?: Poop[];
     }) {
         this.userID = userID;
 
-        if (username.includes('@')) throw new Error('username cannot contain an @');
+        if (username.includes('@')) throw new Error('Username cannot contain an @.');
         if (username.length < 3 || username.length > 25)
-            throw new Error('username must be between 3 and 25 characters');
+            throw new Error('Username must be between 3 and 25 characters.');
         this.username = username;
 
-        if (!this.isEmailValid(email))
-            throw new Error('email must be in email format (name@domain.com)');
+        if (!this.validateEmail(email))
+            throw new Error('Email must be in format: "name@domain.com".');
         this.email = email;
 
         //TODO: password hashing functionality! (here or in user.service)
-        if (password.length < 8) throw new Error('password must be 8 characters or longer');
+        if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
         this.password = password;
 
         if (role) {
@@ -46,15 +42,6 @@ export class User {
         } else {
             this.role = 'User';
         }
-
-        this.poops = poops;
-    }
-
-    isEmailValid(email: string): boolean {
-        const regexp = new RegExp(
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-        return regexp.test(email);
     }
 
     getUserID(): number {
@@ -93,12 +80,11 @@ export class User {
         this.role = role;
     }
 
-    getPoops(): Poop[] | undefined {
-        return this.poops;
-    }
-
-    setPoops(poops: Poop[]) {
-        this.poops = poops;
+    validateEmail(email: string): boolean {
+        const regexp = new RegExp(
+            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+        return regexp.test(email);
     }
 
     static from({
@@ -107,18 +93,15 @@ export class User {
         email,
         password,
         role,
-        poops,
     }: UserPrisma & {
         role: RolePrisma;
-        poops?: PoopPrisma[];
-    }): any {
+    }) {
         return new User({
             userID,
             username,
             email,
             password,
             role: <Role>role,
-            poops: poops ? poops.map((poop) => Poop.from(poop)) : [],
         });
     }
 }
