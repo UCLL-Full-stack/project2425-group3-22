@@ -1,8 +1,9 @@
 import { Poop } from '../model/poop';
+import { ReturnPoop, ReturnPoopForMap } from '../types';
 import poopDb from '../repository/poop.db';
 import userDb from '../repository/user.db';
 
-const getAllPoops = async (): Promise<Array<Poop>> => {
+const getAllPoops = async (): Promise<Array<ReturnPoop>> => {
     const poops = await poopDb.getAllPoops();
     if (!poops) throw new Error('No poops found.');
     return poops;
@@ -12,6 +13,13 @@ const getPoopsByUser = async (userID: number): Promise<Array<Poop>> => {
     if (isNaN(userID)) throw new Error('userID must be a number.');
     const poops = await poopDb.getPoopsByUser({ userID });
     if (!poops) throw new Error('No poops found.');
+    return poops;
+};
+
+const getPoopsForMapByUser = async (userID: number): Promise<Array<ReturnPoopForMap>> => {
+    if (isNaN(userID)) throw new Error('userID must be a number.');
+    const poops = await poopDb.getPoopsForMapByUser({ userID });
+    if (!poops) throw new Error('No poops found (with location).');
     return poops;
 };
 
@@ -38,14 +46,14 @@ const createPoop = async (
             size,
             rating,
             userID,
-            colorID,
-            title,
-            latitude,
-            longitude,
+            colorID: colorID ?? null,
+            title: title ?? null,
+            latitude: latitude ?? null,
+            longitude: longitude ?? null,
         })
     );
     if (!poop) throw new Error('Error occured creating poop.');
     return poop;
 };
 
-export default { getAllPoops, getPoopsByUser, createPoop };
+export default { getAllPoops, getPoopsByUser, getPoopsForMapByUser, createPoop };

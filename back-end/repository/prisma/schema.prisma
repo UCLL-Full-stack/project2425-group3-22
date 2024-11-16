@@ -41,8 +41,8 @@ model Poop {
     colorID   Int?
     rating    Int
     title     String?
-    latitude  Int?
-    longitude Int?
+    latitude  Float?
+    longitude Float?
     user      User     @relation(fields: [userID], references: [userID], onDelete: Cascade)
     userID    Int
 }

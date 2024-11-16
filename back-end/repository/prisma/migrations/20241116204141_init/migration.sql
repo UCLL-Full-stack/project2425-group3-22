@@ -36,8 +36,8 @@ CREATE TABLE "Poop" (
     "colorID" INTEGER,
     "rating" INTEGER NOT NULL,
     "title" TEXT,
-    "latitude" INTEGER,
-    "longitude" INTEGER,
+    "latitude" DOUBLE PRECISION,
+    "longitude" DOUBLE PRECISION,
     "userID" INTEGER NOT NULL,
 
     CONSTRAINT "Poop_pkey" PRIMARY KEY ("poopID")

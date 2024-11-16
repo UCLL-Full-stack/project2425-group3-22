@@ -10,10 +10,10 @@ export class Poop {
     private rating: number;
     private userID: number;
     private username?: string;
-    private colorID?: number;
-    private title?: string;
-    private latitude?: number;
-    private longitude?: number;
+    private colorID: number | null;
+    private title: string | null;
+    private latitude: number | null;
+    private longitude: number | null;
 
     constructor({
         poopID,
@@ -35,10 +35,10 @@ export class Poop {
         rating: number;
         userID: number;
         username?: string;
-        colorID?: number;
-        title?: string;
-        latitude?: number;
-        longitude?: number;
+        colorID: number | null;
+        title: string | null;
+        latitude: number | null;
+        longitude: number | null;
     }) {
         this.poopID = poopID;
 
@@ -59,11 +59,11 @@ export class Poop {
 
         if (userID < 1) throw new Error('UserID must be bigger than 1.');
         this.userID = userID;
-        
+
         this.username = username;
 
         //TODO: implement correct ColorID validation after deciding what exactly it'll be
-        if (colorID !== undefined && (colorID < 0 || colorID > 10))
+        if (colorID !== null && (colorID < 0 || colorID > 10))
             throw new Error('ColorID must be a number from 0 to 10 (0 and 10 included).');
         this.colorID = colorID;
 
@@ -71,11 +71,11 @@ export class Poop {
             throw new Error('Title cannot be longer than 100 characters.');
         this.title = title;
 
-        if (latitude !== undefined && (latitude < -90 || latitude > 90))
+        if (latitude !== null && (latitude < -90 || latitude > 90))
             throw new Error('Latitude must be a number between -90 and 90.');
         this.latitude = latitude;
 
-        if (longitude !== undefined && (longitude < -180 || longitude > 180))
+        if (longitude !== null && (longitude < -180 || longitude > 180))
             throw new Error('Longitude must be a number between -180 and 180.');
         this.longitude = longitude;
     }
@@ -136,7 +136,7 @@ export class Poop {
         this.username = username;
     }
 
-    getColorID(): number | undefined {
+    getColorID(): number | null {
         return this.colorID;
     }
 
@@ -144,7 +144,7 @@ export class Poop {
         this.colorID = colorID;
     }
 
-    getTitle(): string | undefined {
+    getTitle(): string | null {
         return this.title;
     }
 
@@ -152,7 +152,7 @@ export class Poop {
         this.title = title;
     }
 
-    getLatitude(): number | undefined {
+    getLatitude(): number | null {
         return this.latitude;
     }
 
@@ -160,7 +160,7 @@ export class Poop {
         this.latitude = latitude;
     }
 
-    getLongitude(): number | undefined {
+    getLongitude(): number | null {
         return this.longitude;
     }
 
@@ -186,12 +186,12 @@ export class Poop {
             type,
             size,
             rating,
-            userID: User.from(user).getUserID(),
-            username: User.from(user).getUsername(),
-            colorID: colorID ?? undefined,
-            title: title ?? undefined,
-            latitude: latitude ?? undefined,
-            longitude: longitude ?? undefined,
+            userID: user.userID,
+            username: user.username,
+            colorID: colorID ?? null,
+            title: title ?? null,
+            latitude: latitude ?? null,
+            longitude: longitude ?? null,
         });
     }
 }

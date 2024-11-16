@@ -67,6 +67,19 @@ const main = async () => {
     await prisma.poop.create({
         data: {
             dateTime: new Date(),
+            type: 4,
+            size: 50,
+            rating: 4,
+            colorID: 0,
+            title: 'poop1',
+            longitude: null,
+            latitude: null,
+            user: { connect: { userID: user1.userID } },
+        },
+    });
+    await prisma.poop.create({
+        data: {
+            dateTime: new Date(),
             type: 2,
             size: 80,
             rating: 2,
@@ -74,6 +87,19 @@ const main = async () => {
             title: 'Big poop',
             longitude: 4.731953220736576,
             latitude: 50.93708586970979,
+            user: { connect: { userID: user2.userID } },
+        },
+    });
+    await prisma.poop.create({
+        data: {
+            dateTime: new Date(),
+            type: 2,
+            size: 80,
+            rating: 2,
+            colorID: 0,
+            title: 'Big poop',
+            longitude: null,
+            latitude: null,
             user: { connect: { userID: user2.userID } },
         },
     });
