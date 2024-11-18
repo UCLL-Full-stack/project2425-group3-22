@@ -50,6 +50,22 @@ const main = async () => {
             role: 'USER',
         },
     });
+    const user3 = await prisma.user.create({
+        data: {
+            username: 'user3',
+            email: 'user3@poopedia.com',
+            password: await hashPassword('user3!123'),
+            role: 'USER',
+        },
+    });
+    const user4 = await prisma.user.create({
+        data: {
+            username: 'user4',
+            email: 'user4@poopedia.com',
+            password: await hashPassword('user4!123'),
+            role: 'USER',
+        },
+    });
 
     await prisma.poop.create({
         data: {
@@ -101,6 +117,26 @@ const main = async () => {
             longitude: null,
             latitude: null,
             user: { connect: { userID: user2.userID } },
+        },
+    });
+
+    await prisma.friendRequest.create({
+        data: {
+            sender: { connect: { userID: user1.userID } },
+            receiver: { connect: { userID: user2.userID } },
+        },
+    });
+    await prisma.friendRequest.create({
+        data: {
+            sender: { connect: { userID: user3.userID } },
+            receiver: { connect: { userID: user1.userID } },
+        },
+    });
+
+    await prisma.friends.create({
+        data: {
+            user1: { connect: { userID: user1.userID } },
+            user2: { connect: { userID: user4.userID } },
         },
     });
 };

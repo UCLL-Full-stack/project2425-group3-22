@@ -57,4 +57,36 @@ type ReturnPoopForMap = {
 };
 //#endregion
 
-export { Role, RegisterInput, LoginInput, UserResponse, PoopInput, ReturnPoop, ReturnPoopForMap };
+//#region FRIEND(S/REQUEST) types
+type FriendRequestInput = {
+    senderID: number;
+    receiverID: number;
+};
+
+type ReturnFriendRequest = {
+    senderID: number;
+    senderUsername: string;
+    receiverID: number;
+    receiverUsername: string;
+};
+
+type ReturnFriend = {
+    user1ID: number;
+    user1Username: string;
+    user2ID: number;
+    user2Username: string;
+};
+//#endregion
+
+export {
+    Role,
+    RegisterInput,
+    LoginInput,
+    UserResponse,
+    PoopInput,
+    ReturnPoop,
+    ReturnPoopForMap,
+    FriendRequestInput,
+    ReturnFriendRequest,
+    ReturnFriend,
+};
