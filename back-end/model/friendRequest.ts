@@ -1,14 +1,43 @@
 import { User } from './user';
 import { FriendRequest as FriendRequestPrisma, User as UserPrisma } from '@prisma/client';
 
-// TODO: add validation
 export class FriendRequest {
-    private sender: User;
-    private receiver: User;
+    private senderID: number;
+    private receiverID: number;
+    private sender?: User;
+    private receiver?: User;
 
-    constructor(friends: { sender: User; receiver: User }) {
-        this.sender = friends.sender;
-        this.receiver = friends.receiver;
+    constructor({
+        senderID,
+        receiverID,
+        sender,
+        receiver,
+    }: {
+        senderID: number;
+        receiverID: number;
+        sender?: User;
+        receiver?: User;
+    }) {
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
+
+    getSenderID(): number {
+        return this.senderID;
+    }
+
+    setSenderID(senderID: number) {
+        this.senderID = senderID;
+    }
+
+    getReceiverID(): number {
+        return this.receiverID;
+    }
+
+    setReceiverID(receiverID: number) {
+        this.receiverID = receiverID;
     }
 
     getSender(): User | undefined {
@@ -28,9 +57,16 @@ export class FriendRequest {
     }
 
     static from({
+        senderID,
         sender,
+        receiverID,
         receiver,
     }: FriendRequestPrisma & { sender: UserPrisma; receiver: UserPrisma }) {
-        return new FriendRequest({ sender: User.from(sender), receiver: User.from(receiver) });
+        return new FriendRequest({
+            senderID,
+            receiverID,
+            sender: User.from(sender),
+            receiver: User.from(receiver),
+        });
     }
 }

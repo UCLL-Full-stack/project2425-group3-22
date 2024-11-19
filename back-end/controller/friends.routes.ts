@@ -2,127 +2,53 @@
  * @swagger
  *   components:
  *      schemas:
- *        ReturnUser:
+ *        ReturnFriendRequest:
  *          type: object
  *          properties:
- *              userID:
+ *              senderID:
  *                  type: number
- *                  format: int64
- *              username:
+ *              senderUsername:
  *                  type: number
- *              email:
- *                  type: number
- *              role:
+ *              receiverID:
  *                  type: string
- *        UpdateUserInput:
+ *              receiverUsername:
+ *                  type: string
+ *        FriendRequestInput:
  *          type: object
  *          properties:
- *              userID:
+ *              senderID:
  *                  type: number
- *                  format: int64
- *              username:
- *                  type: string
- *              email:
- *                  type: string
- *              password:
- *                  type: string
- *              role:
+ *              receiverID:
  *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
-//import friendsService from '../service/friends.service';
+import friendsService from '../service/friends.service';
 import { FriendRequestInput } from '../types';
 
 const friendsRouter = express.Router();
 
 /**
  * @swagger
- * /user:
+ * /friends:
  *   get:
- *      summary: Get all users
+ *      summary: Get all incoming friend requests
  *      responses:
  *         200:
- *            description: The users
+ *            description: The incoming friend requests
  *            content:
  *              application/json:
  *                users:
  *                  type: array
  *                  items:
- *                      $ref: '#/components/schemas/ReturnUser'
+ *                      $ref: '#/components/schemas/ReturnFriendRequest'
  */
-// friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const result = await userService.getAllUsers();
-//         return res.status(200).json(result);
-//     } catch (err: any) {
-//         res.status(400).json({ message: err.message });
-//     }
-// });
-
-/**
- * @swagger
- * /user/{userID}:
- *   get:
- *      summary: Get a user by ID
- *      parameters:
- *        - in: path
- *          name: userID
- *          schema:
- *              type: integer
- *              minimum: 1
- *          required: true
- *          description: ID of the user to get
- *      responses:
- *         200:
- *            description: The user for the given ID
- *            content:
- *              application/json:
- *                schema:
- *                      $ref: '#/components/schemas/ReturnUser'
- */
-// friendsRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const userID = req.params['userID'];
-//         const result = await userService.getUserByID(Number(userID));
-//         return res.status(200).json(result);
-//     } catch (err: any) {
-//         res.status(400).json({ message: err.message });
-//     }
-// });
-
-/**
- * @swagger
- * /user/update:
- *   post:
- *      summary: Update a user's username, email, password & role
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/UpdateUserInput'
- *      responses:
- *         200:
- *            description: The updated user.
- *            content:
- *              application/json:
- *                schema:
- *                  $ref: '#/components/schemas/ReturnUser'
- */
-// friendsRouter.post('/update', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const updateUserInput = <UpdateUserInput>req.body;
-//         const result = await userService.updateUser(
-//             updateUserInput.userID,
-//             updateUserInput.username,
-//             updateUserInput.email,
-//             updateUserInput.password,
-//             updateUserInput.role
-//         );
-//         res.status(200).json(result);
-//     } catch (err: any) {
-//         res.status(400).json({ message: err.message });
-//     }
-// });
+friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await friendsService.getAllIncomimgFriendRequestsForUser(res.locals.userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+});
 
 export { friendsRouter };

@@ -1,14 +1,43 @@
 import { User } from './user';
 import { Friends as FriendsPrisma, User as UserPrisma } from '@prisma/client';
 
-// TODO: add validation
 export class Friends {
-    private user1: User;
-    private user2: User;
+    private user1ID: number;
+    private user2ID: number;
+    private user1?: User;
+    private user2?: User;
 
-    constructor(friends: { user1: User; user2: User }) {
-        this.user1 = friends.user1;
-        this.user2 = friends.user2;
+    constructor({
+        user1ID,
+        user2ID,
+        user1,
+        user2,
+    }: {
+        user1ID: number;
+        user2ID: number;
+        user1?: User;
+        user2?: User;
+    }) {
+        this.user1ID = user1ID;
+        this.user2ID = user2ID;
+        this.user1 = user1;
+        this.user2 = user2;
+    }
+
+    getUser1ID(): number {
+        return this.user1ID;
+    }
+
+    setUser1ID(user1ID: number) {
+        this.user1ID = user1ID;
+    }
+
+    getUser2ID(): number {
+        return this.user2ID;
+    }
+
+    setUser2ID(user2ID: number) {
+        this.user2ID = user2ID;
     }
 
     getUser1(): User | undefined {
@@ -27,7 +56,17 @@ export class Friends {
         this.user2 = user2;
     }
 
-    static from({ user1, user2 }: FriendsPrisma & { user1: UserPrisma; user2: UserPrisma }) {
-        return new Friends({ user1: User.from(user1), user2: User.from(user2) });
+    static from({
+        user1ID,
+        user1,
+        user2ID,
+        user2,
+    }: FriendsPrisma & { user1: UserPrisma; user2: UserPrisma }) {
+        return new Friends({
+            user1ID: user1ID,
+            user2ID: user2ID,
+            user1: User.from(user1),
+            user2: User.from(user2),
+        });
     }
 }

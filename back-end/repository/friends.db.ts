@@ -1,13 +1,12 @@
 import { FriendRequest } from '../model/friendRequest';
 import { Friends } from '../model/friends';
 import database from './database';
-import { ReturnFriendRequest, ReturnFriend } from '../types/index';
 
 const getAllIncomimgFriendRequestsForUser = async ({
     userID,
 }: {
     userID: number;
-}): Promise<Array<ReturnFriendRequest> | null> => {
+}): Promise<Array<FriendRequest> | null> => {
     try {
         const friendRequestsPrisma = await database.friendRequest.findMany({
             where: { receiverID: userID },
@@ -15,15 +14,9 @@ const getAllIncomimgFriendRequestsForUser = async ({
         });
 
         if (friendRequestsPrisma.length < 1) return null;
-        return friendRequestsPrisma.map((friendRequestPrisma) => {
-            const friendRequest = <ReturnFriendRequest>{
-                senderID: friendRequestPrisma.senderID,
-                senderUsername: friendRequestPrisma.sender.username,
-                receiverID: friendRequestPrisma.receiverID,
-                receiverUsername: friendRequestPrisma.receiver.username,
-            };
-            return friendRequest;
-        });
+        return friendRequestsPrisma.map((friendRequestPrisma) =>
+            FriendRequest.from(friendRequestPrisma)
+        );
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -34,7 +27,7 @@ const getAllOutgoingFriendRequestsForUser = async ({
     userID,
 }: {
     userID: number;
-}): Promise<Array<ReturnFriendRequest> | null> => {
+}): Promise<Array<FriendRequest> | null> => {
     try {
         const friendRequestsPrisma = await database.friendRequest.findMany({
             where: { senderID: userID },
@@ -42,15 +35,9 @@ const getAllOutgoingFriendRequestsForUser = async ({
         });
 
         if (friendRequestsPrisma.length < 1) return null;
-        return friendRequestsPrisma.map((friendRequestPrisma) => {
-            const friendRequest = <ReturnFriendRequest>{
-                senderID: friendRequestPrisma.senderID,
-                senderUsername: friendRequestPrisma.sender.username,
-                receiverID: friendRequestPrisma.receiverID,
-                receiverUsername: friendRequestPrisma.receiver.username,
-            };
-            return friendRequest;
-        });
+        return friendRequestsPrisma.map((friendRequestPrisma) =>
+            FriendRequest.from(friendRequestPrisma)
+        );
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -61,7 +48,7 @@ const getAllFriendsForUser = async ({
     userID,
 }: {
     userID: number;
-}): Promise<Array<ReturnFriend> | null> => {
+}): Promise<Array<Friends> | null> => {
     try {
         const friendsPrisma = await database.friends.findMany({
             where: { user1ID: userID },
@@ -69,15 +56,7 @@ const getAllFriendsForUser = async ({
         });
 
         if (friendsPrisma.length < 1) return null;
-        return friendsPrisma.map((friendPrisma) => {
-            const friend = <ReturnFriend>{
-                user1ID: friendPrisma.user1ID,
-                user1Username: friendPrisma.user1.username,
-                user2ID: friendPrisma.user2ID,
-                user2Username: friendPrisma.user2.username,
-            };
-            return friend;
-        });
+        return friendsPrisma.map((friendPrisma) => Friends.from(friendPrisma));
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
