@@ -9,14 +9,15 @@
     position: fixed;
     width: 60px;
     height: 60px;
+    border: none;
     border-radius: 50%;
-    border: 2px solid rgb(109, 35, 35);
     align-items: center;
     justify-content: center;
     font-size: 32px;
-    transition: 0.2s;
+    transition: 0.1s;
     font-weight: bold;
     text-decoration: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .addPoopButton {
@@ -27,20 +28,20 @@
 }
 
 .addPoopButton:hover {
-    background-color: transparent;
-    color:rgb(109, 35, 35);
+    background-color: white;
+    color: rgb(109, 35, 35);
 }
 
 .scrollToTop {
     right: 20px;
     bottom: 90px;
-    background-color: transparent;
-    color:rgb(109, 35, 35);
+    background-color: white;
+    color: rgb(109, 35, 35);
 }
 
 .scrollToTop:hover {
     background-color: rgb(150, 108, 74);
-    color:white;
+    color: white;
 }
 
 .scrollToTop.hidden {

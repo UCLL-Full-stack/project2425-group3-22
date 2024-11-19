@@ -1,3 +1,4 @@
+import MainNavigation from '@components/mainNavigation';
 import ProfileSidebar from '@components/profile/profileSidebar';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -10,6 +11,7 @@ const Profile: React.FC = () => {
             <Head>
                 <title>Profile</title>
             </Head>
+            <MainNavigation />
             <main>
                 <ProfileSidebar />
                 <p>Profile</p>

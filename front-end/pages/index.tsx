@@ -73,7 +73,7 @@ const Home: React.FC = () => {
                 <Head>
                     <title>Home</title>
                 </Head>
-                <MainNavigation isAdmin={false} />
+                <MainNavigation />
                 <main>
                     <div className={styles.poopContainer}>
                         {poops.length > 0 ? (

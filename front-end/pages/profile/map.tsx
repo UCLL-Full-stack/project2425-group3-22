@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import MainNavigation from '@components/mainNavigation';
 
 const Map: React.FC = () => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -39,6 +40,7 @@ const Map: React.FC = () => {
             <Head>
                 <title>Map</title>
             </Head>
+            <MainNavigation />
             <main>
                 <ProfileSidebar />
                 <div ref={mapContainerRef} style={{ width: '100%', height: '100vh'}}></div>

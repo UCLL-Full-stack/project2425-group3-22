@@ -5,11 +5,7 @@ import styles from '@styles/MainNavigation.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 
-type Props = {
-    isAdmin: boolean;
-};
-
-const MainNavigation: React.FC<Props> = ({ isAdmin }: Props) => {
+const MainNavigation: React.FC = () => {
     const [popupPosition, setPopupPosition] = useState<{ x: number; y: number } | undefined>(
         undefined
     );
