@@ -11,6 +11,12 @@ type LoginInput = {
     usernameOrEmail: string;
     password: string;
 };
+
+type TokenPayload = {
+    userID: number;
+    iat: number;
+    exp: number;
+};
 //#endregion
 
 //#region User types
@@ -89,6 +95,7 @@ export {
     Role,
     RegisterInput,
     LoginInput,
+    TokenPayload,
     UpdateUserInput,
     ReturnUser,
     PoopInput,

@@ -32,6 +32,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { UpdateUserInput } from '../types';
+import { isAdmin } from '../middleware/authMiddleware';
 
 const userRouter = express.Router();
 
@@ -50,7 +51,7 @@ const userRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await userService.getAllUsers();
         return res.status(200).json(result);

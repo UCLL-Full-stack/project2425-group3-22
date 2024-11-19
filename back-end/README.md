@@ -36,6 +36,7 @@ Then, add these lines to the .env file:
 APP_PORT = <<PORT>>
 DATABASE_URL = "postgresql://<<USER>>:<<PASSWORD>>@<<DOMAIN>>:<<PORT>>/<<DB-NAME>>?schema=public"
 SALT_ROUNDS = <<A NUMBER OF SALT ROUNDS FOR BCRYPT HASHING>>
+JWT_SECRET_KEY=<<A SECRET KEY>>
 ```
 
 Then, to setup the postges DB execute:

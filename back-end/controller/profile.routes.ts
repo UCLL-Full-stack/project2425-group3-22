@@ -34,7 +34,6 @@
  */
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
-import { RegisterInput, LoginInput } from '../types';
 
 const profileRouter = express.Router();
 
@@ -53,7 +52,8 @@ const profileRouter = express.Router();
  */
 profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        //TODO: return account data (res.locals.userID)
+        //TODO: return account data
+        const userID = res.locals.userID;
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
@@ -76,6 +76,7 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  */
 profileRouter.post('/poops', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        //TODO: return poops
         const userID = res.locals.userID;
     } catch (err: any) {
         res.status(400).json({ message: err.message });

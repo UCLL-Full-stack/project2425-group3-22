@@ -4,6 +4,7 @@ import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { isAuthenticated } from './middleware/authMiddleware';
 import { authRouter } from './controller/auth.routes';
 import { poopRouter } from './controller/poop.routes';
 import { userRouter } from './controller/user.routes';
@@ -33,9 +34,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //#region Routers
 app.use('/auth', authRouter);
-app.use('/poop', poopRouter);
-app.use('/user', userRouter);
-app.use('/friends', friendsRouter);
+app.use('/poop', isAuthenticated, poopRouter);
+app.use('/user', isAuthenticated, userRouter);
+app.use('/friends', isAuthenticated, friendsRouter);
 //#endregion
 
 app.listen(port || 3000, () => {

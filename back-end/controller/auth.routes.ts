@@ -33,11 +33,16 @@
  *              password:
  *                  type: string
  */
+import * as dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import userService from '../service/user.service';
 import { RegisterInput, LoginInput } from '../types';
 
+dotenv.config();
 const authRouter = express.Router();
+const secretKey =
+    process.env.JWT_SECRET_KEY || 'TheSuperSecretKeyForWhenTheOtherSuperSecretKeyDoesNotWork';
 
 /**
  * @swagger
@@ -67,7 +72,8 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
             registerInput.email,
             registerInput.password
         );
-        res.status(200).json(result);
+        const token = jwt.sign({ userID: result.userID }, secretKey, { expiresIn: 1440 });
+        res.status(200).json({ user: result, jwt: token });
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
@@ -106,7 +112,8 @@ authRouter.post('/login', async (req: Request, res: Response, next: NextFunction
                   loginInput.password
               );
 
-        res.status(200).json(result);
+        const token = jwt.sign({ userID: result.userID }, secretKey, { expiresIn: 1440 });
+        res.status(200).json({ user: result, jwt: token });
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }

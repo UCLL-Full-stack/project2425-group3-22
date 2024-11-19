@@ -57,7 +57,7 @@
  *                  required: false
  *              longitude:
  *                  type: number
- *                  required: false                      
+ *                  required: false
  *        ReturnPoopForMap:
  *          type: object
  *          properties:
@@ -71,6 +71,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import poopService from '../service/poop.service';
 import { PoopInput } from '../types';
+import { isAdmin } from '../middleware/authMiddleware';
 
 const poopRouter = express.Router();
 
@@ -89,7 +90,7 @@ const poopRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/Poop'
  */
-poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await poopService.getAllPoops();
         return res.status(200).json(result);
