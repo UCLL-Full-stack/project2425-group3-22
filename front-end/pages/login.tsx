@@ -43,7 +43,6 @@ const Login: React.FC = () => {
             setError(errorData.message || "An error occurred. Please try again later.");
         } else {
             const response = await loginResponse.json();
-            console.log(response)
             sessionStorage.setItem('userID', response.userID.toString());
             router.push('/');
         }

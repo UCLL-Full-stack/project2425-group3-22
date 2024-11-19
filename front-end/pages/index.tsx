@@ -8,6 +8,7 @@ import styles from '@styles/Home.module.css';
 import MainNavigation from '@components/mainNavigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Helper from 'utils/helper';
 
 const Home: React.FC = () => {
     const router = useRouter();
@@ -17,19 +18,12 @@ const Home: React.FC = () => {
     const [isAtTop, setIsAtTop] = useState(true);
 
     useEffect(() => {
-        const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
-
-        if (storedUserID) {
-            setUserID(parseInt(storedUserID));
-            setIsValidated(true);
-        } else {
-            router.replace('/login');
-        }
+        const authorizedUserID = Helper.authorizeUser(router);
+        setIsValidated(!!authorizedUserID);
+        setUserID(authorizedUserID ?? null);
     }, [router]);
 
     useEffect(() => {
-        console.log(userID)
-
         if (userID) {
             const fetchProfilePoopsData = async () => {
                 try {

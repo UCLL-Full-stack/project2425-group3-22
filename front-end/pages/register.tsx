@@ -26,8 +26,8 @@ const Register: React.FC = () => {
             setError(errorData.message || "An error occurred. Please try again later.");
         } else {
             const response = await registerResponse.json();
-            console.log("Succesfully registered");
-            router.push('/' + response);
+            sessionStorage.setItem('userID', response.userID.toString());
+            router.push('/');
         }
     };
 
