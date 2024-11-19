@@ -17,10 +17,13 @@
  *                  type: number
  *              rating:
  *                  type: number
- *              userID:
- *                  type: number
- *              username:
- *                  type: string
+ *              user:
+ *                  type: object
+ *                  properties:
+ *                      userID:
+ *                          type: number
+ *                      username:
+ *                          type: string
  *              colorID:
  *                  type: number
  *              title:
@@ -41,6 +44,8 @@
  *                  type: number
  *              rating:
  *                  type: number
+ *              userID:
+ *                  type: number
  *              colorID:
  *                  type: number
  *                  required: false
@@ -52,9 +57,7 @@
  *                  required: false
  *              longitude:
  *                  type: number
- *                  required: false
- *              userID:
- *                  type: number
+ *                  required: false                      
  *        ReturnPoopForMap:
  *          type: object
  *          properties:

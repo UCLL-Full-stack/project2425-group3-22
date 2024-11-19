@@ -14,7 +14,15 @@ type LoginInput = {
 //#endregion
 
 //#region User types
-type UserResponse = {
+type UpdateUserInput = {
+    userID: number;
+    email: string;
+    username: string;
+    password: string;
+    role: Role;
+};
+
+type ReturnUser = {
     userID: number;
     username: string;
     email: string;
@@ -42,8 +50,7 @@ type ReturnPoop = {
     type: number;
     size: number;
     rating: number;
-    userID: number;
-    username: string | null;
+    user: any;
     colorID: number | null;
     title: string | null;
     latitude: number | null;
@@ -82,7 +89,8 @@ export {
     Role,
     RegisterInput,
     LoginInput,
-    UserResponse,
+    UpdateUserInput,
+    ReturnUser,
     PoopInput,
     ReturnPoop,
     ReturnPoopForMap,

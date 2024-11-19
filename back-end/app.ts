@@ -7,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './controller/auth.routes';
 import { poopRouter } from './controller/poop.routes';
 import { userRouter } from './controller/user.routes';
+import { friendsRouter } from './controller/friends.routes';
 
 const app = express();
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/auth', authRouter);
 app.use('/poop', poopRouter);
 app.use('/user', userRouter);
+app.use('/friends', friendsRouter);
 //#endregion
 
 app.listen(port || 3000, () => {

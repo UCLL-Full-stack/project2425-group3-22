@@ -1,4 +1,3 @@
-//TODO: role is returned as string, should this be as type Role?
 /**
  * @swagger
  *   components:

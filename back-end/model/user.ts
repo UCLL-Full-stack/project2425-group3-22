@@ -30,10 +30,9 @@ export class User {
         this.username = username;
 
         if (!this.validateEmail(email))
-            throw new Error('Email must be in format: "name@domain.com".');
+            throw new Error('Email must be in correct format (name@domain.com).');
         this.email = email;
 
-        //TODO: password hashing functionality! (here or in user.service)
         if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
         this.password = password;
 
@@ -53,7 +52,12 @@ export class User {
     }
 
     setUsername(username: string) {
-        this.username = username;
+        if (username !== this.username) {
+            if (username.includes('@')) throw new Error('Username cannot contain an @.');
+            if (username.length < 3 || username.length > 25)
+                throw new Error('Username must be between 3 and 25 characters.');
+            this.username = username;
+        }
     }
 
     getEmail(): string {
@@ -61,7 +65,11 @@ export class User {
     }
 
     setEmail(email: string) {
-        this.email = email;
+        if (email !== this.email) {
+            if (!this.validateEmail(email))
+                throw new Error('Email must be in correct format (name@domain.com).');
+            this.email = email;
+        }
     }
 
     getPassword(): string {
@@ -69,7 +77,10 @@ export class User {
     }
 
     setPassword(password: string) {
-        this.password = password;
+        if (password !== this.password) {
+            if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
+            this.password = password;
+        }
     }
 
     getRole(): Role {
@@ -77,10 +88,10 @@ export class User {
     }
 
     setRole(role: Role) {
-        this.role = role;
+        if (role !== this.role) this.role = role;
     }
 
-    validateEmail(email: string): boolean {
+    private validateEmail(email: string): boolean {
         const regexp = new RegExp(
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );

@@ -45,7 +45,7 @@ const createPoop = async (
             type,
             size,
             rating,
-            userID,
+            user: { userID: userID },
             colorID: colorID ?? null,
             title: title ?? null,
             latitude: latitude ?? null,

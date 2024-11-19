@@ -6,11 +6,7 @@ const getAllUsers = async (): Promise<Array<User> | null> => {
         const usersPrisma = await database.user.findMany();
 
         if (usersPrisma.length < 1) return null;
-        return usersPrisma.map((userPrisma) => {
-            const user = User.from(userPrisma);
-            user.setPassword('');
-            return user;
-        });
+        return usersPrisma.map((userPrisma) => User.from(userPrisma));
     } catch (err: any) {
         console.log(err.message);
         throw new Error('Database error, check log for more information.');
@@ -77,10 +73,30 @@ const createUser = async (user: User): Promise<User | null> => {
     }
 };
 
+const updateUser = async (user: User): Promise<User | null> => {
+    try {
+        const userPrisma = await database.user.update({
+            where: { userID: user.getUserID() },
+            data: {
+                username: user.getUsername(),
+                email: user.getEmail(),
+                password: user.getPassword(),
+                role: user.getRole(),
+            },
+        });
+        if (!userPrisma) return null;
+        return User.from(userPrisma);
+    } catch (err: any) {
+        console.log(err.message);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
 export default {
     getAllUsers,
     getUserByID,
     getUserByUsername,
     getUserByEmail,
     createUser,
+    updateUser,
 };

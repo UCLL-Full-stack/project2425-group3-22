@@ -30,10 +30,10 @@
  *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
-import userService from '../service/user.service';
-import { UpdateUserInput } from '../types';
+//import friendsService from '../service/friends.service';
+import { FriendRequestInput } from '../types';
 
-const userRouter = express.Router();
+const friendsRouter = express.Router();
 
 /**
  * @swagger
@@ -50,14 +50,14 @@ const userRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await userService.getAllUsers();
-        return res.status(200).json(result);
-    } catch (err: any) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const result = await userService.getAllUsers();
+//         return res.status(200).json(result);
+//     } catch (err: any) {
+//         res.status(400).json({ message: err.message });
+//     }
+// });
 
 /**
  * @swagger
@@ -80,15 +80,15 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  *                schema:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const userID = req.params['userID'];
-        const result = await userService.getUserByID(Number(userID));
-        return res.status(200).json(result);
-    } catch (err: any) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// friendsRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const userID = req.params['userID'];
+//         const result = await userService.getUserByID(Number(userID));
+//         return res.status(200).json(result);
+//     } catch (err: any) {
+//         res.status(400).json({ message: err.message });
+//     }
+// });
 
 /**
  * @swagger
@@ -109,20 +109,20 @@ userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  *                schema:
  *                  $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.post('/update', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const updateUserInput = <UpdateUserInput>req.body;
-        const result = await userService.updateUser(
-            updateUserInput.userID,
-            updateUserInput.username,
-            updateUserInput.email,
-            updateUserInput.password,
-            updateUserInput.role
-        );
-        res.status(200).json(result);
-    } catch (err: any) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// friendsRouter.post('/update', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const updateUserInput = <UpdateUserInput>req.body;
+//         const result = await userService.updateUser(
+//             updateUserInput.userID,
+//             updateUserInput.username,
+//             updateUserInput.email,
+//             updateUserInput.password,
+//             updateUserInput.role
+//         );
+//         res.status(200).json(result);
+//     } catch (err: any) {
+//         res.status(400).json({ message: err.message });
+//     }
+// });
 
-export { userRouter };
+export { friendsRouter };

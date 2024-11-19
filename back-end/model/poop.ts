@@ -1,5 +1,4 @@
 import { Poop as PoopPrisma, User as UserPrisma } from '@prisma/client';
-import { User } from './user';
 
 // TODO: add validation & create types for type, size & rating (fe 1-5)?
 export class Poop {
@@ -8,8 +7,7 @@ export class Poop {
     private type: number;
     private size: number;
     private rating: number;
-    private userID: number;
-    private username?: string;
+    private user?: any;
     private colorID: number | null;
     private title: string | null;
     private latitude: number | null;
@@ -21,8 +19,7 @@ export class Poop {
         type,
         size,
         rating,
-        userID,
-        username,
+        user,
         colorID,
         title,
         latitude,
@@ -33,8 +30,7 @@ export class Poop {
         type: number;
         size: number;
         rating: number;
-        userID: number;
-        username?: string;
+        user?: any;
         colorID: number | null;
         title: string | null;
         latitude: number | null;
@@ -57,10 +53,7 @@ export class Poop {
             throw new Error('Rating must be a number from 0 to 5 (0 and 5 included).');
         this.rating = rating;
 
-        if (userID < 1) throw new Error('UserID must be bigger than 1.');
-        this.userID = userID;
-
-        this.username = username;
+        this.user = user;
 
         //TODO: implement correct ColorID validation after deciding what exactly it'll be
         if (colorID !== null && (colorID < 0 || colorID > 10))
@@ -120,20 +113,12 @@ export class Poop {
         this.rating = rating;
     }
 
-    getUserID(): number {
-        return this.userID;
+    getUser(): any {
+        return this.user;
     }
 
-    setUserID(userID: number) {
-        this.userID = userID;
-    }
-
-    getUsername(): string | undefined {
-        return this.username;
-    }
-
-    setUsername(username: string) {
-        this.username = username;
+    setUser(user: any) {
+        this.user = user;
     }
 
     getColorID(): number | null {
@@ -186,8 +171,7 @@ export class Poop {
             type,
             size,
             rating,
-            userID: user.userID,
-            username: user.username,
+            user: { userID: user.userID, username: user.username },
             colorID: colorID ?? null,
             title: title ?? null,
             latitude: latitude ?? null,

@@ -1,48 +1,117 @@
+//TODO: when creating/updating/deleting a user check wether or not the user that performs the action is allowed to do so (from jwt)
+import { Role } from '@prisma/client';
 import { User } from '../model/user';
 import userDb from '../repository/user.db';
+import { ReturnUser } from '../types';
 import { hashPassword, validatePassword } from '../util/hash';
 
-const getAllUsers = async (): Promise<Array<User>> => {
+const getAllUsers = async (): Promise<Array<ReturnUser>> => {
     const users = await userDb.getAllUsers();
     if (!users) throw new Error('No users found.');
-    return users;
+    return users.map(
+        (user) =>
+            <ReturnUser>{
+                userID: user.getUserID(),
+                username: user.getUsername(),
+                email: user.getEmail(),
+                role: user.getRole(),
+            }
+    );
 };
 
-const getUserByID = async (userID: number): Promise<User> => {
+const getUserByID = async (userID: number): Promise<ReturnUser> => {
     const user = await userDb.getUserByID({ userID });
     if (!user) throw new Error('User not found.');
-    return user;
+    return <ReturnUser>{
+        userID: user.getUserID(),
+        username: user.getUsername(),
+        email: user.getEmail(),
+        role: user.getRole(),
+    };
 };
 
-const getUserByUsernameAndPassword = async (username: string, password: string): Promise<User> => {
+const getUserByUsernameAndPassword = async (
+    username: string,
+    password: string
+): Promise<ReturnUser> => {
     const user = await userDb.getUserByUsername({ username });
-    if (!user) throw new Error('User not found.');
-    const valid = await validatePassword(password, user.getPassword());
-    if (!valid) throw new Error('Username or password incorrect.');
-    user.setPassword('');
-    return user;
+    if (!user || !(await validatePassword(password, user.getPassword())))
+        throw new Error('Username or password incorrect.');
+    // TODO: test
+    //const valid = await validatePassword(password, user.getPassword());
+    //if (!valid) throw new Error('Email or password incorrect.');
+    return <ReturnUser>{
+        userID: user.getUserID(),
+        username: user.getUsername(),
+        email: user.getEmail(),
+        role: user.getRole(),
+    };
 };
 
-const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
+const getUserByEmailAndPassword = async (email: string, password: string): Promise<ReturnUser> => {
     const user = await userDb.getUserByEmail({ email });
-    if (!user) throw new Error('User not found.');
-    const valid = await validatePassword(password, user.getPassword());
-    if (!valid) throw new Error('Email or password incorrect.');
-    user.setPassword('');
-    return user;
+    if (!user || !(await validatePassword(password, user.getPassword())))
+        throw new Error('Username or password incorrect.');
+    // TODO: test
+    //const valid = await validatePassword(password, user.getPassword());
+    //if (!valid) throw new Error('Email or password incorrect.');
+    return <ReturnUser>{
+        userID: user.getUserID(),
+        username: user.getUsername(),
+        email: user.getEmail(),
+        role: user.getRole(),
+    };
 };
 
-const createUser = async (username: string, email: string, password: string): Promise<User> => {
+const createUser = async (
+    username: string,
+    email: string,
+    password: string
+): Promise<ReturnUser> => {
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
+    const userToCreate = new User({ userID: 0, username, email, password: password });
     const hashedPassword = await hashPassword(password);
-    const user = await userDb.createUser(
-        new User({ userID: 0, username, email, password: hashedPassword })
-    );
-    if (!user) throw new Error('Error occured creating user.');
-    user.setPassword('');
-    return user;
+    userToCreate.setPassword(hashedPassword);
+
+    const createdUser = await userDb.createUser(userToCreate);
+    if (!createdUser) throw new Error('Error occured creating user.');
+    return <ReturnUser>{
+        userID: createdUser.getUserID(),
+        username: createdUser.getUsername(),
+        email: createdUser.getEmail(),
+        role: createdUser.getRole(),
+    };
+};
+
+const updateUser = async (
+    userID: number,
+    username: string,
+    email: string,
+    password: string,
+    role: Role
+): Promise<ReturnUser> => {
+    if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
+    if (await checkEmailInUse(email)) throw new Error('Email already in use.');
+
+    const userToUpdate = await userDb.getUserByID({ userID });
+    if (!userToUpdate) throw new Error('User not found');
+    userToUpdate.setUsername(username);
+    userToUpdate.setEmail(email);
+    userToUpdate.setPassword(password);
+    userToUpdate.setRole(role);
+    const hashedPassword = await hashPassword(password);
+    userToUpdate.setPassword(hashedPassword);
+
+    const updatedUser = await userDb.updateUser(userToUpdate);
+    if (!updatedUser) throw new Error('Error occured updating user.');
+    return <ReturnUser>{
+        userID: updatedUser.getUserID(),
+        username: updatedUser.getUsername(),
+        email: updatedUser.getEmail(),
+        role: updatedUser.getRole(),
+    };
 };
 
 const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
@@ -67,4 +136,5 @@ export default {
     getUserByUsernameAndPassword,
     getUserByEmailAndPassword,
     createUser,
+    updateUser,
 };
