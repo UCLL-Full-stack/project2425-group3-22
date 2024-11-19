@@ -4,6 +4,7 @@ import styles from '@styles/Register.module.css';
 import { FormEvent, useState } from 'react';
 import AuthService from '@services/authService';
 import { useRouter } from 'next/router';
+import Helper from 'utils/helper';
 
 const Register: React.FC = () => {
     const router = useRouter();
@@ -26,8 +27,7 @@ const Register: React.FC = () => {
             setError(errorData.message || "An error occurred. Please try again later.");
         } else {
             const response = await registerResponse.json();
-            sessionStorage.setItem('userID', response.userID.toString());
-            router.push('/');
+            Helper.login(router, response)
         }
     };
 

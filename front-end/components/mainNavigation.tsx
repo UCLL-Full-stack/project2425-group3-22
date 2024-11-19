@@ -1,21 +1,24 @@
-import { poopItem } from '@types';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '@styles/MainNavigation.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import Helper from 'utils/helper';
 
 const MainNavigation: React.FC = () => {
+    const router = useRouter();
     const [popupPosition, setPopupPosition] = useState<{ x: number; y: number } | undefined>(
         undefined
     );
     const [showPopup, setShowPopup] = useState(false);
+    const [isRendered, setIsRendered] = useState(false);
 
     const profileButtonRef = useRef<HTMLButtonElement | null>(null);
     const popupRef = useRef<HTMLDivElement | null>(null);
 
-    const username = 'Admin'; // TODO: get username instead of hardcoded value
-    const firstLetter = username.charAt(0).toUpperCase();
+    useEffect(() => {
+        setIsRendered(true);
+    }, []);
 
     useEffect(() => {
         // when the popup is shown -> hide it when scrolling or resizing
@@ -67,20 +70,24 @@ const MainNavigation: React.FC = () => {
         }
     };
 
+    const handleLogout = () => Helper.logout(router);
+
     return (
         <div className={styles.mainNavigation}>
             <Link className={styles.logo} href="/">
                 Poopedia
             </Link>
             <div className={styles.spacer}></div>
-            <button
-                ref={profileButtonRef}
-                className={styles.profileButton}
-                onClick={handleProfileButtonClick}
-            >
-                <p className={styles.userIcon}>{firstLetter}</p>
-                <FontAwesomeIcon icon={showPopup ? 'angle-down' : 'angle-up'} />
-            </button>
+            {isRendered && (
+                <button
+                    ref={profileButtonRef}
+                    className={styles.profileButton}
+                    onClick={handleProfileButtonClick}
+                >
+                    <p className={styles.userIcon}>{Helper.getUsername()?.charAt(0).toUpperCase() || '?'}</p>
+                    <FontAwesomeIcon icon={showPopup ? 'angle-down' : 'angle-up'} />
+                </button>
+            )}
 
             {showPopup && (
                 <div
@@ -98,7 +105,7 @@ const MainNavigation: React.FC = () => {
                     <Link href="/profile" className="popupLink">
                         Profile
                     </Link>
-                    <button>Log out</button>
+                    <button onClick={handleLogout}>Log out</button>
                 </div>
             )}
         </div>

@@ -5,6 +5,7 @@ import styles from '@styles/Login.module.css';
 import { FormEvent } from 'react';
 import AuthService from '@services/authService';
 import { useRouter } from 'next/router';
+import Helper from 'utils/helper';
 
 const Login: React.FC = () => {
     const router = useRouter();
@@ -43,8 +44,7 @@ const Login: React.FC = () => {
             setError(errorData.message || "An error occurred. Please try again later.");
         } else {
             const response = await loginResponse.json();
-            sessionStorage.setItem('userID', response.userID.toString());
-            router.push('/');
+            Helper.login(router, response)
         }
     };
 
