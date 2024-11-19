@@ -17,17 +17,19 @@ const Home: React.FC = () => {
     const [isAtTop, setIsAtTop] = useState(true);
 
     useEffect(() => {
-        const storedUserID = sessionStorage.getItem('userID')?.toString() || '';
-        setUserID(parseInt(storedUserID));
+        const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
 
-        if (!storedUserID) {
-            router.replace('/login');
-        } else {
+        if (storedUserID) {
+            setUserID(parseInt(storedUserID));
             setIsValidated(true);
+        } else {
+            router.replace('/login');
         }
     }, [router]);
 
     useEffect(() => {
+        console.log(userID)
+
         if (userID) {
             const fetchProfilePoopsData = async () => {
                 try {
