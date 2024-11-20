@@ -9,6 +9,7 @@ import { authRouter } from './controller/auth.routes';
 import { poopRouter } from './controller/poop.routes';
 import { userRouter } from './controller/user.routes';
 import { friendsRouter } from './controller/friends.routes';
+import { profileRouter } from './controller/profile.routes';
 
 const app = express();
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/auth', authRouter);
 app.use('/poop', isAuthenticated, poopRouter);
 app.use('/user', isAuthenticated, userRouter);
 app.use('/friends', isAuthenticated, friendsRouter);
+app.use('/profile', isAuthenticated, profileRouter);
 //#endregion
 
 app.listen(port || 3000, () => {
