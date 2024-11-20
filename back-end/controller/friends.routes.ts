@@ -31,6 +31,8 @@ const friendsRouter = express.Router();
  * @swagger
  * /friends:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get all incoming friend requests
  *      responses:
  *         200:

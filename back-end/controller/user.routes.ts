@@ -40,6 +40,8 @@ const userRouter = express.Router();
  * @swagger
  * /user:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get all users
  *      responses:
  *         200:
@@ -64,6 +66,8 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /user/{userID}:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get a user by ID
  *      parameters:
  *        - in: path
@@ -95,6 +99,8 @@ userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  * @swagger
  * /user/update:
  *   post:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Update a user's username, email, password & role
  *      requestBody:
  *        required: true

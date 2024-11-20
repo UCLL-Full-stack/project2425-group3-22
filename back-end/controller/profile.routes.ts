@@ -2,12 +2,6 @@
  * @swagger
  *   components:
  *      schemas:
- *        User:
- *          type: object
- *          properties:
- *              userID:
- *                  type: number
- *                  format: int64
  *        Poop:
  *          type: object
  *          properties:
@@ -42,6 +36,8 @@ const profileRouter = express.Router();
  * @swagger
  * /profile:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get the logged in user's account data
  *      responses:
  *         200:
@@ -49,7 +45,7 @@ const profileRouter = express.Router();
  *            content:
  *              application/json:
  *                schema:
- *                  $ref: '#/components/schemas/User'
+ *                  $ref: '#/components/schemas/ReturnUser'
  */
 profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -65,6 +61,8 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /profile/poops:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get the logged in user's poops
  *      responses:
  *         200:

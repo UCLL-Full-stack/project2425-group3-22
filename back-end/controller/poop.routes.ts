@@ -79,6 +79,8 @@ const poopRouter = express.Router();
  * @swagger
  * /poop:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get all poops
  *      responses:
  *         200:
@@ -103,6 +105,8 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /poop/{userID}:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get all poops for a user by its ID
  *      parameters:
  *        - in: path
@@ -136,6 +140,8 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  * @swagger
  * /poop/map/{userID}:
  *   get:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Get all poops to show on map for a user by its ID
  *      parameters:
  *        - in: path
@@ -169,6 +175,8 @@ poopRouter.get('/map/:userID', async (req: Request, res: Response, next: NextFun
  * @swagger
  * /poop/create:
  *   post:
+ *      security:
+ *          - bearerAuth: []
  *      summary: Create a poop
  *      requestBody:
  *        required: true

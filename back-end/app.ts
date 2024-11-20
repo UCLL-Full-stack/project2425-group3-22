@@ -1,3 +1,12 @@
+/**
+ * @swagger
+ *   components:
+ *      securitySchemes:
+ *          bearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: jwt
+ */
 import * as dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
