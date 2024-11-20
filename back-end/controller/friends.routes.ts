@@ -1,6 +1,11 @@
 /**
  * @swagger
  *   components:
+ *      securitySchemes:
+ *          bearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: jwt
  *      schemas:
  *        ReturnFriendRequest:
  *          type: object

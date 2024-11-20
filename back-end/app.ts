@@ -1,14 +1,5 @@
-/**
- * @swagger
- *   components:
- *      securitySchemes:
- *          bearerAuth:
- *              type: http
- *              scheme: bearer
- *              bearerFormat: jwt
- */
 import * as dotenv from 'dotenv';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';

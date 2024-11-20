@@ -29,8 +29,8 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
 
 const getUserByUsername = async ({ username }: { username: string }): Promise<User | null> => {
     try {
-        const userPrisma = await database.user.findUnique({
-            where: { username: username },
+        const userPrisma = await database.user.findFirst({
+            where: { username: { equals: username, mode: 'insensitive' } },
         });
 
         if (!userPrisma) return null;
@@ -43,8 +43,8 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
 
 const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
     try {
-        const userPrisma = await database.user.findUnique({
-            where: { email: email },
+        const userPrisma = await database.user.findFirst({
+            where: { email: { equals: email, mode: 'insensitive' } },
         });
 
         if (!userPrisma) return null;

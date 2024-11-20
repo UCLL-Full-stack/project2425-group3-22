@@ -31,7 +31,7 @@ export class User {
 
         if (!this.validateEmail(email))
             throw new Error('Email must be in correct format (name@domain.com).');
-        this.email = email;
+        this.email = email.toLowerCase();
 
         if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
         this.password = password;
@@ -68,7 +68,7 @@ export class User {
         if (email !== this.email) {
             if (!this.validateEmail(email))
                 throw new Error('Email must be in correct format (name@domain.com).');
-            this.email = email;
+            this.email = email.toLowerCase();
         }
     }
 
