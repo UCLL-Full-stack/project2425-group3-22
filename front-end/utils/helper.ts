@@ -1,6 +1,6 @@
-import { userItem } from "@types";
-import { NextRouter } from "next/router";
-import { Roles } from "@types";
+import { userItem } from '@types';
+import { NextRouter } from 'next/router';
+import { Roles } from '@types';
 
 export default class Helper {
     static authorizeUser = (router: NextRouter): number | null => {
@@ -12,7 +12,7 @@ export default class Helper {
             router.replace('/login');
             return null;
         }
-    }
+    };
 
     static authorizeModerator = (router: NextRouter): number | null => {
         const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
@@ -28,7 +28,7 @@ export default class Helper {
             router.replace('/login');
             return null;
         }
-    }
+    };
 
     static authorizeAdmin = (router: NextRouter): number | null => {
         const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
@@ -44,10 +44,9 @@ export default class Helper {
             router.replace('/login');
             return null;
         }
-    }
+    };
 
     static login = (router: NextRouter, response: any): void => {
-
         const user: userItem = response.user;
 
         sessionStorage.setItem('jwt', response.jwt);
@@ -57,7 +56,7 @@ export default class Helper {
         sessionStorage.setItem('role', user.role);
 
         router.replace('/');
-    }
+    };
 
     static logout = (router: NextRouter): void => {
         sessionStorage.removeItem('jwt');
@@ -65,13 +64,18 @@ export default class Helper {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('role');
         router.replace('/login');
-    }
+    };
+
+    static getUserID = (): number | undefined => {
+        const userId = sessionStorage.getItem('userID');
+        return userId ? parseInt(userId) : undefined;
+    };
 
     static getUsername = (): string | undefined => {
         return sessionStorage.getItem('username') || undefined;
-    }
+    };
 
     static getJWT = (): string | undefined => {
         return sessionStorage.getItem('jwt') || undefined;
-    }
+    };
 }

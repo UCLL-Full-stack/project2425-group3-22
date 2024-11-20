@@ -4,9 +4,31 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MainNavigation from '@components/mainNavigation';
+import ProfileService from '@services/profileService';
 
 const Map: React.FC = () => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
+
+
+
+    useEffect(() => {
+        const fetchProfilePoopsData = async () => {
+            try {
+                const response = await ProfileService.getProfileMap();
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch map data');
+                }
+
+                const result = await response.json();
+                console.log(result);
+            } catch (error: any) {
+                console.error(error.message);
+            }
+        };
+
+        fetchProfilePoopsData();
+    }, []);
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
@@ -26,9 +48,7 @@ const Map: React.FC = () => {
             });
 
             map.on('load', () => {
-                new mapboxgl.Marker({ color: 'brown' })
-                    .setLngLat([45, 45])
-                    .addTo(map);
+                new mapboxgl.Marker({ color: 'brown' }).setLngLat([45, 45]).addTo(map);
             });
 
             return () => map.remove();
@@ -43,7 +63,7 @@ const Map: React.FC = () => {
             <MainNavigation />
             <main>
                 <ProfileSidebar />
-                <div ref={mapContainerRef} style={{ width: '100%', height: '100vh'}}></div>
+                <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}></div>
             </main>
         </>
     );

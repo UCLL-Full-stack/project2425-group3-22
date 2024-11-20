@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         if (userID) {
             const fetchProfilePoopsData = async () => {
                 try {
-                    const response = await ProfileService.getProfilePoops(userID);
+                    const response = await ProfileService.getProfilePoops();
 
                     if (!response.ok) {
                         throw new Error('Failed to fetch profile poops');
