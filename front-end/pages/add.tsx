@@ -11,7 +11,7 @@ const Add: React.FC = () => {
             <Head>
                 <title>Add</title>
             </Head>
-            <MainNavigation isAdmin={false} />
+            <MainNavigation />
             <main>
                 <p>Add</p>
             </main>

@@ -46,8 +46,11 @@ export default class Helper {
         }
     }
 
-    static login = (router: NextRouter, user: userItem): void => {
-        console.log(user);
+    static login = (router: NextRouter, response: any): void => {
+
+        const user: userItem = response.user;
+
+        sessionStorage.setItem('jwt', response.jwt);
 
         sessionStorage.setItem('userID', user.userID.toString());
         sessionStorage.setItem('username', user.username);
@@ -57,6 +60,7 @@ export default class Helper {
     }
 
     static logout = (router: NextRouter): void => {
+        sessionStorage.removeItem('jwt');
         sessionStorage.removeItem('userID');
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('role');
@@ -65,5 +69,9 @@ export default class Helper {
 
     static getUsername = (): string | undefined => {
         return sessionStorage.getItem('username') || undefined;
+    }
+
+    static getJWT = (): string | undefined => {
+        return sessionStorage.getItem('jwt') || undefined;
     }
 }
