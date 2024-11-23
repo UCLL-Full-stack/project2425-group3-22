@@ -1,6 +1,6 @@
 .poopItem {
     position: relative;
-    background-color: white;
+    background-color: var(--background);
     padding: 20px 30px;
     margin: 20px auto;
     border-radius: 3px;
@@ -21,7 +21,7 @@
     height: 32px;
     border-radius: 50%;
     background-color: rgb(150, 108, 74);
-    color: white;
+    color: var(--background);
     display: flex;
     align-items: center;
     justify-content: center;

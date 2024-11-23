@@ -20,7 +20,7 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--background);
     border-radius: 8px; 
     align-items: center;
     width: 400px;
@@ -39,7 +39,7 @@
 .container .registerForm button {
     background-color: rgb(165, 42, 42);
     transition: background-color 0.3s;
-    color: white;
+    color: var(--background);
     border: none;
     padding: 5px 10px;
     width: 50%;
