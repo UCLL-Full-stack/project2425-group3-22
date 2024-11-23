@@ -2,8 +2,6 @@
     display: inline-flex;
     flex-direction: column;
     background-color: var(--background);
-    flex-shrink: 0;
-    height: 100%;
     width: 250px;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
     padding: 120px 40px 0 40px;

@@ -20,7 +20,7 @@ html, body {
 }
 
 main {
-    height: calc(100vh - 75px);
+    min-height: calc(100vh - 75px);
     background: radial-gradient(circle, #ffffff, #e4e5eb);
     display: flex;
 }
