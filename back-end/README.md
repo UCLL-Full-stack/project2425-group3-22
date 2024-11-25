@@ -33,10 +33,11 @@ First, install all required node dependencies using npm (node package manager):
 Then, add these lines to the .env file:
 
 ```
-APP_PORT = <<PORT>>
+APP_PORT = <<Port>>
 DATABASE_URL = "postgresql://<<USER>>:<<PASSWORD>>@<<DOMAIN>>:<<PORT>>/<<DB-NAME>>?schema=public"
-SALT_ROUNDS = <<A NUMBER OF SALT ROUNDS FOR BCRYPT HASHING>>
-JWT_SECRET_KEY=<<A SECRET KEY>>
+SALT_ROUNDS = <<A number of salt rounds for hashing>>
+JWT_SECRET = <<A secret key to sign the JWT>>
+JWT_EXPIRES_HOURS = <<Number of hours in which the JWT expires>>
 ```
 
 Then, to setup the postges DB execute:
