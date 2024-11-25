@@ -67,6 +67,7 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
     }
 });
 
+// TODO: should be admin, moderator? or a friend of said user?
 /**
  * @swagger
  * /user/{userID}:
@@ -100,6 +101,7 @@ userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
+// TODO: should be admin, moderator? or the user themselves
 /**
  * @swagger
  * /user/update:

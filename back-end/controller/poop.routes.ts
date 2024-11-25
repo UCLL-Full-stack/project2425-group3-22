@@ -97,7 +97,7 @@ const poopRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/Poop'
  */
-poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await poopService.getAllPoops();
         return res.status(200).json(result);
@@ -106,6 +106,7 @@ poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+// TODO: should be admin, moderator? or a friend of said user
 /**
  * @swagger
  * /poop/{userID}:
@@ -141,6 +142,7 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
+// TODO: should be admin, moderator? or a friend of said user?
 /**
  * @swagger
  * /poop/map/{userID}:
