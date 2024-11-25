@@ -4,7 +4,11 @@ import userDb from '../repository/user.db';
 import { LoginResponse } from '../types';
 import { generateJwtToken } from '../util/jwt';
 
-const register = async (username: string, email: string, password: string): Promise<string> => {
+const register = async (
+    username: string,
+    email: string,
+    password: string
+): Promise<LoginResponse> => {
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
@@ -14,7 +18,14 @@ const register = async (username: string, email: string, password: string): Prom
 
     const createdUser = await userDb.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
-    return 'Register successfull, please login to use your account.';
+
+    const token = await generateJwtToken(createdUser.getUserID(), createdUser.getRole());
+
+    return <LoginResponse>{
+        username: createdUser.getUsername(),
+        role: createdUser.getRole(),
+        token,
+    };
 };
 
 const login = async (usernameOrEmail: string, password: string): Promise<LoginResponse> => {

@@ -69,7 +69,7 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
             registerInput.email,
             registerInput.password
         );
-        res.status(200).json({ message: result });
+        res.status(200).json(result);
     } catch (err: any) {
         next(err);
     }
