@@ -1,21 +1,21 @@
 type Role = 'USER' | 'MODERATOR' | 'ADMIN';
 
 //#region AUTH types
-type RegisterInput = {
+type RegisterRequest = {
     username: string;
     email: string;
     password: string;
 };
 
-type LoginInput = {
+type LoginRequest = {
     usernameOrEmail: string;
     password: string;
 };
 
-type TokenPayload = {
-    userID: number;
-    iat: number;
-    exp: number;
+type LoginResponse = {
+    username: string;
+    role: string;
+    token: string;
 };
 //#endregion
 
@@ -93,9 +93,9 @@ type ReturnFriend = {
 
 export {
     Role,
-    RegisterInput,
-    LoginInput,
-    TokenPayload,
+    RegisterRequest,
+    LoginRequest,
+    LoginResponse,
     UpdateUserInput,
     ReturnUser,
     PoopInput,

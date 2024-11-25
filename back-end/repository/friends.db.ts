@@ -1,6 +1,6 @@
 import { FriendRequest } from '../model/friendRequest';
 import { Friends } from '../model/friends';
-import database from './database';
+import database from '../util/database';
 
 const getAllIncomimgFriendRequestsForUser = async ({
     userID,
@@ -18,7 +18,7 @@ const getAllIncomimgFriendRequestsForUser = async ({
             FriendRequest.from(friendRequestPrisma)
         );
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -39,7 +39,7 @@ const getAllOutgoingFriendRequestsForUser = async ({
             FriendRequest.from(friendRequestPrisma)
         );
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -58,7 +58,7 @@ const getAllFriendsForUser = async ({
         if (friendsPrisma.length < 1) return null;
         return friendsPrisma.map((friendPrisma) => Friends.from(friendPrisma));
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };

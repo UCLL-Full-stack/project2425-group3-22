@@ -1,47 +1,29 @@
-import { Role, TokenPayload } from '../types/index';
-import * as dotenv from 'dotenv';
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import userDb from '../repository/user.db';
+import { NextFunction, Request, Response } from 'express';
+import { UnauthorizedError } from 'express-jwt';
+import { Role } from '../types/index';
 
-dotenv.config();
-
-const secretKey =
-    process.env.JWT_SECRET_KEY || 'TheSuperSecretKeyForWhenTheOtherSuperSecretKeyDoesNotWork';
-
-const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-    const header = req.header('authorization');
-    if (!header) return res.status(401).json({ message: 'Unauthorized, no token.' });
-    const token = header.replace('Bearer ', '');
-
-    try {
-        const now = Math.round(Date.now() / 1000);
-        const decoded = <TokenPayload>jwt.verify(token, secretKey);
-        if (now > decoded.exp)
-            return res.status(401).json({ message: 'Unauthorized, token expired.' });
-
-        const user = await userDb.getUserByID({ userID: decoded.userID });
-        if (!user) return res.status(400).json({ message: 'Unauthorized, user does not exist.' });
-        res.locals.userID = user.getUserID();
-        res.locals.role = user.getRole();
-
-        next();
-    } catch (err: any) {
-        return res.status(401).json({ message: 'Unauthorized, invalid token.' });
-    }
+const isAdmin = async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+    const role = <Role>req.auth.role;
+    if (role === 'ADMIN') next();
+    next(
+        new UnauthorizedError('credentials_required', {
+            message: 'You are not authorized to access this endpoint.',
+        })
+    );
 };
 
-const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
-    const role: Role = res.locals.role;
-    if (role !== 'ADMIN') return res.status(403).json({ message: 'Forbidden.' });
-    next();
+const isAdminOrModerator = async (
+    req: Request & { auth: any },
+    res: Response,
+    next: NextFunction
+) => {
+    const role = <Role>req.auth.role;
+    if (role === 'ADMIN' || role === 'MODERATOR') next();
+    next(
+        new UnauthorizedError('credentials_required', {
+            message: 'You are not authorized to access this endpoint.',
+        })
+    );
 };
 
-const isAdminOrModerator = async (req: Request, res: Response, next: NextFunction) => {
-    const role: Role = res.locals.role;
-    if (role !== 'ADMIN' && role !== 'MODERATOR')
-        return res.status(403).json({ message: 'Forbidden.' });
-    next();
-};
-
-export { isAuthenticated, isAdmin, isAdminOrModerator };
+export { isAdmin, isAdminOrModerator };

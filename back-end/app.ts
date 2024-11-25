@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { isAuthenticated } from './middleware/authMiddleware';
+import { expressjwt } from 'express-jwt';
 import { authRouter } from './controller/auth.routes';
 import { poopRouter } from './controller/poop.routes';
 import { userRouter } from './controller/user.routes';
@@ -17,6 +17,17 @@ const port = process.env.APP_PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(
+    expressjwt({
+        secret:
+            process.env.JWT_SECRET ||
+            'd666a19848375f6a9fd7f2991bc6fce2efcf19b302509cacbcbff9b01b424e76',
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /\/api-docs\/*/, '/auth/register', '/auth/login', '/status'],
+    })
+);
 
 //#region Swagger
 const swaggerOpts = {
@@ -35,11 +46,25 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //#region Routers
 app.use('/auth', authRouter);
-app.use('/poop', isAuthenticated, poopRouter);
-app.use('/user', isAuthenticated, userRouter);
-app.use('/friends', isAuthenticated, friendsRouter);
-app.use('/profile', isAuthenticated, profileRouter);
+app.use('/poop', poopRouter);
+app.use('/user', userRouter);
+app.use('/friends', friendsRouter);
+app.use('/profile', profileRouter);
 //#endregion
+
+//#region Error handling
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ status: 'unauthorized', message: err.message });
+    } else {
+        res.status(400).json({ status: 'application error', message: err.message });
+    }
+});
+//#endregion
+
+app.get('/status', (req, res) => {
+    res.json({ message: 'Poopedia API is running' });
+});
 
 app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);

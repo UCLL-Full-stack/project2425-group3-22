@@ -54,7 +54,7 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
         const result = await friendsService.getAllIncomimgFriendRequestsForUser(res.locals.userID);
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 

@@ -1,9 +1,9 @@
 //TODO: when creating/updating/deleting a user check wether or not the user that performs the action is allowed to do so (from jwt)
+import bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
 import { User } from '../model/user';
 import userDb from '../repository/user.db';
 import { ReturnUser } from '../types';
-import { hashPassword, validatePassword } from '../util/hash';
 
 const getAllUsers = async (): Promise<Array<ReturnUser>> => {
     const users = await userDb.getAllUsers();
@@ -30,39 +30,6 @@ const getUserByID = async (userID: number): Promise<ReturnUser> => {
     };
 };
 
-const getUserByUsernameAndPassword = async (
-    username: string,
-    password: string
-): Promise<ReturnUser> => {
-    const user = await userDb.getUserByUsername({ username });
-    if (!user || !(await validatePassword(password, user.getPassword())))
-        throw new Error('Username or password incorrect.');
-    // TODO: test
-    //const valid = await validatePassword(password, user.getPassword());
-    //if (!valid) throw new Error('Email or password incorrect.');
-    return <ReturnUser>{
-        userID: user.getUserID(),
-        username: user.getUsername(),
-        email: user.getEmail(),
-        role: user.getRole(),
-    };
-};
-
-const getUserByEmailAndPassword = async (email: string, password: string): Promise<ReturnUser> => {
-    const user = await userDb.getUserByEmail({ email });
-    if (!user || !(await validatePassword(password, user.getPassword())))
-        throw new Error('Username or password incorrect.');
-    // TODO: test
-    //const valid = await validatePassword(password, user.getPassword());
-    //if (!valid) throw new Error('Email or password incorrect.');
-    return <ReturnUser>{
-        userID: user.getUserID(),
-        username: user.getUsername(),
-        email: user.getEmail(),
-        role: user.getRole(),
-    };
-};
-
 const createUser = async (
     username: string,
     email: string,
@@ -72,7 +39,7 @@ const createUser = async (
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
     const userToCreate = new User({ userID: 0, username, email, password: password });
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
     userToCreate.setPassword(hashedPassword);
 
     const createdUser = await userDb.createUser(userToCreate);
@@ -101,7 +68,7 @@ const updateUser = async (
     userToUpdate.setEmail(email);
     userToUpdate.setPassword(password);
     userToUpdate.setRole(role);
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
     userToUpdate.setPassword(hashedPassword);
 
     const updatedUser = await userDb.updateUser(userToUpdate);
@@ -133,8 +100,6 @@ const checkUsernameInUse = async (username: string | undefined): Promise<boolean
 export default {
     getAllUsers,
     getUserByID,
-    getUserByUsernameAndPassword,
-    getUserByEmailAndPassword,
     createUser,
     updateUser,
 };

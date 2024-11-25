@@ -52,13 +52,13 @@ const profileRouter = express.Router();
  *                schema:
  *                  $ref: '#/components/schemas/ReturnUser'
  */
-profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+profileRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const userID = res.locals.userID;
+        const userID = req.auth.userID;
         const result = await userService.getUserByID(userID);
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -79,14 +79,17 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  *                      items:
  *                          $ref: '#/components/schemas/Poop'
  */
-profileRouter.get('/poops', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const userID = res.locals.userID;
-        const result = await poopService.getPoopsByUser(userID);
-        return res.status(200).json(result);
-    } catch (err: any) {
-        res.status(400).json({ message: err.message });
+profileRouter.get(
+    '/poops',
+    async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+        try {
+            const userID = req.auth.userID;
+            const result = await poopService.getPoopsByUser(userID);
+            return res.status(200).json(result);
+        } catch (err: any) {
+            next(err);
+        }
     }
-});
+);
 
 export { profileRouter };

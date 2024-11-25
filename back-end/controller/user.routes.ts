@@ -63,7 +63,7 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
         const result = await userService.getAllUsers();
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -96,7 +96,7 @@ userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
         const result = await userService.getUserByID(Number(userID));
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -133,7 +133,7 @@ userRouter.post('/update', async (req: Request, res: Response, next: NextFunctio
         );
         res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 

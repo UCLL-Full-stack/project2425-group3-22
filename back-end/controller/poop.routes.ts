@@ -97,12 +97,12 @@ const poopRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/Poop'
  */
-poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
+poopRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await poopService.getAllPoops();
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -137,7 +137,7 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
         const result = await poopService.getPoopsByUser(Number(userID));
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -172,7 +172,7 @@ poopRouter.get('/map/:userID', async (req: Request, res: Response, next: NextFun
         const result = await poopService.getPoopsForMapByUser(Number(userID));
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -213,7 +213,7 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
         );
         return res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 

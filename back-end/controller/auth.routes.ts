@@ -35,14 +35,11 @@
  */
 import * as dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import userService from '../service/user.service';
-import { RegisterInput, LoginInput } from '../types';
+import authService from '../service/auth.service';
+import { RegisterRequest, LoginRequest } from '../types';
 
 dotenv.config();
 const authRouter = express.Router();
-const secretKey =
-    process.env.JWT_SECRET_KEY || 'TheSuperSecretKeyForWhenTheOtherSuperSecretKeyDoesNotWork';
 
 /**
  * @swagger
@@ -66,16 +63,15 @@ const secretKey =
  */
 authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const registerInput = <RegisterInput>req.body;
-        const result = await userService.createUser(
+        const registerInput = <RegisterRequest>req.body;
+        const result = await authService.register(
             registerInput.username,
             registerInput.email,
             registerInput.password
         );
-        const token = jwt.sign({ userID: result.userID }, secretKey, { expiresIn: 1440 });
-        res.status(200).json({ user: result, jwt: token });
+        res.status(200).json({ message: result });
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 
@@ -83,7 +79,7 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /auth/login:
  *   post:
- *      summary: Login with an email and a password
+ *      summary: Login with a username or email and a password
  *      requestBody:
  *        required: true
  *        content:
@@ -100,22 +96,11 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  */
 authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const loginInput = <LoginInput>req.body;
-
-        const result = loginInput.usernameOrEmail.includes('@')
-            ? await userService.getUserByEmailAndPassword(
-                  loginInput.usernameOrEmail,
-                  loginInput.password
-              )
-            : await userService.getUserByUsernameAndPassword(
-                  loginInput.usernameOrEmail,
-                  loginInput.password
-              );
-
-        const token = jwt.sign({ userID: result.userID }, secretKey, { expiresIn: 1440 });
-        res.status(200).json({ user: result, jwt: token });
+        const loginInput = <LoginRequest>req.body;
+        const result = await authService.login(loginInput.usernameOrEmail, loginInput.password);
+        res.status(200).json(result);
     } catch (err: any) {
-        res.status(400).json({ message: err.message });
+        next(err);
     }
 });
 

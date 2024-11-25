@@ -1,5 +1,5 @@
 import { Poop } from '../model/poop';
-import database from './database';
+import database from '../util/database';
 import { ReturnPoop, ReturnPoopForMap } from '../types';
 
 const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
@@ -25,7 +25,7 @@ const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
                 }
         );
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -40,7 +40,7 @@ const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poo
         if (poopsPrisma.length < 1) return null;
         return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -65,7 +65,7 @@ const getPoopsForMapByUser = async ({
                 }
         );
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -89,7 +89,7 @@ const createPoop = async (poop: Poop): Promise<Poop | null> => {
         if (!poopPrisma) return null;
         return Poop.from(poopPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };

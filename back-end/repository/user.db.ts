@@ -1,5 +1,5 @@
 import { User } from '../model/user';
-import database from './database';
+import database from '../util/database';
 
 const getAllUsers = async (): Promise<Array<User> | null> => {
     try {
@@ -8,7 +8,7 @@ const getAllUsers = async (): Promise<Array<User> | null> => {
         if (usersPrisma.length < 1) return null;
         return usersPrisma.map((userPrisma) => User.from(userPrisma));
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -22,7 +22,7 @@ const getUserByID = async ({ userID }: { userID: number }): Promise<User | null>
         if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -36,7 +36,7 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
         if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -50,7 +50,7 @@ const getUserByEmail = async ({ email }: { email: string }): Promise<User | null
         if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -68,7 +68,7 @@ const createUser = async (user: User): Promise<User | null> => {
         if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
@@ -87,7 +87,7 @@ const updateUser = async (user: User): Promise<User | null> => {
         if (!userPrisma) return null;
         return User.from(userPrisma);
     } catch (err: any) {
-        console.log(err.message);
+        console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
