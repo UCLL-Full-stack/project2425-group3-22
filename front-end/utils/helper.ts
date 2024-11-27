@@ -3,72 +3,62 @@ import { NextRouter } from 'next/router';
 import { Roles } from '@types';
 
 export default class Helper {
-    static authorizeUser = (router: NextRouter): number | null => {
-        const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
+    static authorizeUser = (router: NextRouter): boolean => {
+        const JWT = sessionStorage.getItem('jwt') || undefined;
 
-        if (storedUserID) {
-            return parseInt(storedUserID);
+        if (JWT) {
+            return true;
         } else {
             router.replace('/login');
-            return null;
+            return false;
         }
     };
 
-    static authorizeModerator = (router: NextRouter): number | null => {
-        const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
+    static authorizeModerator = (router: NextRouter): boolean => {
+        const JWT = sessionStorage.getItem('jwt') || undefined;
         const storedRole = sessionStorage.getItem('role') || undefined;
 
-        if (storedUserID) {
+        if (JWT) {
             if (storedRole === Roles.MODERATOR || storedRole === Roles.ADMIN) {
-                return parseInt(storedUserID);
+                return true;
             } else {
-                return null;
+                return false;
             }
         } else {
             router.replace('/login');
-            return null;
+            return false;
         }
     };
 
-    static authorizeAdmin = (router: NextRouter): number | null => {
-        const storedUserID = sessionStorage.getItem('userID')?.toString() || undefined;
+    static authorizeAdmin = (router: NextRouter): boolean => {
+        const JWT = sessionStorage.getItem('jwt') || undefined;
         const storedRole = sessionStorage.getItem('role') || undefined;
 
-        if (storedUserID) {
+        if (JWT) {
             if (storedRole === Roles.ADMIN) {
-                return parseInt(storedUserID);
+                return true;
             } else {
-                return null;
+                return false;
             }
         } else {
             router.replace('/login');
-            return null;
+            return false;
         }
     };
 
     static login = (router: NextRouter, response: any): void => {
-        const user: userItem = response.user;
-
-        sessionStorage.setItem('jwt', response.jwt);
-
-        sessionStorage.setItem('userID', user.userID.toString());
-        sessionStorage.setItem('username', user.username);
-        sessionStorage.setItem('role', user.role);
+        sessionStorage.setItem('jwt', response.token);
+        sessionStorage.setItem('username', response.username);
+        sessionStorage.setItem('role', response.role);
 
         router.replace('/');
     };
 
     static logout = (router: NextRouter): void => {
         sessionStorage.removeItem('jwt');
-        sessionStorage.removeItem('userID');
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('role');
         router.replace('/login');
-    };
-
-    static getUserID = (): number | undefined => {
-        const userId = sessionStorage.getItem('userID');
-        return userId ? parseInt(userId) : undefined;
     };
 
     static getUsername = (): string | undefined => {

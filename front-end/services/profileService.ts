@@ -11,7 +11,7 @@ const getProfilePoops = async () => {
 };
 
 const getProfileMap = async () => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/poop/map/' + Helper.getUserID(), { // TODO: edit link when changed in backend
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/profile/map', { // TODO: edit link when changed in backend
         method: 'GET',
         headers: {
             'authorization': 'Bearer ' + Helper.getJWT(),

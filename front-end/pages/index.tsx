@@ -12,19 +12,16 @@ import Helper from 'utils/helper';
 
 const Home: React.FC = () => {
     const router = useRouter();
-    const [userID, setUserID] = useState<number | null>(null);
     const [isValidated, setIsValidated] = useState(false);
     const [poops, setPoops] = useState([]);
     const [isAtTop, setIsAtTop] = useState(true);
 
     useEffect(() => {
-        const authorizedUserID = Helper.authorizeUser(router);
-        setIsValidated(!!authorizedUserID);
-        setUserID(authorizedUserID ?? null);
+        setIsValidated(Helper.authorizeUser(router));
     }, [router]);
 
     useEffect(() => {
-        if (userID) {
+        if (isValidated) {
             const fetchProfilePoopsData = async () => {
                 try {
                     const response = await ProfileService.getProfilePoops();
@@ -43,7 +40,7 @@ const Home: React.FC = () => {
             
             fetchProfilePoopsData();
         }
-    }, [userID]);
+    }, [isValidated]);
 
     useEffect(() => {
         const handleScroll = () => {
