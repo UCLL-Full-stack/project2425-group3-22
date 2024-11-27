@@ -63,15 +63,6 @@
  *              longitude:
  *                  type: number
  *                  required: false
- *        ReturnPoopForMap:
- *          type: object
- *          properties:
- *              poopID:
- *                  type: number
- *              latitude:
- *                  type: number
- *              longitude:
- *                  type: number
  */
 import express, { NextFunction, Request, Response } from 'express';
 import poopService from '../service/poop.service';
@@ -136,42 +127,6 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
     try {
         const userID = req.params['userID'];
         const result = await poopService.getPoopsByUser(Number(userID));
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
-    }
-});
-
-// TODO: should be admin, moderator? or a friend of said user?
-/**
- * @swagger
- * /poop/map/{userID}:
- *   get:
- *      security:
- *          - bearerAuth: []
- *      summary: Get all poops to show on map for a user by its ID
- *      parameters:
- *        - in: path
- *          name: userID
- *          schema:
- *              type: integer
- *              minimum: 1
- *          required: true
- *          description: ID of the user for whom to get the poops to show on map
- *      responses:
- *         200:
- *            description: The poops for the given user
- *            content:
- *              application/json:
- *                poops:
- *                  type: array
- *                  items:
- *                      $ref: '#/components/schemas/ReturnPoopForMap'
- */
-poopRouter.get('/map/:userID', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const userID = req.params['userID'];
-        const result = await poopService.getPoopsForMapByUser(Number(userID));
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);
