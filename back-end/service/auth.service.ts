@@ -13,7 +13,7 @@ const register = async (
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
     const userToCreate = new User({ userID: 0, username, email, password: password, role: 'USER' });
-    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
     userToCreate.setPassword(hashedPassword);
 
     const createdUser = await userDb.createUser(userToCreate);
