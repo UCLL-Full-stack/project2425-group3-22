@@ -1,6 +1,5 @@
 import MainNavigation from '@components/mainNavigation';
-import PoopSVG from '@components/PoopTypes/poopSVG';
-import ProfileSidebar from '@components/profile/profileSidebar';
+import SelectPoopType from '@components/selectPoopType';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -14,8 +13,7 @@ const Add: React.FC = () => {
             </Head>
             <MainNavigation />
             <main>
-                <p>Add</p>
-                <PoopSVG />
+                <SelectPoopType />
             </main>
         </>
     );

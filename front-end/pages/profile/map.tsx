@@ -68,7 +68,7 @@ const Map: React.FC = () => {
             <MainNavigation />
             <main>
                 <ProfileSidebar />
-                <div ref={mapContainerRef} style={{ flex: 1, border: 'none'}}></div>
+                <div ref={mapContainerRef} style={{ flex: 1 }}></div>
             </main>
         </>
     );

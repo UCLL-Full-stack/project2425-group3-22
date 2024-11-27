@@ -9,7 +9,7 @@ const PoopSVG: React.FC<Props> = ({ color = '#B4846B' }: Props) => {
     const shadow = darken(0.1, color);
 
     return (
-        <svg viewBox="0 0 512 512" width="512" height="512">
+        <svg viewBox="0 0 512 512">
             <g fill="None" fillOpacity="0.0" stroke={shadow} strokeOpacity="0.00" strokeWidth="0.3">
                 <path
                     d="
