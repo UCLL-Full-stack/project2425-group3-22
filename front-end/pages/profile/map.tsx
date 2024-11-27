@@ -50,7 +50,11 @@ const Map: React.FC = () => {
 
             map.on('load', () => {
                 poops.forEach((poop: any) => {
-                    new mapboxgl.Marker({ color: 'brown' })
+                    new mapboxgl.Marker({
+                        color: getComputedStyle(document.documentElement).getPropertyValue(
+                            '--accent-secondary'
+                        ),
+                    })
                         .setLngLat([poop.longitude, poop.latitude])
                         .addTo(map);
                 });

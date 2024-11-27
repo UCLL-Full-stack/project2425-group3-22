@@ -20,13 +20,12 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: rgb(150, 108, 74);
+    background-color: var(--accent);
     color: var(--background);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    border: 2px solid rgb(109, 35, 35);
     margin: auto 16px auto 0;
 }
 

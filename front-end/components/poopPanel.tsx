@@ -36,7 +36,11 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 attributionControl: false,
             });
 
-            const marker = new mapboxgl.Marker({ color: 'brown' })
+            new mapboxgl.Marker({
+                color: getComputedStyle(document.documentElement).getPropertyValue(
+                    '--accent-secondary'
+                ),
+            })
                 .setLngLat([poop.longitude, poop.latitude])
                 .addTo(map);
 

@@ -23,24 +23,24 @@
 .addPoopButton {
     right: 20px;
     bottom: 20px;
-    background-color: rgb(150, 108, 74);
+    background-color: var(--accent);
     color: var(--background);
 }
 
 .addPoopButton:hover {
     background-color: var(--background);
-    color: rgb(109, 35, 35);
+    color: var(--accent-secondary);
 }
 
 .scrollToTop {
     right: 20px;
     bottom: 90px;
     background-color: var(--background);
-    color: rgb(109, 35, 35);
+    color: var(--accent-secondary);
 }
 
 .scrollToTop:hover {
-    background-color: rgb(150, 108, 74);
+    background-color: var(--accent);
     color: var(--background);
 }
 

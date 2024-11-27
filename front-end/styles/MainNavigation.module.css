@@ -11,7 +11,7 @@
 }
 
 .mainNavigation .logo {
-    color: brown;
+    color: var(--accent);
     font-family: "Chakra Petch", sans-serif;
     letter-spacing: -1px;
     font-size: 2rem;
@@ -36,16 +36,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: brown;
+    background-color: var(--accent);
     margin: 0;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgb(150, 108, 74);
     color: var(--background);
-
     font-weight: bold;
     margin-right: 8px;
-    border: 2px solid rgb(109, 35, 35);
     margin: 0;
 }

@@ -9,7 +9,7 @@
 }
 
 .container h1 {
-    color: brown;
+    color: var(--accent);
     font-family: "Chakra Petch", sans-serif;
     letter-spacing: -1px;
     font-size: 3.5rem;
@@ -37,7 +37,7 @@
 }
 
 .container .registerForm button {
-    background-color: rgb(165, 42, 42);
+    background-color: var(--accent);
     transition: background-color 0.3s;
     color: var(--background);
     border: none;
@@ -47,10 +47,10 @@
 }
 
 .container .registerForm button:hover {
-    background-color: rgb(196, 122, 122);
+    background-color: var(--accent-muted);
 }
 
 .container .registerForm .error {
-    color: red;
+    color: var(--error);
     margin-bottom: 0;
 }

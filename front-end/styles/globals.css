@@ -7,9 +7,27 @@
     inherits: false;
 }
 
-@property --tint {
+@property --accent {
     syntax: '<color>';
-    initial-value: '#966C4A';
+    initial-value: #966C4A;
+    inherits: false;
+}
+
+@property --accent-secondary {
+    syntax: '<color>';
+    initial-value: #724B32;
+    inherits: false;
+}
+
+@property --accent-muted {
+    syntax: '<color>';
+    initial-value: #B59B88;
+    inherits: false;
+}
+
+@property --error {
+    syntax: '<color>';
+    initial-value: #ff0000;
     inherits: false;
 }
 
