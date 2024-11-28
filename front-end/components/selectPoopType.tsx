@@ -105,8 +105,8 @@ const SelectPoopType: React.FC = () => {
                 </div>
             </div>
             <div
-                className={`${styles.poopType} ${selectedPoopType == -1 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(-1) /* TODO: is type unknown -1 or 0 */}
+                className={`${styles.poopType} ${selectedPoopType == 0 ? styles.selected : ''}`}
+                onClick={() => handlePoopTypeClicked(0)}
             >
                 <div className={styles.SVGContainer}>
                     <UnknownSVG />

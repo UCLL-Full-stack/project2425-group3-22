@@ -80,3 +80,10 @@ main {
 .popup .popupLink:hover {
     background-color: #ededed;
 }
+
+@media (max-width: 768px) {
+    .popup {
+        left: auto !important;
+        right: 0;
+    }
+}
