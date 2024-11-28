@@ -7,18 +7,29 @@
  *              scheme: bearer
  *              bearerFormat: jwt
  *      schemas:
- *        ReturnFriendRequest:
+ *        FriendInfoResponse:
  *          type: object
  *          properties:
- *              senderID:
+ *              userID:
  *                  type: number
- *              senderUsername:
- *                  type: number
- *              receiverID:
+ *              username:
  *                  type: string
- *              receiverUsername:
- *                  type: string
- *        FriendRequestInput:
+ *        FriendsInfoResponse:
+ *          type: object
+ *          properties:
+ *              friends:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/FriendInfoResponse'
+ *              incoming:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/FriendInfoResponse'
+ *              outgoing:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/FriendInfoResponse'
+ *        FriendRequestRequest:
  *          type: object
  *          properties:
  *              senderID:
@@ -28,7 +39,7 @@
  */
 import express, { NextFunction, Request, Response } from 'express';
 import friendsService from '../service/friends.service';
-import { FriendRequestInput } from '../types';
+import { FriendRequestRequest } from '../types';
 
 const friendsRouter = express.Router();
 
@@ -38,20 +49,19 @@ const friendsRouter = express.Router();
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get all incoming friend requests
+ *      summary: Get all friends, incoming friend requests and outgoing friend requests for the logged in user
  *      responses:
  *         200:
- *            description: The incoming friend requests
+ *            description: The friends, incoming friend requests and outgoing friend requests
  *            content:
  *              application/json:
- *                users:
- *                  type: array
- *                  items:
- *                      $ref: '#/components/schemas/ReturnFriendRequest'
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendsInfoResponse'
  */
-friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const result = await friendsService.getAllIncomimgFriendRequestsForUser(res.locals.userID);
+        const userID = req.auth.userID;
+        const result = await friendsService.getFriendsInfoForUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);
