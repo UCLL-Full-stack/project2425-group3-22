@@ -9,7 +9,7 @@ const Statistics: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Statistics</title>
+                <title>Poopedia | Profile - Statistics</title>
             </Head>
             <MainNavigation />
             <main>

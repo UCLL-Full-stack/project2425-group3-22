@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Profile</title>
+                <title>Poopedia | Profile</title>
             </Head>
             <MainNavigation />
             <main>

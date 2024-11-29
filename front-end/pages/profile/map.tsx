@@ -67,7 +67,7 @@ const Map: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Map</title>
+                <title>Poopedia | Profile - Map</title>
             </Head>
             <MainNavigation />
             <main>

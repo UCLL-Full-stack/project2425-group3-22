@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import styles from '@styles/Login.module.css';
-import { FormEvent } from 'react';
-import AuthService from '@services/authService';
-import { useRouter } from 'next/router';
-import Helper from 'utils/helper';
 import LoginForm from '@components/loginForm';
 
 const Login: React.FC = () => {
@@ -29,7 +25,7 @@ const Login: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Login</title>
+                <title>Poopedia | Login</title>
             </Head>
             <main>
                 <div className={styles.container}>

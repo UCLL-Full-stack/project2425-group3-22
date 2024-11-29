@@ -9,7 +9,7 @@ const Add: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Add</title>
+                <title>Poopedia | Add poop</title>
             </Head>
             <MainNavigation />
             <main>

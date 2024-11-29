@@ -32,7 +32,6 @@ const Home: React.FC = () => {
                     }
 
                     const result = await response.json();
-                    console.log(result);
                     setPoops(result);
                 } catch (error: any) {
                     console.error(error.message);
@@ -50,13 +49,13 @@ const Home: React.FC = () => {
         return (
             <>
                 <Head>
-                    <title>Home</title>
+                    <title>Poopedia | Home</title>
                 </Head>
                 <MainNavigation />
                 <main>
                     <div className={styles.poopContainer}>
                         {poops.length > 0 ? (
-                            poops.map((poop, index) => <PoopPanel key={index} poop={poop} />)
+                            poops.map((poop) => <PoopPanel poop={poop} />)
                         ) : (
                             <p>No poops available.</p>
                         )}

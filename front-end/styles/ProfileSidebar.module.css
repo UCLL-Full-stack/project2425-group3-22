@@ -1,5 +1,8 @@
 .sidebar {
+    position: sticky;
     display: inline-flex;
+    height: 100vh;
+    top: 0;
     flex-direction: column;
     background-color: var(--background);
     width: 250px;
