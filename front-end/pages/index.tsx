@@ -9,12 +9,13 @@ import MainNavigation from '@components/mainNavigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Helper from 'utils/helper';
+import AddPoopButton from '@components/addPoopButton';
+import ScrollToTopButton from '@components/scrollToTopButton';
 
 const Home: React.FC = () => {
     const router = useRouter();
     const [isValidated, setIsValidated] = useState(false);
     const [poops, setPoops] = useState([]);
-    const [isAtTop, setIsAtTop] = useState(true);
 
     useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
@@ -42,21 +43,6 @@ const Home: React.FC = () => {
         }
     }, [isValidated]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsAtTop(window.scrollY === 0);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
 
     if (!isValidated) {
         return null;
@@ -76,15 +62,8 @@ const Home: React.FC = () => {
                         )}
                     </div>
                 </main>
-                <Link href="/add" className={`${styles.addPoopButton} ${styles.button}`}>
-                    <FontAwesomeIcon icon="plus" />
-                </Link>
-                <button
-                    className={`${styles.scrollToTop} ${styles.button} ${isAtTop ? styles.hidden : ''}`}
-                    onClick={scrollToTop}
-                >
-                    <FontAwesomeIcon icon="angle-up" />
-                </button>
+                <AddPoopButton />
+                <ScrollToTopButton />
             </>
         );
 };

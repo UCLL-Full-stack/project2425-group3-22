@@ -4,50 +4,6 @@
     min-height: 100%;
 }
 
-.button {
-    display: flex;
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    transition: 0.1s;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.addPoopButton {
-    right: 20px;
-    bottom: 20px;
-    background-color: var(--accent);
-    color: var(--background);
-}
-
-.addPoopButton:hover {
-    background-color: var(--background);
-    color: var(--accent-secondary);
-}
-
-.scrollToTop {
-    right: 20px;
-    bottom: 90px;
-    background-color: var(--background);
-    color: var(--accent-secondary);
-}
-
-.scrollToTop:hover {
-    background-color: var(--accent);
-    color: var(--background);
-}
-
-.scrollToTop.hidden {
-    opacity: 0;
-}
-
 @media (min-width: 769px) {
     .poopContainer {
         width: 50%;
