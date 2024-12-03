@@ -91,7 +91,7 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                schema:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/:userID', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params['userID'];
         const result = await userService.getUserByID(Number(userID));

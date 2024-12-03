@@ -4,12 +4,15 @@ import { Role } from '../types/index';
 
 const isAdmin = async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     const role = <Role>req.auth.role;
-    if (role === 'ADMIN') next();
-    next(
-        new UnauthorizedError('credentials_required', {
-            message: 'You are not authorized to access this endpoint.',
-        })
-    );
+    if (role === 'ADMIN') {
+        next();
+    } else {
+        next(
+            new UnauthorizedError('credentials_required', {
+                message: 'You are not authorized to access this endpoint.',
+            })
+        );
+    }
 };
 
 const isAdminOrModerator = async (
@@ -18,12 +21,15 @@ const isAdminOrModerator = async (
     next: NextFunction
 ) => {
     const role = <Role>req.auth.role;
-    if (role === 'ADMIN' || role === 'MODERATOR') next();
-    next(
-        new UnauthorizedError('credentials_required', {
-            message: 'You are not authorized to access this endpoint.',
-        })
-    );
+    if (role === 'ADMIN' || role === 'MODERATOR') {
+        next();
+    } else {
+        next(
+            new UnauthorizedError('credentials_required', {
+                message: 'You are not authorized to access this endpoint.',
+            })
+        );
+    }
 };
 
 export { isAdmin, isAdminOrModerator };

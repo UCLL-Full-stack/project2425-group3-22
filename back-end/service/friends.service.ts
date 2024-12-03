@@ -1,3 +1,5 @@
+import { FriendRequest } from '../model/friendRequest';
+import { Friends } from '../model/friends';
 import friendsDB from '../repository/friends.db';
 import { FriendsInfoResponse, FriendInfoResponse } from '../types';
 
@@ -37,6 +39,34 @@ const getFriendsInfoForUser = async (userID: number): Promise<FriendsInfoRespons
     };
 };
 
+const sendFriendRequest = async (
+    senderID: number,
+    receiverID: number
+): Promise<FriendInfoResponse> => {
+    const friendRequest = new FriendRequest({ senderID, receiverID });
+
+    const sentFriendRequest = await friendsDB.sendFriendRequest(friendRequest);
+    if (!sendFriendRequest) throw new Error('Error occured sending friend request.');
+
+    return <FriendInfoResponse>{
+        userID: sentFriendRequest.getReceiverID(),
+        username: sentFriendRequest.getReceiver().getUsername(),
+    };
+};
+
+const removeFriend = async (user1ID: number, user2ID: number): Promise<FriendInfoResponse> => {
+    const friendsToRemove = new Friends({ user1ID, user2ID });
+    const removedFriends = await friendsDB.removeFriend(friendsToRemove);
+
+    if (!removedFriends) throw new Error('Error occured removing friend.');
+    return <FriendInfoResponse>{
+        userID: 1,
+        username: 'peepee',
+    };
+};
+
 export default {
     getFriendsInfoForUser,
+    sendFriendRequest,
+    removeFriend,
 };

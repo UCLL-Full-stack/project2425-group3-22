@@ -68,4 +68,41 @@ friendsRouter.get('/', async (req: Request & { auth: any }, res: Response, next:
     }
 });
 
+/**
+ * @swagger
+ * /friends/remove/{userID}:
+ *   delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete a friend
+ *      parameters:
+ *        - in: path
+ *          name: userID
+ *          schema:
+ *              type: integer
+ *              minimum: 1
+ *          required: true
+ *          description: ID of the friend to remove
+ *      responses:
+ *         200:
+ *            description: The deleted friend
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendInfoResponse'
+ */
+friendsRouter.delete(
+    '/remove/:userID',
+    async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+        try {
+            const user1ID = req.auth.userID;
+            const user2ID = Number(req.params['userID']);
+            const result = await friendsService.removeFriend(user1ID, user2ID);
+            return res.status(200).json(result);
+        } catch (err: any) {
+            next(err);
+        }
+    }
+);
+
 export { friendsRouter };

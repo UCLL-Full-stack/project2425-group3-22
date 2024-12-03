@@ -7,7 +7,7 @@ import { ReturnUser } from '../types';
 
 const getAllUsers = async (): Promise<Array<ReturnUser>> => {
     const users = await userDb.getAllUsers();
-    if (!users) throw new Error('No users found.');
+    if (!users) return [];
     return users.map(
         (user) =>
             <ReturnUser>{
