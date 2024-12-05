@@ -132,16 +132,16 @@ const acceptFriendRequest = async (friendRequest: FriendRequest): Promise<Friend
 
 const removeFriend = async (friends: Friends): Promise<Friends | null> => {
     try {
-        const friendsPrisma1 = await database.friends.findFirst({
-            where: { user1ID: friends.getUser1ID(), user2ID: friends.getUser2ID() },
-            include: { user1: true, user2: true },
-        });
-        const friendsPrisma2 = await database.friends.findFirst({
-            where: { user1ID: friends.getUser2ID(), user2ID: friends.getUser1ID() },
+        const friendsPrisma = await database.friends.findFirst({
+            where: {
+                OR: [
+                    { user1ID: friends.getUser1ID(), user2ID: friends.getUser2ID() },
+                    { user1ID: friends.getUser2ID(), user2ID: friends.getUser1ID() },
+                ],
+            },
             include: { user1: true, user2: true },
         });
 
-        const friendsPrisma = friendsPrisma1 ?? friendsPrisma2;
         if (!friendsPrisma) return null;
         friends = Friends.from(friendsPrisma);
 
