@@ -62,10 +62,7 @@ const friendsRouter = express.Router();
 friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        if (!request.auth)
-            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-        const userID = request.auth.userID;
+        const userID = request.auth?.userID;
         const result = await friendsService.getFriendsInfoForUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
@@ -99,10 +96,7 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 friendsRouter.delete('/remove/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        if (!request.auth)
-            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-        const user1ID = request.auth.userID;
+        const user1ID = request.auth?.userID;
         const user2ID = Number(req.params['userID']);
         const result = await friendsService.removeFriend(user1ID, user2ID);
         return res.status(200).json(result);

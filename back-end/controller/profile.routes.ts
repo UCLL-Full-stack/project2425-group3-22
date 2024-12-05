@@ -65,10 +65,7 @@ const profileRouter = express.Router();
 profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        if (!request.auth)
-            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-        const userID = request.auth.userID;
+        const userID = request.auth?.userID;
         const result = await userService.getUserByID(userID);
         return res.status(200).json(result);
     } catch (err: any) {
@@ -96,10 +93,7 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 profileRouter.get('/poops', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        if (!request.auth)
-            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-        const userID = request.auth.userID;
+        const userID = request.auth?.userID;
         const result = await poopService.getPoopsByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
@@ -128,10 +122,7 @@ profileRouter.get('/poops', async (req: Request, res: Response, next: NextFuncti
 profileRouter.get('/map', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        if (!request.auth)
-            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-        const userID = request.auth.userID;
+        const userID = request.auth?.userID;
         const result = await poopService.getPoopsForMapByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {

@@ -4,10 +4,7 @@ import { Role } from '../types/index';
 
 const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const request = <jwtRequest>req;
-    if (!request.auth)
-        throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-    const role = <Role>request.auth.role;
+    const role = <Role>request.auth?.role;
     if (role === 'ADMIN') {
         next();
     } else {
@@ -21,10 +18,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
 const isAdminOrModerator = async (req: Request, res: Response, next: NextFunction) => {
     const request = <jwtRequest>req;
-    if (!request.auth)
-        throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
-
-    const role = <Role>request.auth.role;
+    const role = <Role>request.auth?.role;
     if (role === 'ADMIN' || role === 'MODERATOR') {
         next();
     } else {
