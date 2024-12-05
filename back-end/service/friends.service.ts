@@ -8,30 +8,39 @@ const getFriendsInfoForUser = async (userID: number): Promise<FriendsInfoRespons
     const incomingFriendRequests = await friendsDB.getAllIncomimgFriendRequestsForUser({ userID });
     const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsForUser({ userID });
 
-    const friendsInfo = friends.map(
-        (friend) =>
-            <FriendInfoResponse>{
-                userID: friend.getUser1ID() === userID ? friend.getUser2ID() : friend.getUser1ID(),
-                username:
-                    friend.getUser1ID() === userID
-                        ? friend.getUser2().getUsername()
-                        : friend.getUser1().getUsername(),
-            }
-    );
-    const incomingFriendRequestsInfo = incomingFriendRequests.map(
-        (incomingFriendRequest) =>
-            <FriendInfoResponse>{
-                userID: incomingFriendRequest.getSender().getUserID(),
-                username: incomingFriendRequest.getSender().getUsername(),
-            }
-    );
-    const outgoingFriendRequestsInfo = outgoingFriendRequests.map(
-        (outgoingFriendRequest) =>
-            <FriendInfoResponse>{
-                userID: outgoingFriendRequest.getReceiver().getUserID(),
-                username: outgoingFriendRequest.getReceiver().getUsername(),
-            }
-    );
+    const friendsInfo = !friends
+        ? []
+        : friends.map(
+              (friend) =>
+                  <FriendInfoResponse>{
+                      userID:
+                          friend.getUser1ID() === userID
+                              ? friend.getUser2ID()
+                              : friend.getUser1ID(),
+                      username:
+                          friend.getUser1ID() === userID
+                              ? friend.getUser2()?.getUsername()
+                              : friend.getUser1()?.getUsername(),
+                  }
+          );
+    const incomingFriendRequestsInfo = !incomingFriendRequests
+        ? []
+        : incomingFriendRequests.map(
+              (incomingFriendRequest) =>
+                  <FriendInfoResponse>{
+                      userID: incomingFriendRequest.getSender()?.getUserID(),
+                      username: incomingFriendRequest.getSender()?.getUsername(),
+                  }
+          );
+    const outgoingFriendRequestsInfo = !outgoingFriendRequests
+        ? []
+        : outgoingFriendRequests.map(
+              (outgoingFriendRequest) =>
+                  <FriendInfoResponse>{
+                      userID: outgoingFriendRequest.getReceiver()?.getUserID(),
+                      username: outgoingFriendRequest.getReceiver()?.getUsername(),
+                  }
+          );
     return <FriendsInfoResponse>{
         friends: friendsInfo,
         incoming: incomingFriendRequestsInfo,
@@ -46,11 +55,11 @@ const sendFriendRequest = async (
     const friendRequest = new FriendRequest({ senderID, receiverID });
 
     const sentFriendRequest = await friendsDB.sendFriendRequest(friendRequest);
-    if (!sendFriendRequest) throw new Error('Error occured sending friend request.');
+    if (!sentFriendRequest) throw new Error('Error occured sending friend request.');
 
     return <FriendInfoResponse>{
         userID: sentFriendRequest.getReceiverID(),
-        username: sentFriendRequest.getReceiver().getUsername(),
+        username: sentFriendRequest.getReceiver()?.getUsername(),
     };
 };
 
