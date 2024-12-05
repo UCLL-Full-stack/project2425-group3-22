@@ -38,6 +38,7 @@
  *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
+import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
 import friendsService from '../service/friends.service';
 import { FriendRequestRequest } from '../types';
 
@@ -58,9 +59,13 @@ const friendsRouter = express.Router();
  *                schema:
  *                  $ref: '#/components/schemas/FriendsInfoResponse'
  */
-friendsRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userID = req.auth.userID;
+        const request = <jwtRequest>req;
+        if (!request.auth)
+            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
+
+        const userID = request.auth.userID;
         const result = await friendsService.getFriendsInfoForUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
@@ -91,18 +96,19 @@ friendsRouter.get('/', async (req: Request & { auth: any }, res: Response, next:
  *                schema:
  *                  $ref: '#/components/schemas/FriendInfoResponse'
  */
-friendsRouter.delete(
-    '/remove/:userID',
-    async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
-        try {
-            const user1ID = req.auth.userID;
-            const user2ID = Number(req.params['userID']);
-            const result = await friendsService.removeFriend(user1ID, user2ID);
-            return res.status(200).json(result);
-        } catch (err: any) {
-            next(err);
-        }
+friendsRouter.delete('/remove/:userID', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        if (!request.auth)
+            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
+
+        const user1ID = request.auth.userID;
+        const user2ID = Number(req.params['userID']);
+        const result = await friendsService.removeFriend(user1ID, user2ID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
     }
-);
+});
 
 export { friendsRouter };

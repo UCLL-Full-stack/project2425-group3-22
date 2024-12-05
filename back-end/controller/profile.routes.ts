@@ -41,6 +41,7 @@
  *                  type: number
  */
 import express, { NextFunction, Request, Response } from 'express';
+import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
 import userService from '../service/user.service';
 import poopService from '../service/poop.service';
 
@@ -61,9 +62,13 @@ const profileRouter = express.Router();
  *                schema:
  *                  $ref: '#/components/schemas/ReturnUser'
  */
-profileRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userID = req.auth.userID;
+        const request = <jwtRequest>req;
+        if (!request.auth)
+            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
+
+        const userID = request.auth.userID;
         const result = await userService.getUserByID(userID);
         return res.status(200).json(result);
     } catch (err: any) {
@@ -88,18 +93,19 @@ profileRouter.get('/', async (req: Request & { auth: any }, res: Response, next:
  *                      items:
  *                          $ref: '#/components/schemas/Poop'
  */
-profileRouter.get(
-    '/poops',
-    async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
-        try {
-            const userID = req.auth.userID;
-            const result = await poopService.getPoopsByUser(userID);
-            return res.status(200).json(result);
-        } catch (err: any) {
-            next(err);
-        }
+profileRouter.get('/poops', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        if (!request.auth)
+            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
+
+        const userID = request.auth.userID;
+        const result = await poopService.getPoopsByUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
     }
-);
+});
 
 // TODO: should be admin, moderator? or a friend of said user?
 /**
@@ -119,17 +125,18 @@ profileRouter.get(
  *                  items:
  *                      $ref: '#/components/schemas/ReturnPoopForMap'
  */
-profileRouter.get(
-    '/map',
-    async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
-        try {
-            const userID = req.auth.userID;
-            const result = await poopService.getPoopsForMapByUser(userID);
-            return res.status(200).json(result);
-        } catch (err: any) {
-            next(err);
-        }
+profileRouter.get('/map', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        if (!request.auth)
+            throw new UnauthorizedError('credentials_required', { message: 'Token is required' });
+
+        const userID = request.auth.userID;
+        const result = await poopService.getPoopsForMapByUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
     }
-);
+});
 
 export { profileRouter };
