@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -11,10 +12,11 @@ import { userRouter } from './controller/user.routes';
 import { friendsRouter } from './controller/friends.routes';
 import { profileRouter } from './controller/profile.routes';
 
-const app = express();
 dotenv.config();
+const app = express();
 const port = Number(process.env.APP_PORT) || 3000;
 
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 
