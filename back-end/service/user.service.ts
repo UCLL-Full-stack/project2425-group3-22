@@ -7,7 +7,7 @@ import { ReturnUser } from '../types';
 
 const getAllUsers = async (): Promise<Array<ReturnUser>> => {
     const users = await userDb.getAllUsers();
-    if (!users) throw new Error('No users found.');
+    if (!users) return [];
     return users.map(
         (user) =>
             <ReturnUser>{
@@ -39,7 +39,7 @@ const createUser = async (
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
     const userToCreate = new User({ userID: 0, username, email, password: password });
-    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS || 12);
     userToCreate.setPassword(hashedPassword);
 
     const createdUser = await userDb.createUser(userToCreate);
@@ -68,7 +68,7 @@ const updateUser = async (
     userToUpdate.setEmail(email);
     userToUpdate.setPassword(password);
     userToUpdate.setRole(role);
-    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS || 12);
     userToUpdate.setPassword(hashedPassword);
 
     const updatedUser = await userDb.updateUser(userToUpdate);
