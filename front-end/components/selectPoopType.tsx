@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import PoopSVG from './PoopTypes/poopSVG';
-import styles from '@styles/selectPoopType.module.css';
+import styles from '@styles/addPoop.module.css';
 import Type1SVG from './PoopTypes/type1SVG';
 import Type2SVG from './PoopTypes/type2SVG';
 import Type3SVG from './PoopTypes/type3SVG';

@@ -111,7 +111,9 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
             <p>size: {poop.size}</p>
             <p>colorID: {poop.colorID}</p>
             <p>type: {poop.type}</p>
-            <div ref={mapContainerRef} className={styles.map}></div>
+            {poop.latitude && poop.longitude && (
+                <div ref={mapContainerRef} className={styles.map}></div>
+            )}
             {showPopup && popupPosition && (
                 <div
                     className="popup"
