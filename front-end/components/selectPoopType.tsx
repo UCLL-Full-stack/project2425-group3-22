@@ -9,19 +9,17 @@ import Type6SVG from './PoopTypes/type6SVG';
 import Type7SVG from './PoopTypes/type7SVG';
 import UnknownSVG from './PoopTypes/unknownSVG';
 
-const SelectPoopType: React.FC = () => {
-    const [selectedPoopType, setSelectedPoopType] = useState<number | null>(null);
+type Props = {
+    selectedPoopType: number | null;
+    poopTypeChanged: (selectedType: number) => void;
+};
 
-    const handlePoopTypeClicked = (index: number) => {
-        console.log(index);
-        setSelectedPoopType(index);
-    };
-
+const SelectPoopType: React.FC<Props> = ({ selectedPoopType, poopTypeChanged }: Props) => {
     return (
         <div className={styles.poopTypesContainer}>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 1 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(1)}
+                onClick={() => poopTypeChanged(1)}
             >
                 <div className={styles.SVGContainer}>
                     <Type1SVG />
@@ -33,7 +31,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 2 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(2)}
+                onClick={() => poopTypeChanged(2)}
             >
                 <div className={styles.SVGContainer}>
                     <Type2SVG />
@@ -45,7 +43,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 3 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(3)}
+                onClick={() => poopTypeChanged(3)}
             >
                 <div className={styles.SVGContainer}>
                     <Type3SVG />
@@ -57,7 +55,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 4 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(4)}
+                onClick={() => poopTypeChanged(4)}
             >
                 <div className={styles.SVGContainer}>
                     <Type4SVG />
@@ -69,7 +67,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 5 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(5)}
+                onClick={() => poopTypeChanged(5)}
             >
                 <div className={styles.SVGContainer}>
                     <Type5SVG />
@@ -81,7 +79,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 6 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(6)}
+                onClick={() => poopTypeChanged(6)}
             >
                 <div className={styles.SVGContainer}>
                     <Type6SVG />
@@ -93,7 +91,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 7 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(7)}
+                onClick={() => poopTypeChanged(7)}
             >
                 <div className={styles.SVGContainer}>
                     <Type7SVG />
@@ -105,7 +103,7 @@ const SelectPoopType: React.FC = () => {
             </div>
             <div
                 className={`${styles.poopType} ${selectedPoopType == 0 ? styles.selected : ''}`}
-                onClick={() => handlePoopTypeClicked(0)}
+                onClick={() => poopTypeChanged(0)}
             >
                 <div className={styles.SVGContainer}>
                     <UnknownSVG />

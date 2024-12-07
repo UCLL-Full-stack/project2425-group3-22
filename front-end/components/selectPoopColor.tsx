@@ -1,14 +1,12 @@
-import { useState } from 'react';
 import styles from '@styles/addPoop.module.css';
 import { colorMap } from '@types';
 
-const SelectPoopColor: React.FC = () => {
-    const [selectedPoopColorID, setSelectedPoopColorID] = useState<number | null>(null);
+type Props = {
+    selectedPoopColorID: number | null;
+    poopColorChanged: (selectedColor: number) => void;
+};
 
-    const handlePoopColorClicked = (colorID: number) => {
-        setSelectedPoopColorID(colorID);
-    };
-
+const SelectPoopColor: React.FC<Props> = ({ selectedPoopColorID, poopColorChanged }: Props) => {
     const colorIDs = Object.keys(colorMap).map(Number);
 
     return (
@@ -20,7 +18,7 @@ const SelectPoopColor: React.FC = () => {
                         selectedPoopColorID === colorID ? styles.selected : ''
                     }`}
                     style={{ backgroundColor: colorMap[colorID] }}
-                    onClick={() => handlePoopColorClicked(colorID)}
+                    onClick={() => poopColorChanged(colorID)}
                 ></div>
             ))}
         </div>

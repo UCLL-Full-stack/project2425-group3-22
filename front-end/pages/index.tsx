@@ -7,7 +7,7 @@ import PoopPanel from '@components/poopPanel';
 import styles from '@styles/Home.module.css';
 import MainNavigation from '@components/mainNavigation';
 import Link from 'next/link';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Helper from 'utils/helper';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
@@ -37,34 +37,34 @@ const Home: React.FC = () => {
                     console.error(error.message);
                 }
             };
-            
+
             fetchProfilePoopsData();
         }
     }, [isValidated]);
 
-
     if (!isValidated) {
         return null;
-    } else
-        return (
-            <>
-                <Head>
-                    <title>Poopedia | Home</title>
-                </Head>
-                <MainNavigation />
-                <main>
-                    <div className={styles.poopContainer}>
-                        {poops.length > 0 ? (
-                            poops.map((poop) => <PoopPanel poop={poop} />)
-                        ) : (
-                            <p>No poops available.</p>
-                        )}
-                    </div>
-                </main>
-                <AddPoopButton />
-                <ScrollToTopButton />
-            </>
-        );
+    }
+    
+    return (
+        <>
+            <Head>
+                <title>Poopedia | Home</title>
+            </Head>
+            <MainNavigation />
+            <main>
+                <div className={styles.poopContainer}>
+                    {poops.length > 0 ? (
+                        poops.map((poop) => <PoopPanel poop={poop} />)
+                    ) : (
+                        <p>No poops available.</p>
+                    )}
+                </div>
+            </main>
+            <AddPoopButton />
+            <ScrollToTopButton />
+        </>
+    );
 };
 
 export default Home;
