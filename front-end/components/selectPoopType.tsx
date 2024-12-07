@@ -14,104 +14,35 @@ type Props = {
     poopTypeChanged: (selectedType: number) => void;
 };
 
+const poopTypes = [
+    { id: 1, label: 'Type 1', description: 'Separate hard lumps', SVG: Type1SVG },
+    { id: 2, label: 'Type 2', description: 'Lumpy and sausage like', SVG: Type2SVG },
+    { id: 3, label: 'Type 3', description: 'A sausage shape with cracks in the surface', SVG: Type3SVG },
+    { id: 4, label: 'Type 4', description: 'Like a smooth, soft sausage or snake', SVG: Type4SVG },
+    { id: 5, label: 'Type 5', description: 'Soft blobs with clear cut edges', SVG: Type5SVG },
+    { id: 6, label: 'Type 6', description: 'Mushy consistency with ragged edges', SVG: Type6SVG },
+    { id: 7, label: 'Type 7', description: 'Liquid consistency with no solid pieces', SVG: Type7SVG },
+    { id: 0, label: 'Unknown', description: '', SVG: UnknownSVG },
+];
+
 const SelectPoopType: React.FC<Props> = ({ selectedPoopType, poopTypeChanged }: Props) => {
     return (
         <div className={styles.poopTypesContainer}>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 1 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(1)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type1SVG />
+            {poopTypes.map(({ id, label, description, SVG }) => (
+                <div
+                    key={id}
+                    className={`${styles.poopType} ${selectedPoopType === id ? styles.selected : ''}`}
+                    onClick={() => poopTypeChanged(id)}
+                >
+                    <div className={styles.SVGContainer}>
+                        <SVG />
+                    </div>
+                    <div className={styles.textContainer}>
+                        <h2>{label}</h2>
+                        {description && <p>{description}</p>}
+                    </div>
                 </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 1</h2>
-                    <p>Separate hard lumps</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 2 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(2)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type2SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 2</h2>
-                    <p>Lumpy and sausage like</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 3 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(3)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type3SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 3</h2>
-                    <p>A sausage shape with cracks in the surface</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 4 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(4)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type4SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 4</h2>
-                    <p>Like a smooth, soft sausage or snake</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 5 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(5)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type5SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 5</h2>
-                    <p>Soft blobs with clear cut edges</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 6 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(6)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type6SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 6</h2>
-                    <p>Mushy consistency with ragged edges</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 7 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(7)}
-            >
-                <div className={styles.SVGContainer}>
-                    <Type7SVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Type 7</h2>
-                    <p>Liquid consistency with no solid pieces</p>
-                </div>
-            </div>
-            <div
-                className={`${styles.poopType} ${selectedPoopType == 0 ? styles.selected : ''}`}
-                onClick={() => poopTypeChanged(0)}
-            >
-                <div className={styles.SVGContainer}>
-                    <UnknownSVG />
-                </div>
-                <div className={styles.textContainer}>
-                    <h2>Unknown</h2>
-                </div>
-            </div>
+            ))}
         </div>
     );
 };
