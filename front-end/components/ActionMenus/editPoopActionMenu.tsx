@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type Props = {
     popupPosition: { x: number; y: number };
@@ -20,7 +20,6 @@ const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup }: Pr
         };
 
         // Close popup if clicking outside of it
-
         window.addEventListener('scroll', handleClosePopup);
         window.addEventListener('resize', handleClosePopup);
 
