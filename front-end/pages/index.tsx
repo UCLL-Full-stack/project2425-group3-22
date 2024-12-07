@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Helper from 'utils/helper';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
+import { poopItem } from '@types';
 
 const Home: React.FC = () => {
     const router = useRouter();
@@ -45,7 +46,7 @@ const Home: React.FC = () => {
     if (!isValidated) {
         return null;
     }
-    
+
     return (
         <>
             <Head>
@@ -55,7 +56,7 @@ const Home: React.FC = () => {
             <main>
                 <div className={styles.poopContainer}>
                     {poops.length > 0 ? (
-                        poops.map((poop) => <PoopPanel poop={poop} />)
+                        poops.map((poop: poopItem) => <PoopPanel key={poop.poopID} poop={poop} />)
                     ) : (
                         <p>No poops available.</p>
                     )}

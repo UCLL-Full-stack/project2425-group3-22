@@ -7,6 +7,7 @@ import ProfileService from '@services/profileService';
 import PoopPanel from '@components/poopPanel';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
+import { poopItem } from '@types';
 
 const Activity: React.FC = () => {
     const [poops, setPoops] = useState([]);
@@ -40,7 +41,7 @@ const Activity: React.FC = () => {
                 <ProfileSidebar />
                 <div className={styles.poopContainer}>
                     {poops.length > 0 ? (
-                        poops.map((poop) => <PoopPanel poop={poop} />)
+                        poops.map((poop: poopItem) => <PoopPanel key={poop.poopID} poop={poop} />)
                     ) : (
                         <p>No poops available.</p>
                     )}
