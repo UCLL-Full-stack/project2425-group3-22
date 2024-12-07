@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import styles from '@styles/actionMenu.module.css';
 
 type Props = {
     popupPosition: { x: number; y: number };
@@ -37,7 +38,7 @@ const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup }: Pr
 
     return (
         <div
-            className="popup"
+            className={styles.actionMenu}
             ref={popupRef}
             style={{
                 left: `${popupPosition.x}px`,

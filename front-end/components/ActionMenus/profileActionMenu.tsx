@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import styles from '@styles/actionMenu.module.css';
 import Helper from 'utils/helper';
 
 type Props = {
@@ -59,7 +60,7 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowPopup, profileButtonRef }: 
 
     return (
         <div
-            className="popup"
+            className={styles.actionMenu}
             ref={popupRef}
             style={
                 popupPosition
@@ -70,7 +71,7 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowPopup, profileButtonRef }: 
                     : {}
             }
         >
-            <Link href="/profile" className="popupLink">
+            <Link href="/profile" className={styles.actionMenuLink}>
                 Profile
             </Link>
             <button onClick={handleLogout}>Log out</button>

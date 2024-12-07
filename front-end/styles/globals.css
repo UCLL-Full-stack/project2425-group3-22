@@ -96,44 +96,6 @@ main {
     opacity: 0;
 }
 
-.popup {
-    position: fixed;
-    background-color: var(--background);
-    border-radius: 3px;
-    box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    top: 10000;
-}
-
-.popup ul {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-}
-
-.popup button,
-.popup .popupLink {
-    cursor: pointer;
-    padding: 8px 12px;
-    transition: 0.2s;
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    color: black;
-    background-color: transparent;
-    border: none;
-    margin: 0;
-    text-align: left;
-}
-
-.popup button:hover,
-.popup .popupLink:hover {
-    background-color: #ededed;
-}
-
 @media (max-width: 768px) {
     .popup {
         left: auto !important;
