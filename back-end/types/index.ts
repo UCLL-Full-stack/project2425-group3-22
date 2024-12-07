@@ -68,6 +68,8 @@ type ReturnPoopForMap = {
     latitude: number;
     longitude: number;
 };
+
+//TODO: add a type that's for returning all poops from logged in user and friends, MUST INCLUDE isOwner property that clarifies wether or not the poop is the user's
 //#endregion
 
 //#region FRIEND(S/REQUEST) types

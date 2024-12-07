@@ -39,7 +39,7 @@ model Poop {
     type      Int
     size      Int
     colorID   Int?
-    rating    Int
+    rating    Float
     title     String?
     latitude  Float?
     longitude Float?
