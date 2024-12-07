@@ -4,7 +4,7 @@
     padding: 20px 30px;
     margin: 20px auto;
     border-radius: 3px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
 }
 
@@ -43,4 +43,8 @@
     height: 300px;
     width: 100%;
     border-radius: 5px;
+}
+
+.poopItem .rating {
+    font-size: 30px;
 }

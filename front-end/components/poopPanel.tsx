@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Rate from 'rc-rate';
 
 type Props = {
     poop: poopItem;
@@ -111,6 +112,13 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
             <p>size: {poop.size}</p>
             <p>colorID: {poop.colorID}</p>
             <p>type: {poop.type}</p>
+            <Rate 
+                count={5}
+                value={poop.rating}
+                allowHalf={true}
+                disabled={true}
+                className={styles.rating}
+            />
             {poop.latitude && poop.longitude && (
                 <div ref={mapContainerRef} className={styles.map}></div>
             )}

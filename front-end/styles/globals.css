@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Roboto+Slab:wght@100..900&display=swap');
 
-
 @property --background {
     syntax: '<color>';
     initial-value: white;
@@ -9,19 +8,19 @@
 
 @property --accent {
     syntax: '<color>';
-    initial-value: #966C4A;
+    initial-value: #966c4a;
     inherits: false;
 }
 
 @property --accent-secondary {
     syntax: '<color>';
-    initial-value: #724B32;
+    initial-value: #724b32;
     inherits: false;
 }
 
 @property --accent-muted {
     syntax: '<color>';
-    initial-value: #B59B88;
+    initial-value: #b59b88;
     inherits: false;
 }
 
@@ -31,8 +30,8 @@
     inherits: false;
 }
 
-
-html, body {
+html,
+body {
     padding: 0;
     margin: 0;
 }
@@ -42,7 +41,6 @@ main {
     background: radial-gradient(circle, #ffffff, #e4e5eb);
     display: flex;
 }
-
 
 .addPoopButton {
     display: flex;
@@ -102,7 +100,7 @@ main {
     position: fixed;
     background-color: var(--background);
     border-radius: 3px;
-    box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     top: 10000;
 }

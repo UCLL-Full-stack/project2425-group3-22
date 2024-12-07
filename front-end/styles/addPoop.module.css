@@ -1,3 +1,29 @@
+.navContainer {
+    display: flex;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.navContainer .navigationButton {
+    padding: 0 20px;
+    border-radius: 5px;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: none;
+    background-color: var(--accent);
+    color: var(--background);
+}
+
+.navContainer .navigationButton:hover {
+    background-color: var(--accent-secondary);
+}
+
 .poopTypesContainer {
     display: flex;
     flex-wrap: wrap;   
@@ -64,13 +90,14 @@
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
-    filter: brightness(0.95) saturate(0.95);    
 }
 
-.poopColorsContainer .poopColor:hover,
+.poopColorsContainer .poopColor:hover {
+    transform: scale(1.03);
+}
+
 .poopColorsContainer .poopColor.selected {
     transform: scale(1.05);
-    filter: brightness(1) saturate(1);    
 }
 
 @media (min-width: 769px) {
