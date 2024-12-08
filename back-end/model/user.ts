@@ -22,18 +22,11 @@ export class User {
         password: string;
         role?: Role;
     }) {
+        this.validate({ username, email, password });
+
         this.userID = userID;
-
-        if (username.includes('@')) throw new Error('Username cannot contain an @.');
-        if (username.length < 3 || username.length > 25)
-            throw new Error('Username must be between 3 and 25 characters.');
         this.username = username;
-
-        if (!this.validateEmail(email))
-            throw new Error('Email must be in correct format (name@domain.com).');
         this.email = email.toLowerCase();
-
-        if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
         this.password = password;
 
         if (role) {
@@ -78,7 +71,10 @@ export class User {
 
     setPassword(password: string) {
         if (password !== this.password) {
-            if (password.length < 8) throw new Error('Password must be 8 characters or longer.');
+            if (!this.validatePassword(password))
+                throw new Error(
+                    'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character'
+                );
             this.password = password;
         }
     }
@@ -91,11 +87,40 @@ export class User {
         if (role !== this.role) this.role = role;
     }
 
+    private validate({
+        username,
+        email,
+        password,
+    }: {
+        username: string;
+        email: string;
+        password: string;
+    }) {
+        if (username.includes('@')) throw new Error('Username cannot contain an @.');
+        if (username.length < 3 || username.length > 25)
+            throw new Error('Username must be between 3 and 25 characters.');
+
+        if (!this.validateEmail(email))
+            throw new Error('Email must be in correct format (name@domain.com).');
+
+        if (!this.validatePassword(password))
+            throw new Error(
+                'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character'
+            );
+    }
+
     private validateEmail(email: string): boolean {
-        const regexp = new RegExp(
+        const emailRegex = new RegExp(
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
-        return regexp.test(email);
+        return emailRegex.test(email);
+    }
+
+    private validatePassword(password: string): boolean {
+        const passwordRegex = new RegExp(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+        );
+        return passwordRegex.test(password);
     }
 
     static from({ userID, username, email, password, role }: UserPrisma) {

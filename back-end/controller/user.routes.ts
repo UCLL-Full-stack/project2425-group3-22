@@ -90,20 +90,24 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                schema:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/:userID', isAdminOrModeratorOrFriends, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const userID = req.params['userID'];
-        const result = await userService.getUserByID(Number(userID));
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
+userRouter.get(
+    '/:userID',
+    isAdminOrModeratorOrFriends,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userID = req.params['userID'];
+            const result = await userService.getUserByID(Number(userID));
+            return res.status(200).json(result);
+        } catch (err: any) {
+            next(err);
+        }
     }
-});
+);
 
 /**
  * @swagger
  * /user/update:
- *   post:
+ *   put:
  *      security:
  *          - bearerAuth: []
  *      summary: Update a user's username, email, password & role
@@ -121,7 +125,7 @@ userRouter.get('/:userID', isAdminOrModeratorOrFriends, async (req: Request, res
  *                schema:
  *                  $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.post('/update', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put('/update', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updateUserInput = <UpdateUserInput>req.body;
         const result = await userService.updateUser(

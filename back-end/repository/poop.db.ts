@@ -30,6 +30,21 @@ const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
     }
 };
 
+const getPoopByID = async ({ poopID }: { poopID: number }): Promise<Poop | null> => {
+    try {
+        const poopPrisma = await database.poop.findFirst({
+            where: { poopID: poopID },
+            include: { user: true },
+        });
+
+        if (!poopPrisma) return null;
+        return Poop.from(poopPrisma);
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
 const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poop> | null> => {
     try {
         const poopsPrisma = await database.poop.findMany({
@@ -94,4 +109,23 @@ const createPoop = async (poop: Poop): Promise<Poop | null> => {
     }
 };
 
-export default { getAllPoops, getPoopsByUser, getPoopsForMapByUser, createPoop };
+const deletePoop = async ({ poopID }: { poopID: number }): Promise<Boolean> => {
+    try {
+        await database.poop.delete({
+            where: { poopID: poopID },
+        });
+        return true;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+export default {
+    getAllPoops,
+    getPoopByID,
+    getPoopsByUser,
+    getPoopsForMapByUser,
+    createPoop,
+    deletePoop,
+};

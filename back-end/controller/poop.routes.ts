@@ -37,7 +37,7 @@
  *                  type: number
  *              longitude:
  *                  type: number
- *        PoopInput:
+ *        PoopRequest:
  *          type: object
  *          properties:
  *              dateTime:
@@ -65,8 +65,9 @@
  *                  required: false
  */
 import express, { NextFunction, Request, Response } from 'express';
+import { Request as jwtRequest } from 'express-jwt';
 import poopService from '../service/poop.service';
-import { PoopInput } from '../types';
+import { PoopRequest } from '../types';
 import { isAdmin } from '../middleware/authMiddleware';
 
 const poopRouter = express.Router();
@@ -155,18 +156,60 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  */
 poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const poopInput = <PoopInput>req.body;
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+        const poopInput = <PoopRequest>req.body;
+
         const result = await poopService.createPoop(
             poopInput.dateTime,
             poopInput.type,
             poopInput.size,
             poopInput.rating,
-            poopInput.userID,
+            userID,
             poopInput.colorID,
             poopInput.title,
             poopInput.latitude,
             poopInput.longitude
         );
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+// TODO: only if autorized by role, or if it's the user's poop
+/**
+ * @swagger
+ * /poop/delete:
+ *   post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete a poop
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      poopID:
+ *                          type: number
+ *                          required: true
+ *      responses:
+ *         200:
+ *            description: The created poop.
+ *            content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Poop'
+ */
+poopRouter.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const loggedInUserID = request.auth?.userID;
+        const { poopID } = req.body;
+
+        const result = await poopService.deletePoop(loggedInUserID, poopID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

@@ -16,7 +16,7 @@ const main = async () => {
         data: {
             username: 'Admin',
             email: 'admin@poopedia.com',
-            password: await bcrypt.hash('admin!123', 12),
+            password: await bcrypt.hash('Admin!123', 12),
             role: 'ADMIN',
             // poops: {
             //     create: {
@@ -30,7 +30,7 @@ const main = async () => {
         data: {
             username: 'moderator',
             email: 'moderator@poopedia.com',
-            password: await bcrypt.hash('moderator!123', 12),
+            password: await bcrypt.hash('Moderator!123', 12),
             role: 'MODERATOR',
         },
     });
@@ -38,7 +38,7 @@ const main = async () => {
         data: {
             username: 'user1',
             email: 'user1@poopedia.com',
-            password: await bcrypt.hash('user1!123', 12),
+            password: await bcrypt.hash('User1!123', 12),
             role: 'USER',
         },
     });
@@ -46,7 +46,7 @@ const main = async () => {
         data: {
             username: 'user2',
             email: 'user2@poopedia.com',
-            password: await bcrypt.hash('user2!123', 12),
+            password: await bcrypt.hash('User2!123', 12),
             role: 'USER',
         },
     });
@@ -54,7 +54,7 @@ const main = async () => {
         data: {
             username: 'user3',
             email: 'user3@poopedia.com',
-            password: await bcrypt.hash('user3!123', 12),
+            password: await bcrypt.hash('User3!123', 12),
             role: 'USER',
         },
     });
@@ -62,7 +62,7 @@ const main = async () => {
         data: {
             username: 'user4',
             email: 'user4@poopedia.com',
-            password: await bcrypt.hash('user4!123', 12),
+            password: await bcrypt.hash('User4!123', 12),
             role: 'USER',
         },
     });
