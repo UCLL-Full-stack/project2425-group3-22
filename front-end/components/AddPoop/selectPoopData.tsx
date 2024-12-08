@@ -8,6 +8,8 @@ import Type6SVG from '../PoopTypes/type6SVG';
 import Type7SVG from '../PoopTypes/type7SVG';
 import PoopSVG from '../PoopTypes/poopSVG';
 import { colorMap } from '@types';
+import Rate from 'rc-rate';
+import Slider from 'rc-slider';
 
 type Props = {
     selectedPoopType: number | null;
@@ -45,9 +47,27 @@ const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID
 
     return (
         <div className={styles.poopDataContainer}>
+            <label htmlFor="title">Title</label>
+            <input name='title' type="text" />
+
+            <label>Rating</label>
+            <Rate count={5} allowHalf={true} className={styles.rating} />
+
+            <label>Slider</label>
+            <Slider 
+                min={0} 
+                max={100} 
+                defaultValue={50} 
+            />
+
+            <label>Location???</label>
+
             <p>type: {selectedPoopType ?? 'null'}</p>
             <p>color: {selectedPoopColorID ?? 'null'}</p>
-            <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
+            <div className={styles.svgContainer}>
+                <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
+            </div>
+            <button>Save</button>
         </div>
     );
 };

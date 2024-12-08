@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'mapbox-gl/dist/mapbox-gl.css'; 
 import 'rc-rate/assets/index.css';
+import 'rc-slider/assets/index.css';
 
 // font awesome icons
 import { library } from "@fortawesome/fontawesome-svg-core";

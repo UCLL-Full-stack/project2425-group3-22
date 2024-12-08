@@ -100,9 +100,26 @@
     transform: scale(1.05);
 }
 
+.poopDataContainer {
+    margin: 20px 0;
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.poopDataContainer .rating {
+    font-size: 30px;
+}
+
+.poopDataContainer .svgContainer {
+    width: 200px;
+}
+
 @media (min-width: 769px) {
     .poopColorsContainer,
-    .poopTypesContainer {
+    .poopTypesContainer,
+    .poopDataContainer {
         width: 80%;
         margin: 20px auto;
     }
