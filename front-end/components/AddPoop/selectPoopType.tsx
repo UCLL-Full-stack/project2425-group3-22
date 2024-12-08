@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styles from '@styles/addPoop.module.css';
-import Type1SVG from './PoopTypes/type1SVG';
-import Type2SVG from './PoopTypes/type2SVG';
-import Type3SVG from './PoopTypes/type3SVG';
-import Type4SVG from './PoopTypes/type4SVG';
-import Type5SVG from './PoopTypes/type5SVG';
-import Type6SVG from './PoopTypes/type6SVG';
-import Type7SVG from './PoopTypes/type7SVG';
-import UnknownSVG from './PoopTypes/unknownSVG';
+import Type1SVG from '../PoopTypes/type1SVG';
+import Type2SVG from '../PoopTypes/type2SVG';
+import Type3SVG from '../PoopTypes/type3SVG';
+import Type4SVG from '../PoopTypes/type4SVG';
+import Type5SVG from '../PoopTypes/type5SVG';
+import Type6SVG from '../PoopTypes/type6SVG';
+import Type7SVG from '../PoopTypes/type7SVG';
+import UnknownSVG from '../PoopTypes/unknownSVG';
 
 type Props = {
     selectedPoopType: number | null;
