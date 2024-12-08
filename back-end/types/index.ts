@@ -73,11 +73,6 @@ type ReturnPoopForMap = {
 //#endregion
 
 //#region FRIEND(S/REQUEST) types
-type FriendRequestRequest = {
-    senderID: number;
-    receiverID: number;
-};
-
 type FriendInfoResponse = {
     userID: number;
     username: string;
@@ -100,7 +95,6 @@ export {
     PoopInput,
     ReturnPoop,
     ReturnPoopForMap,
-    FriendRequestRequest,
     FriendInfoResponse,
     FriendsInfoResponse,
 };

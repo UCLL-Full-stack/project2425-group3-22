@@ -1,24 +1,24 @@
 import { Poop } from '../model/poop';
 import { ReturnPoop, ReturnPoopForMap } from '../types';
-import poopDb from '../repository/poop.db';
-import userDb from '../repository/user.db';
+import poopDB from '../repository/poop.db';
+import userDB from '../repository/user.db';
 
 const getAllPoops = async (): Promise<Array<ReturnPoop>> => {
-    const poops = await poopDb.getAllPoops();
+    const poops = await poopDB.getAllPoops();
     if (!poops) throw new Error('No poops found.');
     return poops;
 };
 
 const getPoopsByUser = async (userID: number): Promise<Array<Poop>> => {
     if (isNaN(userID)) throw new Error('userID must be a number.');
-    const poops = await poopDb.getPoopsByUser({ userID });
+    const poops = await poopDB.getPoopsByUser({ userID });
     if (!poops) throw new Error('No poops found.');
     return poops;
 };
 
 const getPoopsForMapByUser = async (userID: number): Promise<Array<ReturnPoopForMap>> => {
     if (isNaN(userID)) throw new Error('userID must be a number.');
-    const poops = await poopDb.getPoopsForMapByUser({ userID });
+    const poops = await poopDB.getPoopsForMapByUser({ userID });
     if (!poops) throw new Error('No poops found (with location).');
     return poops;
 };
@@ -35,10 +35,10 @@ const createPoop = async (
     longitude?: number
 ): Promise<Poop> => {
     //TODO: user should be clear from JWT
-    const user = await userDb.getUserByID({ userID });
+    const user = await userDB.getUserByID({ userID });
     if (!user) throw new Error('User does not exist.');
 
-    const poop = await poopDb.createPoop(
+    const poop = await poopDB.createPoop(
         new Poop({
             poopID: 0,
             dateTime,

@@ -44,6 +44,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
 import userService from '../service/user.service';
 import poopService from '../service/poop.service';
+import friendsService from '../service/friends.service';
 
 const profileRouter = express.Router();
 
@@ -124,6 +125,32 @@ profileRouter.get('/map', async (req: Request, res: Response, next: NextFunction
         const request = <jwtRequest>req;
         const userID = request.auth?.userID;
         const result = await poopService.getPoopsForMapByUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /profile/friends:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all friends, incoming friend requests and outgoing friend requests for the logged in user
+ *      responses:
+ *         200:
+ *            description: The friends, incoming friend requests and outgoing friend requests
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendsInfoResponse'
+ */
+profileRouter.get('/friends', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+        const result = await friendsService.getFriendsInfoForUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

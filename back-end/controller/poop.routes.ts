@@ -97,7 +97,6 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
     }
 });
 
-// TODO: should be admin, moderator? or a friend of said user
 /**
  * @swagger
  * /poop/{userID}:

@@ -2,11 +2,11 @@
 import bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
 import { User } from '../model/user';
-import userDb from '../repository/user.db';
+import userDB from '../repository/user.db';
 import { ReturnUser } from '../types';
 
 const getAllUsers = async (): Promise<Array<ReturnUser>> => {
-    const users = await userDb.getAllUsers();
+    const users = await userDB.getAllUsers();
     if (!users) return [];
     return users.map(
         (user) =>
@@ -20,7 +20,7 @@ const getAllUsers = async (): Promise<Array<ReturnUser>> => {
 };
 
 const getUserByID = async (userID: number): Promise<ReturnUser> => {
-    const user = await userDb.getUserByID({ userID });
+    const user = await userDB.getUserByID({ userID });
     if (!user) throw new Error('User not found.');
     return <ReturnUser>{
         userID: user.getUserID(),
@@ -42,7 +42,7 @@ const createUser = async (
     const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS || 12);
     userToCreate.setPassword(hashedPassword);
 
-    const createdUser = await userDb.createUser(userToCreate);
+    const createdUser = await userDB.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
     return <ReturnUser>{
         userID: createdUser.getUserID(),
@@ -62,7 +62,7 @@ const updateUser = async (
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
-    const userToUpdate = await userDb.getUserByID({ userID });
+    const userToUpdate = await userDB.getUserByID({ userID });
     if (!userToUpdate) throw new Error('User not found');
     userToUpdate.setUsername(username);
     userToUpdate.setEmail(email);
@@ -71,7 +71,7 @@ const updateUser = async (
     const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS || 12);
     userToUpdate.setPassword(hashedPassword);
 
-    const updatedUser = await userDb.updateUser(userToUpdate);
+    const updatedUser = await userDB.updateUser(userToUpdate);
     if (!updatedUser) throw new Error('Error occured updating user.');
     return <ReturnUser>{
         userID: updatedUser.getUserID(),
@@ -83,7 +83,7 @@ const updateUser = async (
 
 const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
     if (email) {
-        const user = await userDb.getUserByEmail({ email });
+        const user = await userDB.getUserByEmail({ email });
         return user ? true : false;
     }
     return false;
@@ -91,7 +91,7 @@ const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
 
 const checkUsernameInUse = async (username: string | undefined): Promise<boolean> => {
     if (username) {
-        const user = await userDb.getUserByUsername({ username });
+        const user = await userDB.getUserByUsername({ username });
         return user ? true : false;
     }
     return false;

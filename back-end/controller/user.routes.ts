@@ -37,7 +37,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { UpdateUserInput } from '../types';
-import { isAdmin } from '../middleware/authMiddleware';
+import { isAdmin, isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
 
 const userRouter = express.Router();
 
@@ -67,7 +67,6 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
     }
 });
 
-// TODO: should be admin, moderator? or a friend of said user?
 /**
  * @swagger
  * /user/{userID}:
@@ -91,7 +90,7 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                schema:
  *                      $ref: '#/components/schemas/ReturnUser'
  */
-userRouter.get('/:userID', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/:userID', isAdminOrModeratorOrFriends, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params['userID'];
         const result = await userService.getUserByID(Number(userID));
@@ -101,7 +100,6 @@ userRouter.get('/:userID', isAdmin, async (req: Request, res: Response, next: Ne
     }
 });
 
-// TODO: should be admin, moderator? or the user themselves
 /**
  * @swagger
  * /user/update:

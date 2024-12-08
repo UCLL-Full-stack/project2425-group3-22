@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
 import { Role } from '../types/index';
+import friendsDb from '../repository/friends.db';
 
 const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const request = <jwtRequest>req;
@@ -30,4 +31,25 @@ const isAdminOrModerator = async (req: Request, res: Response, next: NextFunctio
     }
 };
 
-export { isAdmin, isAdminOrModerator };
+const isAdminOrModeratorOrFriends = async (req: Request, res: Response, next: NextFunction) => {
+    const request = <jwtRequest>req;
+    const role = <Role>request.auth?.role;
+    const user1ID = request.auth?.userID;
+    const user2ID = Number(req.params['userID']);
+
+    if (
+        role === 'ADMIN' ||
+        role === 'MODERATOR' ||
+        (await friendsDb.areFriends({ user1ID, user2ID }))
+    ) {
+        next();
+    } else {
+        next(
+            new UnauthorizedError('credentials_required', {
+                message: 'You are not authorized to access this data.',
+            })
+        );
+    }
+};
+
+export { isAdmin, isAdminOrModerator, isAdminOrModeratorOrFriends };

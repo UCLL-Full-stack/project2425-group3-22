@@ -29,18 +29,10 @@
  *                  type: array
  *                  items:
  *                      $ref: '#/components/schemas/FriendInfoResponse'
- *        FriendRequestRequest:
- *          type: object
- *          properties:
- *              senderID:
- *                  type: number
- *              receiverID:
- *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
 import friendsService from '../service/friends.service';
-import { FriendRequestRequest } from '../types';
 
 const friendsRouter = express.Router();
 
@@ -72,19 +64,203 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 
 /**
  * @swagger
- * /friends/remove/{userID}:
+ * /friends/{username}:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get friends whose username contains given username
+ *      parameters:
+ *        - in: path
+ *          name: username
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: Username of the friend to find
+ *      responses:
+ *         200:
+ *            description: The friends whose usernames contain the given username
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendInfoResponse'
+ */
+friendsRouter.get('/:username', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+        const username = req.params['username'];
+
+        const result = await friendsService.getFriendsByUsername(userID, username);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/add:
+ *   post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Send a friendrequest to add a new friend
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  receiverID:
+ *                      type: number
+ *      responses:
+ *         200:
+ *            description: The user to whom the friendrequest was sent
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendInfoResponse'
+ */
+friendsRouter.post('/add', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const senderID = request.auth?.userID;
+        const { receiverID } = req.body;
+
+        const result = await friendsService.sendFriendRequest(senderID, receiverID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/cancel:
+ *   post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Cancel a friendrequest
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  receiverID:
+ *                      type: number
+ *      responses:
+ *         200:
+ *            description: The error or success message
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: string
+ */
+friendsRouter.post('/cancel', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const senderID = request.auth?.userID;
+        const { receiverID } = req.body;
+
+        const result = await friendsService.cancelFriendRequest(senderID, receiverID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/accept:
+ *   post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Accept a friendrequest
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  senderID:
+ *                      type: number
+ *      responses:
+ *         200:
+ *            description: The user of whom to accept the friendrequest
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendInfoResponse'
+ */
+friendsRouter.post('/accept', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const { senderID } = req.body;
+        const receiverID = request.auth?.userID;
+
+        const result = await friendsService.acceptFriendRequest(senderID, receiverID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/refuse:
+ *   post:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Refuse a friendrequest
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  senderID:
+ *                      type: number
+ *      responses:
+ *         200:
+ *            description: The error or success message
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: string
+ */
+friendsRouter.post('/refuse', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const { senderID } = req.body;
+        const receiverID = request.auth?.userID;
+
+        const result = await friendsService.refuseFriendRequest(senderID, receiverID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/remove:
  *   delete:
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a friend
- *      parameters:
- *        - in: path
- *          name: userID
- *          schema:
- *              type: integer
- *              minimum: 1
- *          required: true
- *          description: ID of the friend to remove
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                  userID:
+ *                      type: number
  *      responses:
  *         200:
  *            description: The deleted friend
@@ -93,12 +269,13 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  *                schema:
  *                  $ref: '#/components/schemas/FriendInfoResponse'
  */
-friendsRouter.delete('/remove/:userID', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.delete('/remove', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        const user1ID = request.auth?.userID;
-        const user2ID = Number(req.params['userID']);
-        const result = await friendsService.removeFriend(user1ID, user2ID);
+        const loggedInUserID = request.auth?.userID;
+        const { userID } = req.body;
+
+        const result = await friendsService.removeFriend(loggedInUserID, userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

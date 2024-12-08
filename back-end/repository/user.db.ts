@@ -41,6 +41,24 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
     }
 };
 
+const getUsersByUsername = async ({
+    username,
+}: {
+    username: string;
+}): Promise<Array<User> | null> => {
+    try {
+        const usersPrisma = await database.user.findMany({
+            where: { username: { contains: username } },
+        });
+
+        if (usersPrisma.length < 1) return null;
+        return usersPrisma.map((userPrisma) => User.from(userPrisma));
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
 const getUserByEmail = async ({ email }: { email: string }): Promise<User | null> => {
     try {
         const userPrisma = await database.user.findFirst({
@@ -96,6 +114,7 @@ export default {
     getAllUsers,
     getUserByID,
     getUserByUsername,
+    getUsersByUsername,
     getUserByEmail,
     createUser,
     updateUser,

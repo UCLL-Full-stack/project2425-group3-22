@@ -16,14 +16,14 @@
  *                  type: string
  *              role:
  *                  type: string
- *        LoginInput:
+ *        LoginRequest:
  *          type: object
  *          properties:
  *              usernameOrEmail:
  *                  type: string
  *              password:
  *                  type: string
- *        RegisterInput:
+ *        RegisterRequest:
  *          type: object
  *          properties:
  *              username:
@@ -51,7 +51,7 @@ const authRouter = express.Router();
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/RegisterInput'
+ *              $ref: '#/components/schemas/RegisterRequest'
  *      responses:
  *         200:
  *            description: The logged in user.
@@ -63,11 +63,11 @@ const authRouter = express.Router();
  */
 authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const registerInput = <RegisterRequest>req.body;
+        const registerRequest = <RegisterRequest>req.body;
         const result = await authService.register(
-            registerInput.username,
-            registerInput.email,
-            registerInput.password
+            registerRequest.username,
+            registerRequest.email,
+            registerRequest.password
         );
         res.status(200).json(result);
     } catch (err: any) {
@@ -85,7 +85,7 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/LoginInput'
+ *              $ref: '#/components/schemas/LoginRequest'
  *      responses:
  *         200:
  *            description: The logged in user.
@@ -96,8 +96,8 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  */
 authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const loginInput = <LoginRequest>req.body;
-        const result = await authService.login(loginInput.usernameOrEmail, loginInput.password);
+        const loginRequest = <LoginRequest>req.body;
+        const result = await authService.login(loginRequest.usernameOrEmail, loginRequest.password);
         res.status(200).json(result);
     } catch (err: any) {
         next(err);

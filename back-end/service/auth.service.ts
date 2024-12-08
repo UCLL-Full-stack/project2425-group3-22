@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { User } from '../model/user';
-import userDb from '../repository/user.db';
+import userDB from '../repository/user.db';
 import { LoginResponse } from '../types';
 import { generateJwtToken } from '../util/jwt';
 
@@ -16,7 +16,7 @@ const register = async (
     const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT_ROUNDS));
     userToCreate.setPassword(hashedPassword);
 
-    const createdUser = await userDb.createUser(userToCreate);
+    const createdUser = await userDB.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
 
     const token = await generateJwtToken(createdUser.getUserID(), createdUser.getRole());
@@ -30,8 +30,8 @@ const register = async (
 
 const login = async (usernameOrEmail: string, password: string): Promise<LoginResponse> => {
     const user = usernameOrEmail.includes('@')
-        ? await userDb.getUserByEmail({ email: usernameOrEmail })
-        : await userDb.getUserByUsername({ username: usernameOrEmail });
+        ? await userDB.getUserByEmail({ email: usernameOrEmail })
+        : await userDB.getUserByUsername({ username: usernameOrEmail });
 
     if (!user)
         throw new Error(
@@ -55,7 +55,7 @@ const login = async (usernameOrEmail: string, password: string): Promise<LoginRe
 
 const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
     if (email) {
-        const user = await userDb.getUserByEmail({ email });
+        const user = await userDB.getUserByEmail({ email });
         return user ? true : false;
     }
     return false;
@@ -63,7 +63,7 @@ const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
 
 const checkUsernameInUse = async (username: string | undefined): Promise<boolean> => {
     if (username) {
-        const user = await userDb.getUserByUsername({ username });
+        const user = await userDB.getUserByUsername({ username });
         return user ? true : false;
     }
     return false;
