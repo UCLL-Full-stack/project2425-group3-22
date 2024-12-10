@@ -73,7 +73,6 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 </button>
             </div>
             <h2>{poop.title}</h2>
-            <p>rating: {poop.rating}</p>
             <p>size: {poop.size}</p>
             <p>colorID: {poop.colorID}</p>
             <p>type: {poop.type}</p>
@@ -88,7 +87,7 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 <div ref={mapContainerRef} className={styles.map}></div>
             )}
             {showPopup && popupPosition && (
-                <EditPoopActionMenu popupPosition={popupPosition} setShowPopup={setShowPopup} />
+                <EditPoopActionMenu popupPosition={popupPosition} setShowPopup={setShowPopup} poopID={poop.poopID} />
             )}
         </div>
     );

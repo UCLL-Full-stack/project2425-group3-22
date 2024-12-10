@@ -22,12 +22,6 @@ const Add: React.FC = () => {
     const [isValidated, setIsValidated] = useState(false);
 
     useEffect(() => {
-        if (selectedPoopLocation) {
-            console.log(selectedPoopLocation);
-        }
-    }, [selectedPoopLocation]);
-
-    useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
     }, [router]);
 

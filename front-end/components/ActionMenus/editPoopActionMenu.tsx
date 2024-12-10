@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import styles from '@styles/actionMenu.module.css';
+import PoopService from '@services/poopService';
 
 type Props = {
     popupPosition: { x: number; y: number };
     setShowPopup: (show: boolean) => void;
+    poopID: number;
 };
 
-const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup }: Props) => {
+const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup, poopID }: Props) => {
     const popupRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -36,6 +38,21 @@ const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup }: Pr
         };
     }, [setShowPopup]);
 
+    const deletePoop = async () => {
+        try {
+            const response = await PoopService.deletePoop(poopID);
+
+            if (!response.ok) {
+                throw new Error('Failed to delete poop');
+            }
+
+            await response.json();
+            window.location.reload();
+        } catch (error: any) {
+            console.error(error.message);
+        }
+    };
+
     return (
         <div
             className={styles.actionMenu}
@@ -46,7 +63,7 @@ const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup }: Pr
             }}
         >
             <button>Edit</button>
-            <button>Delete</button>
+            <button onClick={deletePoop}>Delete</button>
             <button>Remove Friend</button>
             <button>Another thing</button>
         </div>

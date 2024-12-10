@@ -1,17 +1,14 @@
-import ProfileSidebar from '@components/profile/profileSidebar';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import ProfileService from '@services/profileService';
 import PoopPanel from '@components/poopPanel';
 import styles from '@styles/Home.module.css';
 import MainNavigation from '@components/mainNavigation';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Helper from 'utils/helper';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
 import { poopItem } from '@types';
+import PoopService from '@services/poopService';
 
 const Home: React.FC = () => {
     const router = useRouter();
@@ -26,10 +23,10 @@ const Home: React.FC = () => {
         if (isValidated) {
             const fetchProfilePoopsData = async () => {
                 try {
-                    const response = await ProfileService.getProfilePoops();
+                    const response = await PoopService.getPoops();
 
                     if (!response.ok) {
-                        throw new Error('Failed to fetch profile poops');
+                        throw new Error('Failed to fetch poops');
                     }
 
                     const result = await response.json();
