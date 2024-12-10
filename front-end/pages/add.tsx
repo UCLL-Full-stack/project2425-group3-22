@@ -8,9 +8,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Helper from 'utils/helper';
 import SelectPoopData from '@components/AddPoop/selectPoopData';
+import SelectPoopLocation from '@components/AddPoop/selectPoopLocation';
 
 const Add: React.FC = () => {
     const router = useRouter();
+
+    const pageAmount = 4; // Number of pages
 
     const [selectedPage, setSelectedPage] = useState<number>(1);
     const [selectedPoopType, setSelectedPoopType] = useState<number | null>(null)
@@ -28,7 +31,7 @@ const Add: React.FC = () => {
     };
 
     const handleNext = () => {
-        if (selectedPage != 3) {
+        if (selectedPage != pageAmount) {
             setSelectedPage(selectedPage + 1);
         }
     };
@@ -46,7 +49,8 @@ const Add: React.FC = () => {
             <main>
                 {selectedPage == 1 && <SelectPoopType poopTypeChanged={setSelectedPoopType} selectedPoopType={selectedPoopType} />}
                 {selectedPage == 2 && <SelectPoopColor poopColorChanged={setSelectedPoopColorID} selectedPoopColorID={selectedPoopColorID} />}
-                {selectedPage == 3 && <SelectPoopData selectedPoopType={selectedPoopType} selectedPoopColorID={selectedPoopColorID} />}
+                {selectedPage == 3 && <SelectPoopLocation />}
+                {selectedPage == 4 && <SelectPoopData selectedPoopType={selectedPoopType} selectedPoopColorID={selectedPoopColorID} />}
                 <div className={styles.navContainer}>
                     <button onClick={handlePrevious} className={styles.navigationButton}><FontAwesomeIcon icon="angle-left" /></button>
                     <button onClick={handleNext} className={styles.navigationButton}><FontAwesomeIcon icon="angle-right" /></button>

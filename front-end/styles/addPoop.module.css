@@ -100,6 +100,15 @@
     transform: scale(1.05);
 }
 
+.poopMapContainer {
+    flex: 1;
+}
+
+.poopMapContainer .map {
+    width: 100%;
+    height: 100%;
+}
+
 .poopDataContainer {
     margin: 20px 0;
     width: 100%;
