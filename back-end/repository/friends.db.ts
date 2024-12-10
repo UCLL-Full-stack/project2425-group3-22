@@ -3,23 +3,50 @@ import { Friends } from '../model/friends';
 import database from '../util/database';
 
 const areFriends = async ({
-    user1ID,
-    user2ID,
+    loggedInUserID,
+    userID,
 }: {
-    user1ID: number;
-    user2ID: number;
+    loggedInUserID: number;
+    userID: number;
 }): Promise<Boolean> => {
     try {
         const friendPrisma = await database.friends.findFirst({
             where: {
                 OR: [
-                    { user1ID: user1ID, user2ID: user2ID },
-                    { user1ID: user2ID, user2ID: user1ID },
+                    { user1ID: loggedInUserID, user2ID: userID },
+                    { user1ID: userID, user2ID: loggedInUserID },
                 ],
             },
         });
+
         if (!friendPrisma) return false;
         return true;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+const getFriendForLoggedInUser = async ({
+    loggedInUserID,
+    userID,
+}: {
+    loggedInUserID: number;
+    userID: number;
+}): Promise<Friends | null> => {
+    try {
+        const friendsPrisma = await database.friends.findFirst({
+            where: {
+                OR: [
+                    { user1ID: loggedInUserID, user2ID: userID },
+                    { user1ID: userID, user2ID: loggedInUserID },
+                ],
+            },
+            include: { user1: true, user2: true },
+        });
+
+        if (!friendsPrisma) return null;
+        return Friends.from(friendsPrisma);
     } catch (err: any) {
         console.log(err);
         throw new Error('Database error, check log for more information.');
@@ -127,28 +154,50 @@ const getFriendsByUsername = async ({
     }
 };
 
-const friendRequestAllowed = async (friendRequest: FriendRequest): Promise<string | null> => {
+const getFriendRequest = async ({
+    senderID,
+    receiverID,
+}: {
+    senderID: number;
+    receiverID: number;
+}): Promise<FriendRequest | null> => {
     try {
-        const alreadySent = await database.friendRequest.findFirst({
+        const friendRequestPrisma = await database.friendRequest.findFirst({
             where: {
-                senderID: friendRequest.getSenderID(),
-                receiverID: friendRequest.getReceiverID(),
+                senderID: senderID,
+                receiverID: receiverID,
             },
-            include: { receiver: true },
+            include: { sender: true, receiver: true },
+        });
+
+        if (!friendRequestPrisma) return null;
+        return FriendRequest.from(friendRequestPrisma);
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+const sendFriendRequestAllowed = async (friendRequest: FriendRequest): Promise<string | null> => {
+    try {
+        const alreadySent = await getFriendRequest({
+            senderID: friendRequest.getSenderID(),
+            receiverID: friendRequest.getReceiverID(),
         });
         if (alreadySent) {
-            return `You have already sent a friendrequest to ${alreadySent.receiver.username}.`;
+            return `You have already sent a friendrequest to ${alreadySent
+                .getReceiver()
+                ?.getUsername()}.`;
         }
 
-        const alreadyReceived = await database.friendRequest.findFirst({
-            where: {
-                senderID: friendRequest.getReceiverID(),
-                receiverID: friendRequest.getSenderID(),
-            },
-            include: { receiver: true },
+        const alreadyReceived = await getFriendRequest({
+            senderID: friendRequest.getReceiverID(),
+            receiverID: friendRequest.getSenderID(),
         });
         if (alreadyReceived) {
-            return `You already have a friendrequest incoming from ${alreadyReceived.receiver.username}.`;
+            return `You already have a friendrequest incoming from ${alreadyReceived
+                .getReceiver()
+                ?.getUsername()}.`;
         }
 
         const alreadyFriends = await database.friends.findFirst({
@@ -286,11 +335,13 @@ const removeFriend = async (friends: Friends): Promise<Friends | null> => {
 
 export default {
     areFriends,
+    getFriendForLoggedInUser,
     getAllIncomingFriendRequestsForUser,
     getAllOutgoingFriendRequestsForUser,
     getAllFriendsForUser,
     getFriendsByUsername,
-    friendRequestAllowed,
+    getFriendRequest,
+    sendFriendRequestAllowed,
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,

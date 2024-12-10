@@ -34,13 +34,13 @@ const isAdminOrModerator = async (req: Request, res: Response, next: NextFunctio
 const isAdminOrModeratorOrFriends = async (req: Request, res: Response, next: NextFunction) => {
     const request = <jwtRequest>req;
     const role = <Role>request.auth?.role;
-    const user1ID = request.auth?.userID;
-    const user2ID = Number(req.params['userID']);
+    const loggedInUserID = request.auth?.userID;
+    const userID = Number(req.params['userID']);
 
     if (
         role === 'ADMIN' ||
         role === 'MODERATOR' ||
-        (await friendsDb.areFriends({ user1ID, user2ID }))
+        (await friendsDb.areFriends({ loggedInUserID, userID }))
     ) {
         next();
     } else {

@@ -37,8 +37,7 @@ type ReturnUser = {
 //#endregion
 
 //#region POOP types
-// TODO: remove userID from the poopInput, the userID should be pulled from the JWT (passed in authorization header) saved in session
-type PoopInput = {
+type PoopRequest = {
     dateTime: Date;
     type: number;
     size: number;
@@ -47,7 +46,6 @@ type PoopInput = {
     title?: string;
     latitude?: number;
     longitude?: number;
-    userID: number;
 };
 
 type ReturnPoop = {
@@ -92,7 +90,7 @@ export {
     LoginResponse,
     UpdateUserInput,
     ReturnUser,
-    PoopInput,
+    PoopRequest,
     ReturnPoop,
     ReturnPoopForMap,
     FriendInfoResponse,

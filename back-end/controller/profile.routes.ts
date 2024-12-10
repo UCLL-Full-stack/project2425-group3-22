@@ -150,6 +150,7 @@ profileRouter.get('/friends', async (req: Request, res: Response, next: NextFunc
     try {
         const request = <jwtRequest>req;
         const userID = request.auth?.userID;
+        
         const result = await friendsService.getFriendsInfoForUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {

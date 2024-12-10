@@ -5,21 +5,25 @@ import userDB from '../repository/user.db';
 
 const getAllPoops = async (): Promise<Array<ReturnPoop>> => {
     const poops = await poopDB.getAllPoops();
-    if (!poops) throw new Error('No poops found.');
+    if (!poops) return [];
+
     return poops;
 };
 
 const getPoopsByUser = async (userID: number): Promise<Array<Poop>> => {
-    if (isNaN(userID)) throw new Error('userID must be a number.');
+    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
+
     const poops = await poopDB.getPoopsByUser({ userID });
-    if (!poops) throw new Error('No poops found.');
+    if (!poops) return [];
+
     return poops;
 };
 
 const getPoopsForMapByUser = async (userID: number): Promise<Array<ReturnPoopForMap>> => {
     if (isNaN(userID)) throw new Error('userID must be a number.');
+
     const poops = await poopDB.getPoopsForMapByUser({ userID });
-    if (!poops) throw new Error('No poops found (with location).');
+    if (!poops) return [];
     return poops;
 };
 
@@ -34,9 +38,10 @@ const createPoop = async (
     latitude?: number,
     longitude?: number
 ): Promise<Poop> => {
-    //TODO: user should be clear from JWT
-    const user = await userDB.getUserByID({ userID });
-    if (!user) throw new Error('User does not exist.');
+    if (!dateTime || isNaN(type) || isNaN(size) || isNaN(rating))
+        throw new Error(
+            'dateTime, type, size and rating are required (type, size and rating must be numbers).'
+        );
 
     const poop = await poopDB.createPoop(
         new Poop({
@@ -56,4 +61,18 @@ const createPoop = async (
     return poop;
 };
 
-export default { getAllPoops, getPoopsByUser, getPoopsForMapByUser, createPoop };
+const deletePoop = async (loggedInUserID: number, poopID: number): Promise<String> => {
+    if (isNaN(poopID)) throw new Error('poopID is required and must be a number.');
+
+    const poopExists = await poopDB.getPoopByID({ poopID });
+    if (!poopExists) throw new Error('Poop does not exists');
+
+    if (poopExists.getUser().userID !== loggedInUserID)
+        throw new Error('You are not authorized to delete this poop');
+
+    const deletedPoop = await poopDB.deletePoop({ poopID });
+    if (!deletedPoop) throw new Error('Error occured deleting poop.');
+    return 'Poop successfully deleted.';
+};
+
+export default { getAllPoops, getPoopsByUser, getPoopsForMapByUser, createPoop, deletePoop };

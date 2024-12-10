@@ -1,6 +1,5 @@
-import { Poop as PoopPrisma, User as UserPrisma } from '@prisma/client';
+import { Poop as PoopPrisma, User, User as UserPrisma } from '@prisma/client';
 
-// TODO: add validation & create types for type, size & rating (fe 1-5)?
 export class Poop {
     private poopID: number;
     private dateTime: Date;
@@ -36,40 +35,26 @@ export class Poop {
         latitude: number | null;
         longitude: number | null;
     }) {
+        this.validate({
+            dateTime,
+            type,
+            size,
+            rating,
+            colorID,
+            title,
+            latitude,
+            longitude,
+        });
+
         this.poopID = poopID;
-
-        // TODO: find out what the format from front-end is first
         this.dateTime = dateTime;
-
-        if (type < 0 || type > 7)
-            throw new Error('Type must be a number from 0 to 7 (0 and 7 included).');
         this.type = type;
-
-        if (size < 0 || size > 100)
-            throw new Error('Size must be a number from 0 to 100 (0 and 100 included).');
         this.size = size;
-
-        if (rating < 0 || rating > 5)
-            throw new Error('Rating must be a number from 0 to 5 (0 and 5 included).');
         this.rating = rating;
-
         this.user = user;
-
-        //TODO: implement correct ColorID validation after deciding what exactly it'll be
-        if (colorID !== null && (colorID < 0 || colorID > 10))
-            throw new Error('ColorID must be a number from 0 to 10 (0 and 10 included).');
         this.colorID = colorID;
-
-        if (title && title.length > 100)
-            throw new Error('Title cannot be longer than 100 characters.');
         this.title = title;
-
-        if (latitude !== null && (latitude < -90 || latitude > 90))
-            throw new Error('Latitude must be a number between -90 and 90.');
         this.latitude = latitude;
-
-        if (longitude !== null && (longitude < -180 || longitude > 180))
-            throw new Error('Longitude must be a number between -180 and 180.');
         this.longitude = longitude;
     }
 
@@ -117,10 +102,6 @@ export class Poop {
         return this.user;
     }
 
-    setUser(user: any) {
-        this.user = user;
-    }
-
     getColorID(): number | null {
         return this.colorID;
     }
@@ -151,6 +132,54 @@ export class Poop {
 
     setLongitude(longitude: number) {
         this.longitude = longitude;
+    }
+
+    private validate({
+        dateTime,
+        type,
+        size,
+        rating,
+        colorID,
+        title,
+        latitude,
+        longitude,
+    }: {
+        dateTime: Date;
+        type: number;
+        size: number;
+        rating: number;
+        colorID: number | null;
+        title: string | null;
+        latitude: number | null;
+        longitude: number | null;
+    }) {
+        if (!this.validateDateTime(dateTime))
+            throw new Error('DateTime must be in correct format (2024-01-01T00:00:00.000Z)');
+
+        if (type < 0 || type > 7) throw new Error('Type must be a number from 0 to 7.');
+
+        if (size < 0 || size > 100) throw new Error('Size must be a number from 0 to 100.');
+
+        if (rating < 0 || rating > 5 || (rating % 1 !== 0 && rating % 1 !== 0.5))
+            throw new Error('Rating must be a number from 0 to 5 (whole or ending in .5).');
+
+        //TODO: implement correct ColorID validation after deciding what exactly it'll be
+        if (colorID !== null && (colorID < 0 || colorID > 10))
+            throw new Error('ColorID must be a number from 0 to 10.');
+
+        if (title && title.length > 100)
+            throw new Error('Title cannot be longer than 100 characters.');
+
+        if (latitude !== null && (latitude < -90 || latitude > 90))
+            throw new Error('Latitude must be a number between -90 and 90.');
+
+        if (longitude !== null && (longitude < -180 || longitude > 180))
+            throw new Error('Longitude must be a number between -180 and 180.');
+    }
+
+    private validateDateTime(dateTime: Date): boolean {
+        const dateTimeRegex = new RegExp(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+        return dateTimeRegex.test(typeof dateTime === 'object' ? dateTime.toISOString() : dateTime);
     }
 
     static from({

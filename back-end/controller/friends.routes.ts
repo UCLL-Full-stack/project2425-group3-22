@@ -31,36 +31,10 @@
  *                      $ref: '#/components/schemas/FriendInfoResponse'
  */
 import express, { NextFunction, Request, Response } from 'express';
-import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
+import { Request as jwtRequest } from 'express-jwt';
 import friendsService from '../service/friends.service';
 
 const friendsRouter = express.Router();
-
-/**
- * @swagger
- * /friends:
- *   get:
- *      security:
- *          - bearerAuth: []
- *      summary: Get all friends, incoming friend requests and outgoing friend requests for the logged in user
- *      responses:
- *         200:
- *            description: The friends, incoming friend requests and outgoing friend requests
- *            content:
- *              application/json:
- *                schema:
- *                  $ref: '#/components/schemas/FriendsInfoResponse'
- */
-friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const request = <jwtRequest>req;
-        const userID = request.auth?.userID;
-        const result = await friendsService.getFriendsInfoForUser(userID);
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
-    }
-});
 
 /**
  * @swagger
@@ -137,7 +111,7 @@ friendsRouter.post('/add', async (req: Request, res: Response, next: NextFunctio
 /**
  * @swagger
  * /friends/cancel:
- *   post:
+ *   delete:
  *      security:
  *          - bearerAuth: []
  *      summary: Cancel a friendrequest
@@ -158,7 +132,7 @@ friendsRouter.post('/add', async (req: Request, res: Response, next: NextFunctio
  *                schema:
  *                  type: string
  */
-friendsRouter.post('/cancel', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.delete('/cancel', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
         const senderID = request.auth?.userID;
@@ -174,7 +148,7 @@ friendsRouter.post('/cancel', async (req: Request, res: Response, next: NextFunc
 /**
  * @swagger
  * /friends/accept:
- *   post:
+ *   put:
  *      security:
  *          - bearerAuth: []
  *      summary: Accept a friendrequest
@@ -195,7 +169,7 @@ friendsRouter.post('/cancel', async (req: Request, res: Response, next: NextFunc
  *                schema:
  *                  $ref: '#/components/schemas/FriendInfoResponse'
  */
-friendsRouter.post('/accept', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.put('/accept', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
         const { senderID } = req.body;
@@ -211,7 +185,7 @@ friendsRouter.post('/accept', async (req: Request, res: Response, next: NextFunc
 /**
  * @swagger
  * /friends/refuse:
- *   post:
+ *   delete:
  *      security:
  *          - bearerAuth: []
  *      summary: Refuse a friendrequest
@@ -232,7 +206,7 @@ friendsRouter.post('/accept', async (req: Request, res: Response, next: NextFunc
  *                schema:
  *                  type: string
  */
-friendsRouter.post('/refuse', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.delete('/refuse', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
         const { senderID } = req.body;
