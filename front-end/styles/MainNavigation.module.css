@@ -23,6 +23,25 @@
     flex-grow: 1;
 }
 
+.mainNavigation .buttonsContainer {
+    display: flex;
+    gap: 60px;
+    margin-left: 20px;
+}
+
+.mainNavigation .languageButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.mainNavigation .languageButton span {
+    font-size: 1.2rem;
+}
+
 .mainNavigation .profileButton {
     display: flex;
     align-items: center;

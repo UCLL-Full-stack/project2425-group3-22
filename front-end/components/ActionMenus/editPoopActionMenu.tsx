@@ -3,40 +3,40 @@ import styles from '@styles/actionMenu.module.css';
 import PoopService from '@services/poopService';
 
 type Props = {
-    popupPosition: { x: number; y: number };
-    setShowPopup: (show: boolean) => void;
+    position: { x: number; y: number };
+    setShowActionMenu: (show: boolean) => void;
     poopID: number;
 };
 
-const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup, poopID }: Props) => {
-    const popupRef = useRef<HTMLDivElement | null>(null);
+const EditPoopActionMenu: React.FC<Props> = ({ position, setShowActionMenu, poopID }: Props) => {
+    const actionMenuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        // Close popup on scroll or resize
-        const handleClosePopup = () => setShowPopup(false);
+        // Close action menu on scroll or resize
+        const handleClose = () => setShowActionMenu(false);
 
-        // when clicking outside the popup -> close it
-        const handleClickOutsidePopup = (event: MouseEvent) => {
-            if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-                handleClosePopup();
+        // when clicking outside the action menu -> close it
+        const handleClickOutside = (event: MouseEvent) => {
+            if (actionMenuRef.current && !actionMenuRef.current.contains(event.target as Node)) {
+                handleClose();
             }
         };
 
-        // Close popup if clicking outside of it
-        window.addEventListener('scroll', handleClosePopup);
-        window.addEventListener('resize', handleClosePopup);
+        // Close action menu if clicking outside of it
+        window.addEventListener('scroll', handleClose);
+        window.addEventListener('resize', handleClose);
 
-        // Add click event listener to handle closing popup
+        // Add click event listener to handle closing action menu
         setTimeout(() => {
-            window.addEventListener('click', handleClickOutsidePopup);
+            window.addEventListener('click', handleClickOutside);
         }, 0);
 
         return () => {
-            window.removeEventListener('scroll', handleClosePopup);
-            window.removeEventListener('resize', handleClosePopup);
-            window.removeEventListener('click', handleClickOutsidePopup);
+            window.removeEventListener('scroll', handleClose);
+            window.removeEventListener('resize', handleClose);
+            window.removeEventListener('click', handleClickOutside);
         };
-    }, [setShowPopup]);
+    }, [setShowActionMenu]);
 
     const deletePoop = async () => {
         try {
@@ -56,10 +56,10 @@ const EditPoopActionMenu: React.FC<Props> = ({ popupPosition, setShowPopup, poop
     return (
         <div
             className={styles.actionMenu}
-            ref={popupRef}
+            ref={actionMenuRef}
             style={{
-                left: `${popupPosition.x}px`,
-                top: `${popupPosition.y}px`,
+                left: `${position.x}px`,
+                top: `${position.y}px`,
             }}
         >
             <button>Edit</button>

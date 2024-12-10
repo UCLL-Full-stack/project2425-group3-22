@@ -6,18 +6,18 @@ import Helper from 'utils/helper';
 
 type Props = {
     setShowActionMenu: (show: boolean) => void;
-    profileButtonRef: React.RefObject<HTMLButtonElement | null>;
+    languageButtonRef: React.RefObject<HTMLButtonElement | null>;
 };
 
-const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRef }: Props) => {
+const LanguageActionMenu: React.FC<Props> = ({ setShowActionMenu, languageButtonRef }: Props) => {
     const router = useRouter();
     const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
 
     const actionMenuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (profileButtonRef.current) {
-            const buttonRect = profileButtonRef.current.getBoundingClientRect();
+        if (languageButtonRef.current) {
+            const buttonRect = languageButtonRef.current.getBoundingClientRect();
             const actionMenuRect = actionMenuRef.current?.getBoundingClientRect();
 
             if (actionMenuRect) {
@@ -27,7 +27,7 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRe
                 });
             }
         }
-    }, [profileButtonRef]);
+    }, [languageButtonRef]);
 
     useEffect(() => {
         // Close action menu on scroll or resize
@@ -56,8 +56,6 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRe
         };
     }, [setShowActionMenu]);
 
-    const handleLogout = () => Helper.logout(router);
-
     return (
         <div
             className={styles.actionMenu}
@@ -71,12 +69,10 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRe
                     : {}
             }
         >
-            <Link href="/profile" className={styles.actionMenuLink}>
-                Profile
-            </Link>
-            <button onClick={handleLogout}>Log out</button>
+            <button>NL</button>
+            <button>EN</button>
         </div>
     );
 };
 
-export default ProfileActionMenu;
+export default LanguageActionMenu;

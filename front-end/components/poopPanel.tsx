@@ -11,8 +11,8 @@ type Props = {
 };
 
 const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
-    const [popupPosition, setPopupPosition] = useState<{ x: number; y: number } | null>(null);
-    const [showPopup, setShowPopup] = useState(false);
+    const [actionMenuPosition, setActionMenuPosition] = useState<{ x: number; y: number } | null>(null);
+    const [showActionMenu, setShowActionMenu] = useState(false);
 
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const firstLetter = poop.user.username.charAt(0).toUpperCase();
@@ -48,8 +48,8 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
 
     const handleOptionsClick = (event: React.MouseEvent) => {
         const { clientX, clientY } = event;
-        setPopupPosition({ x: clientX, y: clientY });
-        setShowPopup(true);
+        setActionMenuPosition({ x: clientX, y: clientY });
+        setShowActionMenu(true);
     };
 
     return (
@@ -86,8 +86,8 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
             {poop.latitude && poop.longitude && (
                 <div ref={mapContainerRef} className={styles.map}></div>
             )}
-            {showPopup && popupPosition && (
-                <EditPoopActionMenu popupPosition={popupPosition} setShowPopup={setShowPopup} poopID={poop.poopID} />
+            {showActionMenu && actionMenuPosition && (
+                <EditPoopActionMenu position={actionMenuPosition} setShowActionMenu={setShowActionMenu} poopID={poop.poopID} />
             )}
         </div>
     );
