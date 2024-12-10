@@ -18,7 +18,14 @@ const Add: React.FC = () => {
     const [selectedPage, setSelectedPage] = useState<number>(1);
     const [selectedPoopType, setSelectedPoopType] = useState<number | null>(null)
     const [selectedPoopColorID, setSelectedPoopColorID] = useState<number | null>(null);
+    const [selectedPoopLocation, setSelectedPoopLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [isValidated, setIsValidated] = useState(false);
+
+    useEffect(() => {
+        if (selectedPoopLocation) {
+            console.log(selectedPoopLocation);
+        }
+    }, [selectedPoopLocation]);
 
     useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
@@ -49,8 +56,8 @@ const Add: React.FC = () => {
             <main>
                 {selectedPage == 1 && <SelectPoopType poopTypeChanged={setSelectedPoopType} selectedPoopType={selectedPoopType} />}
                 {selectedPage == 2 && <SelectPoopColor poopColorChanged={setSelectedPoopColorID} selectedPoopColorID={selectedPoopColorID} />}
-                {selectedPage == 3 && <SelectPoopLocation />}
-                {selectedPage == 4 && <SelectPoopData selectedPoopType={selectedPoopType} selectedPoopColorID={selectedPoopColorID} />}
+                {selectedPage == 3 && <SelectPoopLocation poopLocationChanged={setSelectedPoopLocation} selectedPoopLocation={selectedPoopLocation} />}
+                {selectedPage == 4 && <SelectPoopData selectedPoopType={selectedPoopType} selectedPoopColorID={selectedPoopColorID} selectedPoopLocation={selectedPoopLocation} />}
                 <div className={styles.navContainer}>
                     <button onClick={handlePrevious} className={styles.navigationButton}><FontAwesomeIcon icon="angle-left" /></button>
                     <button onClick={handleNext} className={styles.navigationButton}><FontAwesomeIcon icon="angle-right" /></button>

@@ -2,18 +2,16 @@ import styles from '@styles/addPoop.module.css';
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-type Props = {};
+type Props = {
+    selectedPoopLocation: { lat: number; lng: number } | null;
+    poopLocationChanged: (location: { lat: number; lng: number } | null) => void;
+};
 
-const SelectPoopLocation: React.FC<Props> = ({}: Props) => {
+const SelectPoopLocation: React.FC<Props> = ({ selectedPoopLocation, poopLocationChanged }: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const markerRef = useRef<mapboxgl.Marker | null>(null);
 
-    // Set default position
-    const [position, setPosition] = useState({
-        lat: 50.8791,
-        lng: 4.7025,
-    });
 
     // Initialize the map
     useEffect(() => {
@@ -23,36 +21,34 @@ const SelectPoopLocation: React.FC<Props> = ({}: Props) => {
             mapRef.current = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: 'mapbox://styles/landeriscool/cltul3bhu00fr01p7h0e70gbc',
-                center: [position.lng, position.lat],
+                center: [selectedPoopLocation?.lng ?? 4.7025, selectedPoopLocation?.lat ?? 50.8791], // Set default position if needed (Leuven)
                 zoom: 10,
+                attributionControl: false,
             });
-
-            markerRef.current = new mapboxgl.Marker({
-                color: getComputedStyle(document.documentElement).getPropertyValue(
-                    '--accent-secondary'
-                ),
-            })
-                .setLngLat([position.lng, position.lat])
-                .addTo(mapRef.current);
 
             mapRef.current.on('click', (e) => {
                 const { lng, lat } = e.lngLat;
-                setPosition({ lat, lng });
+                
+                if (!markerRef.current) {
+                    // Create marker
+                    markerRef.current = new mapboxgl.Marker({
+                        color: getComputedStyle(document.documentElement).getPropertyValue(
+                            '--accent-secondary'
+                        ),
+                    })
+                        .setLngLat([lng, lat])
+                        .addTo(mapRef.current!);
+                } else {
+                    // Update existing marker position
+                    markerRef.current.setLngLat([lng, lat]);
+                }
 
-                // Update marker position
-                markerRef.current?.setLngLat([lng, lat]);
+                poopLocationChanged({ lat, lng });
+
                 mapRef.current?.flyTo({ center: [lng, lat] });
             });
         }
-    }, [position]);
-
-    // Set the marker and location when the position changes
-    useEffect(() => {
-        if (mapRef.current && position) {
-            mapRef.current.flyTo({ center: [position.lng, position.lat] });
-            markerRef.current?.setLngLat([position.lng, position.lat]);
-        }
-    }, [position]);
+    }, [selectedPoopLocation]);
 
     return (
         <div className={styles.poopMapContainer}>

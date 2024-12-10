@@ -14,9 +14,10 @@ import Slider from 'rc-slider';
 type Props = {
     selectedPoopType: number | null;
     selectedPoopColorID: number | null;
+    selectedPoopLocation: { lat: number; lng: number } | null;
 };
 
-const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID }: Props) => {
+const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID, selectedPoopLocation }: Props) => {
     let TypeSVG;
 
     switch (selectedPoopType) {
@@ -60,10 +61,9 @@ const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID
                 defaultValue={50} 
             />
 
-            <label>Location???</label>
-
             <p>type: {selectedPoopType ?? 'null'}</p>
             <p>color: {selectedPoopColorID ?? 'null'}</p>
+            <p>location: {(selectedPoopLocation?.lat && selectedPoopLocation?.lng) ? `${selectedPoopLocation.lat} ${selectedPoopLocation.lng}` : 'null'}</p>
             <div className={styles.svgContainer}>
                 <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
             </div>
