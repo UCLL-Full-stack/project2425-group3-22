@@ -7,25 +7,24 @@ import Helper from 'utils/helper';
 
 const Profile: React.FC = () => {
     const router = useRouter();
-    const [isValidated, setIsValidated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
-        setIsValidated(Helper.authorizeUser(router));
+        setIsAdmin(Helper.authorizeAdmin(router));
     }, [router]);
 
-    if (!isValidated) {
+    if (!isAdmin) {
         return null;
     }
 
     return (
         <>
             <Head>
-                <title>Poopedia | Profile</title>
+                <title>Poopedia | Admin</title>
             </Head>
             <MainNavigation />
             <main>
-                <ProfileSidebar />
-                <p>Profile</p>
+                <p>admin</p>
             </main>
         </>
     );

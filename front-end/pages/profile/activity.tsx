@@ -8,9 +8,17 @@ import PoopPanel from '@components/poopPanel';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
 import { poopItem } from '@types';
+import Helper from 'utils/helper';
+import { useRouter } from 'next/router';
 
 const Activity: React.FC = () => {
+    const router = useRouter();
     const [poops, setPoops] = useState([]);
+    const [isValidated, setIsValidated] = useState(false);
+
+    useEffect(() => {
+        setIsValidated(Helper.authorizeUser(router));
+    }, [router]);
 
     useEffect(() => {
         const fetchProfilePoopsData = async () => {
@@ -30,6 +38,10 @@ const Activity: React.FC = () => {
 
         fetchProfilePoopsData();
     }, []);
+
+    if (!isValidated) {
+        return null;
+    }
 
     return (
         <>

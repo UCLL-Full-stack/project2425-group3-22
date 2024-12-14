@@ -6,10 +6,17 @@ import mapboxgl from 'mapbox-gl';
 import MainNavigation from '@components/mainNavigation';
 import ProfileService from '@services/profileService';
 import { poopItem } from '@types';
+import Helper from 'utils/helper';
 
 const Map: React.FC = () => {
+    const router = useRouter();
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [poops, setPoops] = useState<poopItem[]>([]);
+    const [isValidated, setIsValidated] = useState(false);
+
+    useEffect(() => {
+        setIsValidated(Helper.authorizeUser(router));
+    }, [router]);
 
     useEffect(() => {
         const fetchProfilePoopsData = async () => {
@@ -63,6 +70,10 @@ const Map: React.FC = () => {
             return () => map.remove();
         }
     }, [poops]);
+
+    if (!isValidated) {
+        return null;
+    }
 
     return (
         <>
