@@ -8,7 +8,7 @@ export default class Helper {
             username: response.username,
             role: response.role,
         };
-    
+
         localStorage.setItem('userData', JSON.stringify(userData));
         router.replace('/');
     };
@@ -21,15 +21,15 @@ export default class Helper {
     static getUserData = (): { token?: string; username?: string; role?: string } => {
         return JSON.parse(localStorage.getItem('userData') || '{}');
     };
-    
+
     static getJWT = (): string | undefined => {
         return this.getUserData().token;
     };
-    
+
     static getUsername = (): string | undefined => {
         return this.getUserData().username;
     };
-    
+
     static getRole = (): string | undefined => {
         return this.getUserData().role;
     };
@@ -44,28 +44,22 @@ export default class Helper {
     };
 
     static authorizeModerator = (router: NextRouter): boolean => {
-        if (Helper.getJWT()) {
+        if (Helper.authorizeUser(router)) {
             if (Helper.getRole() === Roles.MODERATOR || Helper.getRole() === Roles.ADMIN) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            router.replace('/login');
-            return false;
+            router.replace('/');
         }
+        return false;
     };
 
     static authorizeAdmin = (router: NextRouter): boolean => {
-        if (Helper.getJWT()) {
+        if (Helper.authorizeUser(router)) {
             if (Helper.getRole() === Roles.ADMIN) {
                 return true;
-            } else {
-                return false;
             }
-        } else {
-            router.replace('/login');
-            return false;
+            router.replace('/');
         }
+        return false;
     };
 }

@@ -10,6 +10,7 @@ import PoopSVG from '../PoopTypes/poopSVG';
 import { colorMap } from '@types';
 import Rate from 'rc-rate';
 import Slider from 'rc-slider';
+import { useState } from 'react';
 
 type Props = {
     selectedPoopType: number | null;
@@ -17,7 +18,15 @@ type Props = {
     selectedPoopLocation: { lat: number; lng: number } | null;
 };
 
-const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID, selectedPoopLocation }: Props) => {
+const SelectPoopData: React.FC<Props> = ({
+    selectedPoopType,
+    selectedPoopColorID,
+    selectedPoopLocation,
+}: Props) => {
+    const [title, setTitle] = useState<string>('');
+    const [rating, setRating] = useState<number>(0);
+    const [size, setSize] = useState<number>(50);
+
     let TypeSVG;
 
     switch (selectedPoopType) {
@@ -46,28 +55,50 @@ const SelectPoopData: React.FC<Props> = ({ selectedPoopType, selectedPoopColorID
             TypeSVG = PoopSVG;
     }
 
+    const saveHandler = () => {
+        console.log(`new poop added 
+            type: ${selectedPoopType}
+            colorID: ${selectedPoopColorID}
+            latitute: ${selectedPoopLocation?.lat}
+            longitude: ${selectedPoopLocation?.lng}
+            title: ${title}
+            rating: ${rating}
+            size: ${size}
+            date: ${new Date().toString()}`);
+    };
+
     return (
         <div className={styles.poopDataContainer}>
             <label htmlFor="title">Title</label>
-            <input name='title' type="text" />
+            <input
+                name="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
 
             <label>Rating</label>
-            <Rate count={5} allowHalf={true} className={styles.rating} />
+            <Rate count={5} allowHalf={true} className={styles.rating} onChange={setRating} value={rating} />
 
             <label>Slider</label>
-            <Slider 
-                min={0} 
-                max={100} 
-                defaultValue={50} 
-            />
+            <Slider min={0} max={100} defaultValue={size} onChange={(value) => {
+                    if (typeof value === 'number') { // check that the slider doesn't return an array (for range sliders)
+                        setSize(value);
+                    }
+                }} />
 
             <p>type: {selectedPoopType ?? 'null'}</p>
             <p>color: {selectedPoopColorID ?? 'null'}</p>
-            <p>location: {(selectedPoopLocation?.lat && selectedPoopLocation?.lng) ? `${selectedPoopLocation.lat} ${selectedPoopLocation.lng}` : 'null'}</p>
+            <p>
+                location:{' '}
+                {selectedPoopLocation?.lat && selectedPoopLocation?.lng
+                    ? `${selectedPoopLocation.lat} ${selectedPoopLocation.lng}`
+                    : 'null'}
+            </p>
             <div className={styles.svgContainer}>
                 <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
             </div>
-            <button>Save</button>
+            <button onClick={saveHandler}>Save</button>
         </div>
     );
 };

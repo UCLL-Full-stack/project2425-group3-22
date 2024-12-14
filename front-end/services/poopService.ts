@@ -11,7 +11,6 @@ const getPoops = async () => {
 };
 
 const createPoop = async ({
-    dateTime,
     type,
     size,
     colorID,
@@ -20,7 +19,6 @@ const createPoop = async ({
     latitude,
     longitude,
 }: {
-    dateTime: Date;
     type: number;
     size: number;
     colorID: number;
@@ -36,7 +34,7 @@ const createPoop = async ({
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            dateTime,
+            dateTime: new Date(),
             type,
             size,
             colorID,
