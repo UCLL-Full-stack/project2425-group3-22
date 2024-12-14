@@ -1,12 +1,12 @@
-import { mix, lighten, darken } from 'polished';
+import PoopHelper from 'utils/poopHelper';
 
 type Props = {
     color?: string;
 };
 
-const Type6SVG: React.FC<Props> = ({ color = '#B4846B' }: Props) => {
-    const highlight = mix(0.15, '#FF5733', lighten(0.15, color));
-    const shadow = darken(0.1, color);
+const Type6SVG: React.FC<Props> = ({ color = PoopHelper.defaultPoopColor() }: Props) => {
+    const highlight = PoopHelper.lighten(color);
+    const shadow = PoopHelper.darken(color);
 
     return (
         <svg

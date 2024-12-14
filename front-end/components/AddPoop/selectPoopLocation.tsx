@@ -7,17 +7,19 @@ type Props = {
     poopLocationChanged: (location: { lat: number; lng: number } | null) => void;
 };
 
-const SelectPoopLocation: React.FC<Props> = ({ selectedPoopLocation, poopLocationChanged }: Props) => {
+const SelectPoopLocation: React.FC<Props> = ({
+    selectedPoopLocation,
+    poopLocationChanged,
+}: Props) => {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const markerRef = useRef<mapboxgl.Marker | null>(null);
 
-
-    // Initialize the map
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
 
         if (mapContainerRef.current && !mapRef.current) {
+            // Create the map
             mapRef.current = new mapboxgl.Map({
                 container: mapContainerRef.current,
                 style: 'mapbox://styles/landeriscool/cltul3bhu00fr01p7h0e70gbc',
@@ -26,9 +28,22 @@ const SelectPoopLocation: React.FC<Props> = ({ selectedPoopLocation, poopLocatio
                 attributionControl: false,
             });
 
+            // Create a marker if a location is already selected
+            if (!markerRef.current && selectedPoopLocation) {
+                // Create marker
+                markerRef.current = new mapboxgl.Marker({
+                    color: getComputedStyle(document.documentElement).getPropertyValue(
+                        '--accent-secondary'
+                    ),
+                })
+                    .setLngLat([selectedPoopLocation.lng, selectedPoopLocation.lat])
+                    .addTo(mapRef.current!);
+            }
+
             mapRef.current.on('click', (e) => {
+                // Set the location of the marker
                 const { lng, lat } = e.lngLat;
-                
+
                 if (!markerRef.current) {
                     // Create marker
                     markerRef.current = new mapboxgl.Marker({
