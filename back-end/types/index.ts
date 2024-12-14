@@ -34,6 +34,11 @@ type ReturnUser = {
     email: string;
     role: Role;
 };
+
+type ReturnUserMinimal = {
+    userID: number;
+    username: string;
+};
 //#endregion
 
 //#region POOP types
@@ -67,7 +72,19 @@ type ReturnPoopForMap = {
     longitude: number;
 };
 
-//TODO: add a type that's for returning all poops from logged in user and friends, MUST INCLUDE isOwner property that clarifies wether or not the poop is the user's
+type ReturnPoopForDisplay = {
+    poopID: number;
+    dateTime: Date;
+    type: number;
+    size: number;
+    rating: number;
+    user: any;
+    colorID: number | null;
+    title: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    isOwner: boolean;
+};
 //#endregion
 
 //#region FRIEND(S/REQUEST) types
@@ -93,6 +110,7 @@ export {
     PoopRequest,
     ReturnPoop,
     ReturnPoopForMap,
+    ReturnPoopForDisplay,
     FriendInfoResponse,
     FriendsInfoResponse,
 };

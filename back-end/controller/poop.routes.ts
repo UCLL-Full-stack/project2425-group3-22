@@ -98,7 +98,7 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
- * /poop/{userID}:
+ * /poop/id/{userID}:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -121,10 +121,38 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                  items:
  *                      $ref: '#/components/schemas/Poop'
  */
-poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunction) => {
+poopRouter.get('/id/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params['userID'];
         const result = await poopService.getPoopsByUser(Number(userID));
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /poop/friends:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all poops for a user and their friends
+ *      responses:
+ *         200:
+ *            description: The poops from the given user and their friends
+ *            content:
+ *              application/json:
+ *                poops:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/components/schemas/Poop'
+ */
+poopRouter.get('/friends', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+        const result = await poopService.getPoopsFromUserAndFriendsByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

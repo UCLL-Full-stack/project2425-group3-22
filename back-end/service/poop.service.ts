@@ -1,7 +1,6 @@
 import { Poop } from '../model/poop';
-import { ReturnPoop, ReturnPoopForMap } from '../types';
+import { ReturnPoop, ReturnPoopForMap, ReturnPoopForDisplay } from '../types';
 import poopDB from '../repository/poop.db';
-import userDB from '../repository/user.db';
 
 const getAllPoops = async (): Promise<Array<ReturnPoop>> => {
     const poops = await poopDB.getAllPoops();
@@ -19,8 +18,34 @@ const getPoopsByUser = async (userID: number): Promise<Array<Poop>> => {
     return poops;
 };
 
+const getPoopsFromUserAndFriendsByUser = async (
+    userID: number
+): Promise<Array<ReturnPoopForDisplay>> => {
+    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
+
+    const poops = await poopDB.getPoopsFromUserAndFriendsByUser({ userID });
+    if (!poops) return [];
+
+    return poops.map(
+        (poop) =>
+            <ReturnPoopForDisplay>{
+                poopID: poop.getPoopID(),
+                dateTime: poop.getDateTime(),
+                type: poop.getType(),
+                size: poop.getSize(),
+                rating: poop.getRating(),
+                user: poop.getUser(),
+                colorID: poop.getColorID(),
+                title: poop.getTitle(),
+                latitude: poop.getLatitude(),
+                longitude: poop.getLongitude(),
+                isOwner: poop.getUser().userID === userID,
+            }
+    );
+};
+
 const getPoopsForMapByUser = async (userID: number): Promise<Array<ReturnPoopForMap>> => {
-    if (isNaN(userID)) throw new Error('userID must be a number.');
+    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
 
     const poops = await poopDB.getPoopsForMapByUser({ userID });
     if (!poops) return [];
@@ -75,4 +100,11 @@ const deletePoop = async (loggedInUserID: number, poopID: number): Promise<Strin
     return 'Poop successfully deleted.';
 };
 
-export default { getAllPoops, getPoopsByUser, getPoopsForMapByUser, createPoop, deletePoop };
+export default {
+    getAllPoops,
+    getPoopsByUser,
+    getPoopsFromUserAndFriendsByUser,
+    getPoopsForMapByUser,
+    createPoop,
+    deletePoop,
+};

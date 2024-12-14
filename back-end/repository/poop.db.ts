@@ -49,10 +49,44 @@ const getPoopsByUser = async ({ userID }: { userID: number }): Promise<Array<Poo
     try {
         const poopsPrisma = await database.poop.findMany({
             where: { userID: userID },
-            include: { user: true },
+            include: { user: { include: { poops: true } } },
+            orderBy: { dateTime: 'desc' },
         });
 
         if (poopsPrisma.length < 1) return null;
+        return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+const getPoopsFromUserAndFriendsByUser = async ({
+    userID,
+}: {
+    userID: number;
+}): Promise<Array<Poop> | null> => {
+    try {
+        const friendsPrisma = await database.friends.findMany({
+            where: { OR: [{ user1ID: userID }, { user2ID: userID }] },
+            include: { user1: true, user2: true },
+        });
+        if (friendsPrisma.length < 1) return null;
+
+        const friendIDs = friendsPrisma.map((friendPrisma) =>
+            friendPrisma.user1ID === userID ? friendPrisma.user2ID : friendPrisma.user1ID
+        );
+        friendIDs.push(userID);
+
+        const poopsPrisma = await database.poop.findMany({
+            where: {
+                userID: { in: friendIDs },
+            },
+            include: { user: true },
+            orderBy: { dateTime: 'desc' },
+        });
+        if (poopsPrisma.length < 1) return null;
+
         return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
         console.log(err);
@@ -125,6 +159,7 @@ export default {
     getAllPoops,
     getPoopByID,
     getPoopsByUser,
+    getPoopsFromUserAndFriendsByUser,
     getPoopsForMapByUser,
     createPoop,
     deletePoop,
