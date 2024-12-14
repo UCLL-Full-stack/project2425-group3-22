@@ -10,7 +10,7 @@ import Type7SVG from '../PoopTypes/type7SVG';
 import UnknownSVG from '../PoopTypes/unknownSVG';
 
 type Props = {
-    selectedPoopType: number | null;
+    selectedPoopType: number;
     poopTypeChanged: (selectedType: number) => void;
 };
 
@@ -31,7 +31,7 @@ const SelectPoopType: React.FC<Props> = ({ selectedPoopType, poopTypeChanged }: 
             {poopTypes.map(({ id, label, description, SVG }) => (
                 <div
                     key={id}
-                    className={`${styles.poopType} ${selectedPoopType === id ? styles.selected : ''}`}
+                    className={`${styles.poopType} ${selectedPoopType == id ? styles.selected : ''}`}
                     onClick={() => poopTypeChanged(id)}
                 >
                     <div className={styles.SVGContainer}>

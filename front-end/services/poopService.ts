@@ -21,11 +21,11 @@ const createPoop = async ({
 }: {
     type: number;
     size: number;
-    colorID: number;
+    colorID: number | null;
     rating: number;
     title: string;
-    latitude: number;
-    longitude: number;
+    latitude: number | null;
+    longitude: number | null;
 }) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/poop/create', {
         method: 'POST',

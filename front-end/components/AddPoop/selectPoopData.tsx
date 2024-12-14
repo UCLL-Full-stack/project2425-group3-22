@@ -13,20 +13,30 @@ import Slider from 'rc-slider';
 import { useState } from 'react';
 
 type Props = {
-    selectedPoopType: number | null;
+    selectedPoopType: number;
     selectedPoopColorID: number | null;
     selectedPoopLocation: { lat: number; lng: number } | null;
+    selectedPoopTitle: string;
+    onTitleChange: (title: string) => void;
+    selectedPoopRating: number;
+    onRatingChange: (rating: number) => void;
+    selectedPoopSize: number;
+    onSizeChange: (size: number) => void;
+    onSave: () => void;
 };
 
 const SelectPoopData: React.FC<Props> = ({
     selectedPoopType,
     selectedPoopColorID,
     selectedPoopLocation,
+    selectedPoopTitle,
+    onTitleChange,
+    selectedPoopRating,
+    onRatingChange,
+    selectedPoopSize,
+    onSizeChange,
+    onSave,
 }: Props) => {
-    const [title, setTitle] = useState<string>('');
-    const [rating, setRating] = useState<number>(0);
-    const [size, setSize] = useState<number>(50);
-
     let TypeSVG;
 
     switch (selectedPoopType) {
@@ -55,37 +65,37 @@ const SelectPoopData: React.FC<Props> = ({
             TypeSVG = PoopSVG;
     }
 
-    const saveHandler = () => {
-        console.log(`new poop added 
-            type: ${selectedPoopType}
-            colorID: ${selectedPoopColorID}
-            latitute: ${selectedPoopLocation?.lat}
-            longitude: ${selectedPoopLocation?.lng}
-            title: ${title}
-            rating: ${rating}
-            size: ${size}
-            date: ${new Date().toString()}`);
-    };
-
     return (
         <div className={styles.poopDataContainer}>
             <label htmlFor="title">Title</label>
             <input
                 name="title"
                 type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={selectedPoopTitle}
+                onChange={(e) => onTitleChange(e.target.value)}
             />
 
             <label>Rating</label>
-            <Rate count={5} allowHalf={true} className={styles.rating} onChange={setRating} value={rating} />
+            <Rate
+                count={5}
+                allowHalf={true}
+                className={styles.rating}
+                onChange={onRatingChange}
+                value={selectedPoopRating}
+            />
 
-            <label>Slider</label>
-            <Slider min={0} max={100} defaultValue={size} onChange={(value) => {
-                    if (typeof value === 'number') { // check that the slider doesn't return an array (for range sliders)
-                        setSize(value);
+            <label>Size</label>
+            <Slider
+                min={0}
+                max={100}
+                defaultValue={selectedPoopSize}
+                onChange={(value) => {
+                    if (typeof value === 'number') {
+                        // check that the slider doesn't return an array (for range sliders)
+                        onSizeChange(value);
                     }
-                }} />
+                }}
+            />
 
             <p>type: {selectedPoopType ?? 'null'}</p>
             <p>color: {selectedPoopColorID ?? 'null'}</p>
@@ -98,7 +108,7 @@ const SelectPoopData: React.FC<Props> = ({
             <div className={styles.svgContainer}>
                 <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
             </div>
-            <button onClick={saveHandler}>Save</button>
+            <button onClick={onSave}>Save</button>
         </div>
     );
 };
