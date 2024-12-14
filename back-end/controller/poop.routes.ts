@@ -49,8 +49,6 @@
  *                  type: number
  *              rating:
  *                  type: number
- *              userID:
- *                  type: number
  *              colorID:
  *                  type: number
  *                  required: false
@@ -145,7 +143,7 @@ poopRouter.get('/:userID', async (req: Request, res: Response, next: NextFunctio
  *        content:
  *          application/json:
  *              schema:
- *                  $ref: '#/components/schemas/PoopInput'
+ *                  $ref: '#/components/schemas/PoopRequest'
  *      responses:
  *         200:
  *            description: The created poop.
