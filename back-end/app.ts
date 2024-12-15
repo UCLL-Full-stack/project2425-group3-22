@@ -11,6 +11,7 @@ import { poopRouter } from './controller/poop.routes';
 import { userRouter } from './controller/user.routes';
 import { friendsRouter } from './controller/friends.routes';
 import { profileRouter } from './controller/profile.routes';
+import { statRouter } from './controller/stat.routes';
 
 dotenv.config();
 const app = express();
@@ -52,6 +53,7 @@ app.use('/poop', poopRouter);
 app.use('/user', userRouter);
 app.use('/friends', friendsRouter);
 app.use('/profile', profileRouter);
+app.use('/stat', statRouter);
 //#endregion
 
 //#region Error handling

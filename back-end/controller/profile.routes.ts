@@ -39,12 +39,29 @@
  *                  type: number
  *              longitude:
  *                  type: number
+ *        UserStatResponse:
+ *          type: object
+ *          properties:
+ *              statID:
+ *                  type: number
+ *              statCode:
+ *                  type: string
+ *              name:
+ *                  type: string
+ *              description:
+ *                  type: string
+ *              statValue:
+ *                  type: number
+ *              updatedAt:
+ *                  type: string
+ *                  format: date
  */
 import express, { NextFunction, Request, Response } from 'express';
-import { Request as jwtRequest, UnauthorizedError } from 'express-jwt';
+import { Request as jwtRequest } from 'express-jwt';
 import userService from '../service/user.service';
 import poopService from '../service/poop.service';
 import friendsService from '../service/friends.service';
+import statService from '../service/stat.service';
 
 const profileRouter = express.Router();
 
@@ -150,8 +167,35 @@ profileRouter.get('/friends', async (req: Request, res: Response, next: NextFunc
     try {
         const request = <jwtRequest>req;
         const userID = request.auth?.userID;
-        
+
         const result = await friendsService.getFriendsInfoForUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /profile/stats:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all stats for logged in user
+ *      responses:
+ *         200:
+ *            description: The stats for the logged in user
+ *            content:
+ *              application/json:
+ *                schema:
+ *                      $ref: '#/components/schemas/UserStatResponse'
+ */
+profileRouter.get('/stats', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+
+        const result = await statService.getStatsByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

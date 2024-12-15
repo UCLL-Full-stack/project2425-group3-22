@@ -1,4 +1,5 @@
 type Role = 'USER' | 'MODERATOR' | 'ADMIN';
+type StatUpdate = 'INCREASE' | 'DECREASE';
 
 //#region AUTH types
 type RegisterRequest = {
@@ -100,8 +101,20 @@ type FriendsInfoResponse = {
 };
 //#endregion
 
+//#region STAT types
+type UserStatResponse = {
+    statID: number;
+    statCode: string;
+    name: string;
+    description: string;
+    statValue: number;
+    updatedAt: Date;
+};
+//#endregion
+
 export {
     Role,
+    StatUpdate,
     RegisterRequest,
     LoginRequest,
     LoginResponse,
@@ -113,4 +126,5 @@ export {
     ReturnPoopForDisplay,
     FriendInfoResponse,
     FriendsInfoResponse,
+    UserStatResponse,
 };

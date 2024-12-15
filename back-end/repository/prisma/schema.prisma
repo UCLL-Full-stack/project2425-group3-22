@@ -8,11 +8,15 @@ datasource db {
 }
 
 model Achievement {
-    achievementID Int                @id @default(autoincrement())
-    name          String             @unique
-    description   String
-    level         Int
-    users         UserAchievements[]
+    achievementID   Int                @id @default(autoincrement())
+    achievementCode String             @unique
+    name            String
+    description     String
+    levels          Int[]
+    levelsCriteria  Int[]
+    stat            Stat               @relation(fields: [statID], references: [statID])
+    statID          Int                @unique
+    users           UserAchievements[]
 }
 
 model FriendRequest {
@@ -47,6 +51,15 @@ model Poop {
     userID    Int
 }
 
+model Stat {
+    statID      Int          @id @default(autoincrement())
+    statCode    String       @unique
+    name        String
+    description String
+    achievement Achievement?
+    users       UserStats[]
+}
+
 model User {
     userID       Int                @id @default(autoincrement())
     username     String             @unique
@@ -55,6 +68,7 @@ model User {
     role         Role               @default(USER)
     poops        Poop[]
     achievements UserAchievements[]
+    stats        UserStats[]
     isSender     FriendRequest[]    @relation(name: "isSender")
     isReceiver   FriendRequest[]    @relation(name: "isReceiver")
     isUser1      Friends[]          @relation(name: "isUser1")
@@ -62,13 +76,25 @@ model User {
 }
 
 model UserAchievements {
-    user          User        @relation(fields: [userID], references: [userID])
+    user          User        @relation(fields: [userID], references: [userID], onDelete: Cascade)
     userID        Int
-    achievement   Achievement @relation(fields: [achievementID], references: [achievementID])
+    achievement   Achievement @relation(fields: [achievementID], references: [achievementID], onDelete: Cascade)
     achievementID Int
+    achievedLevel Int
     achievedAt    DateTime    @default(now())
 
     @@id([userID, achievementID])
+}
+
+model UserStats {
+    user      User     @relation(fields: [userID], references: [userID], onDelete: Cascade)
+    userID    Int
+    stat      Stat     @relation(fields: [statID], references: [statID], onDelete: Cascade)
+    statID    Int
+    statValue Int      @default(0)
+    updatedAt DateTime @default(now())
+
+    @@id([userID, statID])
 }
 
 enum Role {
