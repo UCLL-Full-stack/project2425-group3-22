@@ -3,10 +3,10 @@ import friendsDB from '../repository/friends.db';
 import userDB from '../repository/user.db';
 import { FriendsInfoResponse, FriendInfoResponse } from '../types';
 
-const getFriendsInfoForUser = async (userID: number): Promise<FriendsInfoResponse> => {
-    const friends = await friendsDB.getAllFriendsForUser({ userID });
-    const incomingFriendRequests = await friendsDB.getAllIncomingFriendRequestsForUser({ userID });
-    const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsForUser({ userID });
+const getFriendsInfoByUser = async (userID: number): Promise<FriendsInfoResponse> => {
+    const friends = await friendsDB.getAllFriendsByUser({ userID });
+    const incomingFriendRequests = await friendsDB.getAllIncomingFriendRequestsByUser({ userID });
+    const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsByUser({ userID });
 
     const friendsInfo = !friends
         ? []
@@ -80,7 +80,7 @@ const sendFriendRequest = async (
         throw new Error('The user you want to send a friendrequest to, does not exist.');
 
     const friendRequestToSend = new FriendRequest({ senderID, receiverID });
-    const friendRequestAllowed = await friendsDB.isSendingFriendRequestAllowed(friendRequestToSend);
+    const friendRequestAllowed = await friendsDB.checkIfFriendRequestAllowed(friendRequestToSend);
     if (friendRequestAllowed) throw new Error(friendRequestAllowed);
 
     const sentFriendRequest = await friendsDB.sendFriendRequest(friendRequestToSend);
@@ -151,34 +151,31 @@ const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Pr
     return 'Friendrequest successfully refused.';
 };
 
-const removeFriend = async (
-    loggedInUserID: number,
-    userID: number
-): Promise<FriendInfoResponse> => {
-    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
+const removeFriend = async (userID: number, friendID: number): Promise<FriendInfoResponse> => {
+    if (isNaN(friendID)) throw new Error('UserID is required and must be a number.');
 
     const friendExists = await userDB.getUserByID({ userID: userID });
     if (!friendExists) throw new Error('The friend whom you want to remove does not exist.');
 
-    const friendToRemove = await friendsDB.getFriendForLoggedInUser({ loggedInUserID, userID });
+    const friendToRemove = await friendsDB.getFriendByUser({ userID, friendID });
     if (!friendToRemove) throw new Error('The person you tried to remove is not your friend.');
 
     const removedFriends = await friendsDB.removeFriend(friendToRemove);
     if (!removedFriends) throw new Error('Error occured removing friend.');
     return <FriendInfoResponse>{
         userID:
-            removedFriends.getUser1ID() === loggedInUserID
+            removedFriends.getUser1ID() === userID
                 ? removedFriends.getUser2ID()
                 : removedFriends.getUser1ID(),
         username:
-            removedFriends.getUser1ID() === loggedInUserID
+            removedFriends.getUser1ID() === userID
                 ? removedFriends.getUser2()?.getUsername()
                 : removedFriends.getUser1()?.getUsername(),
     };
 };
 
 export default {
-    getFriendsInfoForUser,
+    getFriendsInfoByUser,
     getFriendsByUsername,
     sendFriendRequest,
     cancelFriendRequest,

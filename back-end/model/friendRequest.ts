@@ -67,12 +67,12 @@ export class FriendRequest {
         sender,
         receiverID,
         receiver,
-    }: FriendRequestPrisma & { sender: UserPrisma; receiver: UserPrisma }) {
+    }: FriendRequestPrisma & { sender?: UserPrisma; receiver?: UserPrisma }) {
         return new FriendRequest({
             senderID,
             receiverID,
-            sender: User.from(sender),
-            receiver: User.from(receiver),
+            sender: sender ? User.from(sender) : undefined,
+            receiver: receiver ? User.from(receiver) : undefined,
         });
     }
 }

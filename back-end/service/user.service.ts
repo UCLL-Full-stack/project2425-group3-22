@@ -22,7 +22,7 @@ const getAllUsers = async (): Promise<Array<UserResponse>> => {
 
 const getUserByID = async (userID: number): Promise<UserProfileResponse> => {
     const user = await userDB.getUserByID({ userID });
-    const friendsInfo = await friendsDB.getFriendsInfoByUser({ userID });
+    const friendsInfo = await friendsDB.getFriendStatsByUser({ userID });
 
     if (!user) throw new Error('User not found.');
     return <UserProfileResponse>{

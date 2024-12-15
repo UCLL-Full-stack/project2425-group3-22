@@ -66,12 +66,12 @@ export class Friends {
         user1,
         user2ID,
         user2,
-    }: FriendsPrisma & { user1: UserPrisma; user2: UserPrisma }) {
+    }: FriendsPrisma & { user1?: UserPrisma; user2?: UserPrisma }) {
         return new Friends({
             user1ID: user1ID,
             user2ID: user2ID,
-            user1: User.from(user1),
-            user2: User.from(user2),
+            user1: user1 ? User.from(user1) : undefined,
+            user2: user2 ? User.from(user2) : undefined,
         });
     }
 }

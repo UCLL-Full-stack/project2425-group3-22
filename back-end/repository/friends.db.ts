@@ -3,7 +3,7 @@ import { Friends } from '../model/friends';
 import { FriendStats } from '../types';
 import database from '../util/database';
 
-const areFriends = async ({
+const checkIfFriends = async ({
     user1ID,
     user2ID,
 }: {
@@ -28,7 +28,7 @@ const areFriends = async ({
     }
 };
 
-const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<FriendStats> => {
+const getFriendStatsByUser = async ({ userID }: { userID: number }): Promise<FriendStats> => {
     try {
         const countFriendsPrisma = await database.friends.count({
             where: {
@@ -51,19 +51,19 @@ const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<Fri
     }
 };
 
-const getFriendForLoggedInUser = async ({
-    loggedInUserID,
+const getFriendByUser = async ({
     userID,
+    friendID,
 }: {
-    loggedInUserID: number;
     userID: number;
+    friendID: number;
 }): Promise<Friends | null> => {
     try {
         const friendsPrisma = await database.friends.findFirst({
             where: {
                 OR: [
-                    { user1ID: loggedInUserID, user2ID: userID },
-                    { user1ID: userID, user2ID: loggedInUserID },
+                    { user1ID: userID, user2ID: friendID },
+                    { user1ID: friendID, user2ID: userID },
                 ],
             },
             include: { user1: true, user2: true },
@@ -77,7 +77,7 @@ const getFriendForLoggedInUser = async ({
     }
 };
 
-const getAllIncomingFriendRequestsForUser = async ({
+const getAllIncomingFriendRequestsByUser = async ({
     userID,
 }: {
     userID: number;
@@ -98,7 +98,7 @@ const getAllIncomingFriendRequestsForUser = async ({
     }
 };
 
-const getAllOutgoingFriendRequestsForUser = async ({
+const getAllOutgoingFriendRequestsByUser = async ({
     userID,
 }: {
     userID: number;
@@ -119,7 +119,7 @@ const getAllOutgoingFriendRequestsForUser = async ({
     }
 };
 
-const getAllFriendsForUser = async ({
+const getAllFriendsByUser = async ({
     userID,
 }: {
     userID: number;
@@ -149,29 +149,29 @@ const getFriendsByUsername = async ({
         const friendsPrisma = await database.friends.findMany({
             where: {
                 OR: [
-                    { user1: { username: { contains: username } } },
-                    { user2: { username: { contains: username } } },
+                    { user1: { username: { contains: username } }, user2ID: userID },
+                    { user1ID: userID, user2: { username: { contains: username } } },
                 ],
             },
             include: { user1: true, user2: true },
         });
         if (friendsPrisma.length < 1) return null;
 
-        const filteredFriendsPrisma: Array<any> = [];
-        friendsPrisma.forEach((friendPrisma) => {
-            if (
-                (friendPrisma.user1ID === userID &&
-                    friendPrisma.user2.username.includes(username)) ||
-                (friendPrisma.user2ID === userID && friendPrisma.user1.username.includes(username))
-            ) {
-                filteredFriendsPrisma.push(friendPrisma);
-            }
-        });
+        // const filteredFriendsPrisma: Array<any> = [];
+        // friendsPrisma.forEach((friendPrisma) => {
+        //     if (
+        //         (friendPrisma.user1ID === userID &&
+        //             friendPrisma.user2.username.includes(username)) ||
+        //         (friendPrisma.user2ID === userID && friendPrisma.user1.username.includes(username))
+        //     ) {
+        //         filteredFriendsPrisma.push(friendPrisma);
+        //     }
+        // });
 
-        const friends = filteredFriendsPrisma.map((filteredFriendPrisma) =>
-            Friends.from(filteredFriendPrisma)
-        );
-        return friends;
+        // const friends = filteredFriendsPrisma.map((filteredFriendPrisma) =>
+        //     Friends.from(filteredFriendPrisma)
+        // );
+        return friendsPrisma.map((friendPrisma) => Friends.from(friendPrisma));
     } catch (err: any) {
         console.log(err);
         throw new Error('Database error, check log for more information.');
@@ -202,7 +202,7 @@ const getFriendRequest = async ({
     }
 };
 
-const isSendingFriendRequestAllowed = async (
+const checkIfFriendRequestAllowed = async (
     friendRequest: FriendRequest
 ): Promise<string | null> => {
     try {
@@ -360,15 +360,15 @@ const removeFriend = async (friends: Friends): Promise<Friends | null> => {
 };
 
 export default {
-    areFriends,
-    getFriendsInfoByUser,
-    getFriendForLoggedInUser,
-    getAllIncomingFriendRequestsForUser,
-    getAllOutgoingFriendRequestsForUser,
-    getAllFriendsForUser,
+    checkIfFriends,
+    getFriendStatsByUser,
+    getFriendByUser,
+    getAllIncomingFriendRequestsByUser,
+    getAllOutgoingFriendRequestsByUser,
+    getAllFriendsByUser,
     getFriendsByUsername,
     getFriendRequest,
-    isSendingFriendRequestAllowed,
+    checkIfFriendRequestAllowed,
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,

@@ -98,7 +98,40 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
- * /poop/id/{userID}:
+ * /poop/id/{poopID}:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get a poops by ID
+ *      parameters:
+ *        - in: path
+ *          name: poopID
+ *          schema:
+ *              type: integer
+ *              minimum: 1
+ *          required: true
+ *          description: ID of the poop to get
+ *      responses:
+ *         200:
+ *            description: The poop for the given ID
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/PoopResponse'
+ */
+// poopRouter.get('/id/:poopID', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const poopID = req.params['poopID'];
+//         const result = await poopService.getPoopByID(Number(poopID));
+//         return res.status(200).json(result);
+//     } catch (err: any) {
+//         next(err);
+//     }
+// });
+
+/**
+ * @swagger
+ * /poop/user/{userID}:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -121,7 +154,7 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                  items:
  *                      $ref: '#/components/schemas/PoopResponse'
  */
-poopRouter.get('/id/:userID', async (req: Request, res: Response, next: NextFunction) => {
+poopRouter.get('/user/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params['userID'];
         const result = await poopService.getPoopsByUser(Number(userID));

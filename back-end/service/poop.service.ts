@@ -104,7 +104,7 @@ const createPoop = async (
     title?: string,
     latitude?: number,
     longitude?: number
-): Promise<Poop> => {
+): Promise<PoopResponse> => {
     if (!dateTime || isNaN(type) || isNaN(size) || isNaN(rating))
         throw new Error(
             'dateTime, type, size and rating are required (type, size and rating must be numbers).'
@@ -125,7 +125,22 @@ const createPoop = async (
         })
     );
     if (!poop) throw new Error('Error occured creating poop.');
-    return poop;
+
+    return <PoopResponse>{
+        poopID: poop.getPoopID(),
+        dateTime: poop.getDateTime(),
+        type: poop.getType(),
+        size: poop.getSize(),
+        rating: poop.getRating(),
+        user: {
+            userID: poop.getUser()?.getUserID(),
+            username: poop.getUser()?.getUsername(),
+        },
+        colorID: poop.getColorID(),
+        title: poop.getTitle(),
+        latitude: poop.getLatitude(),
+        longitude: poop.getLongitude(),
+    };
 };
 
 const deletePoop = async (userID: number, poopID: number): Promise<String> => {

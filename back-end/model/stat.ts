@@ -17,6 +17,7 @@ export class Stat {
         name: string;
         description: string;
     }) {
+        this.validate({ statCode, name, description });
         this.statID = statID;
         this.statCode = statCode;
         this.name = name;
@@ -37,6 +38,22 @@ export class Stat {
 
     getDescription(): string {
         return this.description;
+    }
+
+    private validate({
+        statCode,
+        name,
+        description,
+    }: {
+        statCode: string;
+        name: string;
+        description: string;
+    }) {
+        if (!statCode) throw new Error('Stat code is required.');
+        if (!name || name.length > 100)
+            throw new Error('Name is required and cannot be longer than 100 characters.');
+        if (!description || description.length > 100)
+            throw new Error('Description is required and cannot be longer than 100 characters.');
     }
 
     static from({ statID, statCode, name, description }: StatPrisma) {

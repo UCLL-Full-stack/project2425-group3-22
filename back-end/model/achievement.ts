@@ -1,57 +1,134 @@
-import { Achievement as AchievementPrisma } from '@prisma/client';
+import { Achievement as AchievementPrisma, Stat as StatPrisma } from '@prisma/client';
+import { Stat } from './stat';
 
-//TODO: add validation & make type for level?
 export class Achievement {
     private achievementID: number;
+    private achievementCode: string;
     private name: string;
     private description: string;
-    private level: number;
+    private levels: Array<number>;
+    private levelsCriteria: Array<number>;
+    private statID: number;
+    private stat?: Stat;
 
-    constructor(achievement: {
+    constructor({
+        achievementID,
+        achievementCode,
+        name,
+        description,
+        levels,
+        levelsCriteria,
+        statID,
+        stat,
+    }: {
         achievementID: number;
+        achievementCode: string;
         name: string;
         description: string;
-        level: number;
+        levels: Array<number>;
+        levelsCriteria: Array<number>;
+        statID: number;
+        stat?: Stat;
     }) {
-        this.achievementID = achievement.achievementID;
-        this.name = achievement.name;
-        this.description = achievement.description;
-        this.level = achievement.level;
+        this.validate({ achievementCode, name, description, levels, levelsCriteria, statID });
+        this.achievementID = achievementID;
+        this.achievementCode = achievementCode;
+        this.name = name;
+        this.description = description;
+        this.levels = levels;
+        this.levelsCriteria = levelsCriteria;
+        this.statID = statID;
+        this.stat = stat;
     }
 
-    getAchievementID(): number | undefined {
+    getAchievementID(): number {
         return this.achievementID;
     }
 
-    setAchievementID(achievementID: number) {
-        this.achievementID = achievementID;
+    getAchievementCode(): string {
+        return this.achievementCode;
     }
 
-    getName(): string | undefined {
+    getName(): string {
         return this.name;
     }
 
-    setName(name: string) {
-        this.name = name;
-    }
-
-    getDescription(): string | undefined {
+    getDescription(): string {
         return this.description;
     }
 
-    setDescription(description: string) {
-        this.description = description;
+    getLevels(): Array<number> {
+        return this.levels;
     }
 
-    getLevel(): number | undefined {
-        return this.level;
+    getLevelsCriteria(): Array<number> {
+        return this.levelsCriteria;
     }
 
-    setLevel(level: number) {
-        this.level = level;
+    getStatID(): number {
+        return this.statID;
     }
 
-    static from({ achievementID, name, description, level }: AchievementPrisma) {
-        return new Achievement({ achievementID, name, description, level });
+    getStat(): Stat | undefined {
+        return this.stat;
+    }
+
+    private validate({
+        achievementCode,
+        name,
+        description,
+        levels,
+        levelsCriteria,
+        statID,
+    }: {
+        achievementCode: string;
+        name: string;
+        description: string;
+        levels: Array<number>;
+        levelsCriteria: Array<number>;
+        statID: number;
+    }) {
+        if (!achievementCode) throw new Error('Achievement code is required.');
+        if (!name || name.length > 100)
+            throw new Error('Name is required and cannot be longer than 100 characters.');
+        if (!description || description.length > 100)
+            throw new Error('Description is required and cannot be longer than 100 characters.');
+        if (
+            !Array.isArray(levels) ||
+            levels.every((level) => Number.isInteger(level)) ||
+            levels.length > 10
+        )
+            throw new Error('Levels is required and must be an array of maximum 10 whole numbers.');
+        if (
+            !Array.isArray(levelsCriteria) ||
+            levelsCriteria.every((levelCriteria) => Number.isInteger(levelCriteria)) ||
+            levelsCriteria.length === levels.length
+        )
+            throw new Error(
+                'Levels criteria is required and must be an array the same lenght as levels, containing only whole numbers.'
+            );
+        if (isNaN(statID)) throw new Error('StatID is required ans must be a number.');
+    }
+
+    static from({
+        achievementID,
+        achievementCode,
+        name,
+        description,
+        levels,
+        levelsCriteria,
+        statID,
+        stat,
+    }: AchievementPrisma & { stat: StatPrisma }) {
+        return new Achievement({
+            achievementID,
+            achievementCode,
+            name,
+            description,
+            levels,
+            levelsCriteria,
+            statID,
+            stat: stat ? Stat.from(stat) : undefined,
+        });
     }
 }

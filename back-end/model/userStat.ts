@@ -65,6 +65,21 @@ export class UserStat {
         return this.stat;
     }
 
+    private validate({
+        userID,
+        statID,
+        statValue,
+    }: {
+        userID: number;
+        statID: number;
+        statValue: number;
+    }) {
+        if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
+        if (isNaN(statID)) throw new Error('StatID is required qnd must be a number.');
+        if (isNaN(statValue) || statValue < 0)
+            throw new Error('Stat value is required and must be a positive number.');
+    }
+
     static from({
         userID,
         statID,

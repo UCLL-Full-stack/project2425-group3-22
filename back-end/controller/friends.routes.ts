@@ -56,7 +56,7 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
         const request = <jwtRequest>req;
         const userID = request.auth?.userID;
 
-        const result = await friendsService.getFriendsInfoForUser(userID);
+        const result = await friendsService.getFriendsInfoByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

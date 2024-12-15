@@ -1,5 +1,6 @@
+import { User as UserPrisma, Stat as StatPrisma } from '@prisma/client';
 import { Role } from '../types';
-import { User as UserPrisma } from '@prisma/client';
+import { Stat } from './stat';
 
 //TODO: add other necessary validation
 export class User {
@@ -8,6 +9,7 @@ export class User {
     private email: string;
     private password: string;
     private role: Role;
+    private stats?: Array<Stat>;
 
     constructor({
         userID,
@@ -15,12 +17,14 @@ export class User {
         email,
         password,
         role,
+        stats,
     }: {
         userID: number;
         username: string;
         email: string;
         password: string;
         role?: Role;
+        stats?: Array<Stat>;
     }) {
         this.validate({ username, email, password });
 
@@ -34,6 +38,8 @@ export class User {
         } else {
             this.role = 'USER';
         }
+
+        this.stats = stats;
     }
 
     getUserID(): number {
@@ -87,6 +93,10 @@ export class User {
         if (role !== this.role) this.role = role;
     }
 
+    getStats(): Array<Stat> | undefined {
+        return this.stats;
+    }
+
     private validate({
         username,
         email,
@@ -123,13 +133,21 @@ export class User {
         return passwordRegex.test(password);
     }
 
-    static from({ userID, username, email, password, role }: UserPrisma) {
+    static from({
+        userID,
+        username,
+        email,
+        password,
+        role,
+        stats,
+    }: UserPrisma & { stats?: Array<StatPrisma> }) {
         return new User({
             userID,
             username,
             email,
             password,
             role: <Role>role,
+            stats: stats ? stats.map((stat) => Stat.from(stat)) : undefined,
         });
     }
 }
