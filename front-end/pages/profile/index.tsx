@@ -7,6 +7,7 @@ import Helper from 'utils/helper';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import ProfileOverview from '@components/profile/profileOverview';
 
 const Profile: React.FC = () => {
     const router = useRouter();
@@ -30,7 +31,7 @@ const Profile: React.FC = () => {
             <MainNavigation />
             <main>
                 <ProfileSidebar />
-                <p>Profile</p>
+                <ProfileOverview />
             </main>
         </>
     );

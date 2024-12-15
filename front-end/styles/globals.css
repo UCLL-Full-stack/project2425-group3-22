@@ -95,10 +95,3 @@ main {
 .scrollToTopButton.hidden {
     opacity: 0;
 }
-
-@media (max-width: 768px) {
-    .popup {
-        left: auto !important;
-        right: 0;
-    }
-}

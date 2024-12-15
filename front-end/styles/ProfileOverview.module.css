@@ -1,0 +1,49 @@
+.profileOverviewContainer {
+    background-color: white;
+    width: 100%;
+    height: fit-content;
+    padding: 30px 40px 20px 40px;
+}
+
+.userData {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.userData .userIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent);
+    border: 3px solid var(--accent);
+    color: var(--background);
+    width: 80px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 8px;    
+}
+
+.userData .username {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    color: #222;
+}
+
+.userData .role {
+    margin: 0;
+}
+
+.userData .username span {
+    color: var(--accent-muted);
+}
+
+.friendsContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}

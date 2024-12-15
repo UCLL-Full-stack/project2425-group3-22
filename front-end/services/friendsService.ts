@@ -1,5 +1,16 @@
 import Helper from "utils/helper";
 
+const getFriends = async () => {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/profile/friends', {
+        method: 'GET',
+        headers: {
+            authorization: 'Bearer ' + Helper.getJWT(),
+            'Content-Type': 'application/json',
+        },
+    });
+};
+
+
 const searchFriends = async (username: string) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/' + username, {
         method: 'GET',
@@ -76,6 +87,7 @@ const removeFriend = async (userID: number) => {
 }
 
 const FriendsService = {
+    getFriends,
     searchFriends,
     sendFriendRequest,
     cancelFriendRequest,

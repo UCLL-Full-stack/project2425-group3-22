@@ -36,3 +36,10 @@
 .actionMenu .actionMenuLink:hover {
     background-color: #ededed;
 }
+
+@media (max-width: 768px) {
+    .actionMenu {
+        left: auto !important;
+        right: 0;
+    }
+}
