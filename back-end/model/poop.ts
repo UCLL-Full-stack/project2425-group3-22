@@ -164,8 +164,8 @@ export class Poop {
             throw new Error('Rating must be a number from 0 to 5 (whole or ending in .5).');
 
         //TODO: implement correct ColorID validation after deciding what exactly it'll be
-        if (colorID !== null && (colorID < 0 || colorID > 10))
-            throw new Error('ColorID must be a number from 0 to 10.');
+        if (colorID !== null && (colorID < 0 || colorID > 15))
+            throw new Error('ColorID must be a number from 0 to 15.');
 
         if (title && title.length > 100)
             throw new Error('Title cannot be longer than 100 characters.');

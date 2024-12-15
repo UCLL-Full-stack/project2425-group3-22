@@ -3,14 +3,15 @@ import bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
 import { User } from '../model/user';
 import userDB from '../repository/user.db';
-import { ReturnUser } from '../types';
+import friendsDB from '../repository/friends.db';
+import { UserInfoResponse, UserProfileResponse, UserResponse } from '../types';
 
-const getAllUsers = async (): Promise<Array<ReturnUser>> => {
+const getAllUsers = async (): Promise<Array<UserResponse>> => {
     const users = await userDB.getAllUsers();
     if (!users) return [];
     return users.map(
         (user) =>
-            <ReturnUser>{
+            <UserResponse>{
                 userID: user.getUserID(),
                 username: user.getUsername(),
                 email: user.getEmail(),
@@ -19,22 +20,44 @@ const getAllUsers = async (): Promise<Array<ReturnUser>> => {
     );
 };
 
-const getUserByID = async (userID: number): Promise<ReturnUser> => {
+const getUserByID = async (userID: number): Promise<UserProfileResponse> => {
     const user = await userDB.getUserByID({ userID });
+    const friendsInfo = await friendsDB.getFriendsInfoByUser({ userID });
+
     if (!user) throw new Error('User not found.');
-    return <ReturnUser>{
+    return <UserProfileResponse>{
         userID: user.getUserID(),
         username: user.getUsername(),
         email: user.getEmail(),
         role: user.getRole(),
+        friends: friendsInfo.friends,
+        friendRequests: friendsInfo.friendRequests,
     };
+};
+
+const getUsersByUsername = async (
+    loggedInUserID: number,
+    username: string
+): Promise<Array<UserInfoResponse>> => {
+    if (!username) throw new Error('Username is required.');
+
+    const users = await userDB.getUsersByUsername({ loggedInUserID, username });
+    if (!users) throw new Error(`No users with username containing '${username}' found.`);
+
+    return users.map(
+        (user) =>
+            <UserInfoResponse>{
+                userID: user.getUserID(),
+                username: user.getUsername(),
+            }
+    );
 };
 
 const createUser = async (
     username: string,
     email: string,
     password: string
-): Promise<ReturnUser> => {
+): Promise<UserResponse> => {
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
@@ -44,7 +67,7 @@ const createUser = async (
 
     const createdUser = await userDB.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
-    return <ReturnUser>{
+    return <UserResponse>{
         userID: createdUser.getUserID(),
         username: createdUser.getUsername(),
         email: createdUser.getEmail(),
@@ -58,7 +81,7 @@ const updateUser = async (
     email: string,
     password: string,
     role: Role
-): Promise<ReturnUser> => {
+): Promise<UserResponse> => {
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
@@ -73,7 +96,7 @@ const updateUser = async (
 
     const updatedUser = await userDB.updateUser(userToUpdate);
     if (!updatedUser) throw new Error('Error occured updating user.');
-    return <ReturnUser>{
+    return <UserResponse>{
         userID: updatedUser.getUserID(),
         username: updatedUser.getUsername(),
         email: updatedUser.getEmail(),
@@ -100,6 +123,7 @@ const checkUsernameInUse = async (username: string | undefined): Promise<boolean
 export default {
     getAllUsers,
     getUserByID,
+    getUsersByUsername,
     createUser,
     updateUser,
 };

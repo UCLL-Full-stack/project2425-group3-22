@@ -29,14 +29,23 @@ type UpdateUserInput = {
     role: Role;
 };
 
-type ReturnUser = {
+type UserResponse = {
     userID: number;
     username: string;
     email: string;
     role: Role;
 };
 
-type ReturnUserMinimal = {
+type UserProfileResponse = {
+    userID: number;
+    username: string;
+    email: string;
+    role: Role;
+    friends?: number;
+    friendRequests?: number;
+};
+
+type UserInfoResponse = {
     userID: number;
     username: string;
 };
@@ -89,6 +98,11 @@ type ReturnPoopForDisplay = {
 //#endregion
 
 //#region FRIEND(S/REQUEST) types
+type FriendInfo = {
+    friends: number;
+    friendRequests: number;
+};
+
 type FriendInfoResponse = {
     userID: number;
     username: string;
@@ -119,11 +133,14 @@ export {
     LoginRequest,
     LoginResponse,
     UpdateUserInput,
-    ReturnUser,
+    UserResponse,
+    UserProfileResponse,
+    UserInfoResponse,
     PoopRequest,
     ReturnPoop,
     ReturnPoopForMap,
     ReturnPoopForDisplay,
+    FriendInfo,
     FriendInfoResponse,
     FriendsInfoResponse,
     UserStatResponse,

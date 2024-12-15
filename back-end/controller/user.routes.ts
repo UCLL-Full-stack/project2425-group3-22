@@ -33,8 +33,16 @@
  *                  type: string
  *              role:
  *                  type: string
+ *        UserInfoResponse:
+ *          type: object
+ *          properties:
+ *              userID:
+ *                  type: number
+ *              username:
+ *                  type: string
  */
 import express, { NextFunction, Request, Response } from 'express';
+import { Request as jwtRequest } from 'express-jwt';
 import userService from '../service/user.service';
 import { UpdateUserInput } from '../types';
 import { isAdmin, isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
@@ -69,7 +77,42 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
- * /user/{userID}:
+ * /user/search:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get users whose username contains given username
+ *      parameters:
+ *        - in: query
+ *          name: username
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: Username of the user to find
+ *      responses:
+ *         200:
+ *            description: The users whose usernames contain the given username
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/UserInfoResponse'
+ */
+userRouter.get('/search', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+        const username = <string>req.query?.username;
+
+        const result = await userService.getUsersByUsername(userID, username);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /user/id/{userID}:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -91,7 +134,7 @@ userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                      $ref: '#/components/schemas/ReturnUser'
  */
 userRouter.get(
-    '/:userID',
+    '/id/:userID',
     isAdminOrModeratorOrFriends,
     async (req: Request, res: Response, next: NextFunction) => {
         try {

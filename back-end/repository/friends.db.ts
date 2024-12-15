@@ -1,5 +1,6 @@
 import { FriendRequest } from '../model/friendRequest';
 import { Friends } from '../model/friends';
+import { FriendInfo } from '../types';
 import database from '../util/database';
 
 const areFriends = async ({
@@ -21,6 +22,29 @@ const areFriends = async ({
 
         if (!friendPrisma) return false;
         return true;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<FriendInfo> => {
+    try {
+        const countFriendsPrisma = await database.friends.count({
+            where: {
+                OR: [{ user1ID: userID }, { user2ID: userID }],
+            },
+        });
+        const countFriendRequestsPrisma = await database.friendRequest.count({
+            where: {
+                receiverID: userID,
+            },
+        });
+
+        return <FriendInfo>{
+            friends: countFriendsPrisma ?? 0,
+            friendRequests: countFriendRequestsPrisma ?? 0,
+        };
     } catch (err: any) {
         console.log(err);
         throw new Error('Database error, check log for more information.');
@@ -335,6 +359,7 @@ const removeFriend = async (friends: Friends): Promise<Friends | null> => {
 
 export default {
     areFriends,
+    getFriendsInfoByUser,
     getFriendForLoggedInUser,
     getAllIncomingFriendRequestsForUser,
     getAllOutgoingFriendRequestsForUser,

@@ -38,13 +38,40 @@ const friendsRouter = express.Router();
 
 /**
  * @swagger
- * /friends/{username}:
+ * /friends:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all friends, incoming friend requests and outgoing friend requests for the logged in user
+ *      responses:
+ *         200:
+ *            description: The friends, incoming friend requests and outgoing friend requests
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  $ref: '#/components/schemas/FriendsInfoResponse'
+ */
+friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+
+        const result = await friendsService.getFriendsInfoForUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /friends/search:
  *   get:
  *      security:
  *          - bearerAuth: []
  *      summary: Get friends whose username contains given username
  *      parameters:
- *        - in: path
+ *        - in: query
  *          name: username
  *          schema:
  *              type: string
@@ -58,11 +85,11 @@ const friendsRouter = express.Router();
  *                schema:
  *                  $ref: '#/components/schemas/FriendInfoResponse'
  */
-friendsRouter.get('/:username', async (req: Request, res: Response, next: NextFunction) => {
+friendsRouter.get('/search', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
         const userID = request.auth?.userID;
-        const username = req.params['username'];
+        const username = <string>req.query?.username;
 
         const result = await friendsService.getFriendsByUsername(userID, username);
         return res.status(200).json(result);

@@ -207,7 +207,7 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
 /**
  * @swagger
  * /poop/delete:
- *   post:
+ *   delete:
  *      security:
  *          - bearerAuth: []
  *      summary: Delete a poop

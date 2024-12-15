@@ -42,13 +42,17 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
 };
 
 const getUsersByUsername = async ({
+    loggedInUserID,
     username,
 }: {
+    loggedInUserID: number;
     username: string;
 }): Promise<Array<User> | null> => {
     try {
         const usersPrisma = await database.user.findMany({
-            where: { username: { contains: username } },
+            where: {
+                AND: [{ username: { contains: username } }, { NOT: { userID: loggedInUserID } }],
+            },
         });
 
         if (usersPrisma.length < 1) return null;
