@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import styles from '@styles/ScrollToTopButton.module.css';
 
 const ScrollToTopButton: React.FC = () => {
     const [isAtTop, setIsAtTop] = useState(true);
@@ -21,7 +22,10 @@ const ScrollToTopButton: React.FC = () => {
     };
 
     return (
-        <button className={`scrollToTopButton ${isAtTop ? 'hidden' : ''}`} onClick={scrollToTop}>
+        <button
+            className={`${styles.scrollToTopButton} ${isAtTop ? styles.hidden : ''}`}
+            onClick={scrollToTop}
+        >
             <FontAwesomeIcon icon="angle-up" />
         </button>
     );

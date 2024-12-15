@@ -1,12 +1,15 @@
+import styles from '@styles/Friends.module.css';
+
 type Props = {
     user: { userID: number; username: string };
 };
 
 const OutgoingRequestItem: React.FC<Props> = ({ user }: Props) => {
     return (
-        <div>
+        <div className={styles.friendItem}>
             {user.username}
-            <button>Cancel</button>
+            <div className={styles.spacer} />
+            <button className={styles.cancelButton}>Cancel</button>
         </div>
     );
 };

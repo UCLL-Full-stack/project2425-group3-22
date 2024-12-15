@@ -1,12 +1,33 @@
+import FriendsService from '@services/friendsService';
+import styles from '@styles/Friends.module.css';
+
 type Props = {
     user: { userID: number; username: string };
 };
 
 const FriendItem: React.FC<Props> = ({ user }: Props) => {
+
+    const removeFriend = async () => {
+        const isConfirmed = window.confirm("Are you sure you want to remove this friend?");
+
+        if (!isConfirmed) {
+            return;
+        }
+
+        const response = await FriendsService.removeFriend(user.userID);
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Failed to remove friend');
+        }
+    };
+
     return (
-        <div>
+        <div className={styles.friendItem}>
             {user.username}
-            <button>Remove</button>
+            <div className={styles.spacer} />
+            <button className={styles.removeButton} onClick={removeFriend}>Remove</button>
         </div>
     );
 };

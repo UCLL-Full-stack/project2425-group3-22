@@ -8,9 +8,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import FriendsService from '@services/friendsService';
-import FriendItem from '@components/Friends/friendItem';
 import IncomingRequestItem from '@components/Friends/incomingRequestItem';
 import OutgoingRequestItem from '@components/Friends/outgoingRequestItem';
+import styles from '@styles/Friends.module.css';
+import FriendList from '@components/Friends/friendList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IncomingRequestList from '@components/Friends/incomingRequestList';
+import OutgoingRequestList from '@components/Friends/outgoingRequestList';
 
 const Profile: React.FC = () => {
     const router = useRouter();
@@ -59,48 +63,11 @@ const Profile: React.FC = () => {
                 <title>{t('title.profile-friends')}</title>
             </Head>
             <MainNavigation />
+            <Link href="/profile" className={styles.backButton}><FontAwesomeIcon icon="angle-left" /></Link>
             <main>
-                <Link href="/profile">Back</Link>
-
-                <div>
-                    <h2>friends</h2>
-
-                    {friends.length > 0 ? (
-                        <div>
-                            {friends.map((user: any) => (
-                                <FriendItem user={user} />
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No friends</p>
-                    )}
-                </div>
-
-                <div>
-                    <h2>incoming</h2>
-                    {incoming.length > 0 ? (
-                        <div>
-                            {incoming.map((user: any) => (
-                                <IncomingRequestItem user={user} />
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No incoming requests</p>
-                    )}
-                </div>
-
-                <div>
-                    <h2>outgoing</h2>
-                    {outgoing.length > 0 ? (
-                        <div>
-                            {outgoing.map((user: any) => (
-                                <OutgoingRequestItem user={user} />
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No outgoing requests</p>
-                    )}
-                </div>
+                <FriendList users={friends}/>
+                <IncomingRequestList users={incoming}/>
+                <OutgoingRequestList users={outgoing}/>
             </main>
         </>
     );
