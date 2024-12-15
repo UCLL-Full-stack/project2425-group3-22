@@ -18,6 +18,7 @@ export class FriendRequest {
         sender?: User;
         receiver?: User;
     }) {
+        this.validate({ senderID, receiverID });
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.sender = sender;
@@ -54,6 +55,11 @@ export class FriendRequest {
 
     setReceiver(receiver: User) {
         this.receiver = receiver;
+    }
+
+    private validate({ senderID, receiverID }: { senderID: number; receiverID: number }) {
+        if (!senderID) throw new Error('SenderID is required.');
+        if (!receiverID) throw new Error('ReceiverID is required.');
     }
 
     static from({

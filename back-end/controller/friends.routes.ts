@@ -45,7 +45,7 @@ const friendsRouter = express.Router();
  *      summary: Get all friends, incoming friend requests and outgoing friend requests for the logged in user
  *      responses:
  *         200:
- *            description: The friends, incoming friend requests and outgoing friend requests
+ *            description: Friends, incoming and outgoing friend requests
  *            content:
  *              application/json:
  *                schema:
@@ -69,7 +69,7 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get friends whose username contains given username
+ *      summary: Get friends by username
  *      parameters:
  *        - in: query
  *          name: username
@@ -79,7 +79,7 @@ friendsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  *          description: Username of the friend to find
  *      responses:
  *         200:
- *            description: The friends whose usernames contain the given username
+ *            description: Friends whose usernames contain the given username
  *            content:
  *              application/json:
  *                schema:
@@ -153,7 +153,7 @@ friendsRouter.post('/add', async (req: Request, res: Response, next: NextFunctio
  *                      type: number
  *      responses:
  *         200:
- *            description: The error or success message
+ *            description: An error or success message
  *            content:
  *              application/json:
  *                schema:
@@ -190,7 +190,7 @@ friendsRouter.delete('/cancel', async (req: Request, res: Response, next: NextFu
  *                      type: number
  *      responses:
  *         200:
- *            description: The user of whom to accept the friendrequest
+ *            description: The user whose friendrequest to accept
  *            content:
  *              application/json:
  *                schema:
@@ -227,7 +227,7 @@ friendsRouter.put('/accept', async (req: Request, res: Response, next: NextFunct
  *                      type: number
  *      responses:
  *         200:
- *            description: The error or success message
+ *            description: An error or success message
  *            content:
  *              application/json:
  *                schema:

@@ -1,21 +1,21 @@
 import { FriendRequest } from '../model/friendRequest';
 import { Friends } from '../model/friends';
-import { FriendInfo } from '../types';
+import { FriendStats } from '../types';
 import database from '../util/database';
 
 const areFriends = async ({
-    loggedInUserID,
-    userID,
+    user1ID,
+    user2ID,
 }: {
-    loggedInUserID: number;
-    userID: number;
+    user1ID: number;
+    user2ID: number;
 }): Promise<Boolean> => {
     try {
         const friendPrisma = await database.friends.findFirst({
             where: {
                 OR: [
-                    { user1ID: loggedInUserID, user2ID: userID },
-                    { user1ID: userID, user2ID: loggedInUserID },
+                    { user1ID: user1ID, user2ID: user2ID },
+                    { user1ID: user2ID, user2ID: user1ID },
                 ],
             },
         });
@@ -28,7 +28,7 @@ const areFriends = async ({
     }
 };
 
-const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<FriendInfo> => {
+const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<FriendStats> => {
     try {
         const countFriendsPrisma = await database.friends.count({
             where: {
@@ -41,7 +41,7 @@ const getFriendsInfoByUser = async ({ userID }: { userID: number }): Promise<Fri
             },
         });
 
-        return <FriendInfo>{
+        return <FriendStats>{
             friends: countFriendsPrisma ?? 0,
             friendRequests: countFriendRequestsPrisma ?? 0,
         };
@@ -202,7 +202,9 @@ const getFriendRequest = async ({
     }
 };
 
-const sendFriendRequestAllowed = async (friendRequest: FriendRequest): Promise<string | null> => {
+const isSendingFriendRequestAllowed = async (
+    friendRequest: FriendRequest
+): Promise<string | null> => {
     try {
         const alreadySent = await getFriendRequest({
             senderID: friendRequest.getSenderID(),
@@ -366,7 +368,7 @@ export default {
     getAllFriendsForUser,
     getFriendsByUsername,
     getFriendRequest,
-    sendFriendRequestAllowed,
+    isSendingFriendRequestAllowed,
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,

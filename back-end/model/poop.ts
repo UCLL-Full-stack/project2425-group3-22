@@ -1,4 +1,5 @@
-import { Poop as PoopPrisma, User, User as UserPrisma } from '@prisma/client';
+import { Poop as PoopPrisma, User as UserPrisma } from '@prisma/client';
+import { User } from './user';
 
 export class Poop {
     private poopID: number;
@@ -6,7 +7,7 @@ export class Poop {
     private type: number;
     private size: number;
     private rating: number;
-    private user?: any;
+    private user?: User;
     private colorID: number | null;
     private title: string | null;
     private latitude: number | null;
@@ -29,7 +30,7 @@ export class Poop {
         type: number;
         size: number;
         rating: number;
-        user?: any;
+        user?: User;
         colorID: number | null;
         title: string | null;
         latitude: number | null;
@@ -98,7 +99,7 @@ export class Poop {
         this.rating = rating;
     }
 
-    getUser(): any {
+    getUser(): User | undefined {
         return this.user;
     }
 
@@ -193,14 +194,14 @@ export class Poop {
         title,
         latitude,
         longitude,
-    }: PoopPrisma & { user: UserPrisma }) {
+    }: PoopPrisma & { user?: UserPrisma }) {
         return new Poop({
             poopID,
             dateTime,
             type,
             size,
             rating,
-            user: { userID: user.userID, username: user.username },
+            user: user ? User.from(user) : undefined,
             colorID: colorID ?? null,
             title: title ?? null,
             latitude: latitude ?? null,

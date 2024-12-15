@@ -40,7 +40,7 @@ const isAdminOrModeratorOrFriends = async (req: Request, res: Response, next: Ne
     if (
         role === 'ADMIN' ||
         role === 'MODERATOR' ||
-        (await friendsDb.areFriends({ loggedInUserID, userID }))
+        (await friendsDb.areFriends({ user1ID: loggedInUserID, user2ID: userID }))
     ) {
         next();
     } else {

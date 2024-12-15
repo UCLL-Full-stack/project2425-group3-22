@@ -2,27 +2,6 @@
  * @swagger
  *   components:
  *      schemas:
- *        User:
- *          type: object
- *          properties:
- *              userID:
- *                  type: number
- *                  format: int64
- *              username:
- *                  type: string
- *              email:
- *                  type: string
- *              password:
- *                  type: string
- *              role:
- *                  type: string
- *        LoginRequest:
- *          type: object
- *          properties:
- *              usernameOrEmail:
- *                  type: string
- *              password:
- *                  type: string
  *        RegisterRequest:
  *          type: object
  *          properties:
@@ -32,13 +11,27 @@
  *                  type: string
  *              password:
  *                  type: string
+ *        LoginRequest:
+ *          type: object
+ *          properties:
+ *              usernameOrEmail:
+ *                  type: string
+ *              password:
+ *                  type: string
+ *        AuthenticationReponse:
+ *          type: object
+ *          properties:
+ *              username:
+ *                  type: string
+ *              role:
+ *                  type: string
+ *              toke:
+ *                  type: string
  */
-import * as dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import authService from '../service/auth.service';
 import { RegisterRequest, LoginRequest } from '../types';
 
-dotenv.config();
 const authRouter = express.Router();
 
 /**
@@ -54,12 +47,11 @@ const authRouter = express.Router();
  *              $ref: '#/components/schemas/RegisterRequest'
  *      responses:
  *         200:
- *            description: The logged in user.
+ *            description: The registered user.
  *            content:
  *              application/json:
- *                userID:
- *                  type: number
- *                  format: int64
+ *                schema:
+ *                  $ref: '#/components/schemas/AuthenticationResponse'
  */
 authRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -79,7 +71,7 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  * @swagger
  * /auth/login:
  *   post:
- *      summary: Login with a username or email and a password
+ *      summary: Login with a username/email and a password
  *      requestBody:
  *        required: true
  *        content:
@@ -92,7 +84,7 @@ authRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  *            content:
  *              application/json:
  *                schema:
- *                  $ref: '#/components/schemas/User'
+ *                  $ref: '#/components/schemas/AuthenticationResponse'
  */
 authRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {

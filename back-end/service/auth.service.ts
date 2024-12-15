@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 import { User } from '../model/user';
 import userDB from '../repository/user.db';
-import { LoginResponse } from '../types';
+import { AuthenticationResponse } from '../types';
 import { generateJwtToken } from '../util/jwt';
 
 const register = async (
     username: string,
     email: string,
     password: string
-): Promise<LoginResponse> => {
+): Promise<AuthenticationResponse> => {
     if (await checkUsernameInUse(username)) throw new Error('Username already in use.');
     if (await checkEmailInUse(email)) throw new Error('Email already in use.');
 
@@ -21,39 +21,43 @@ const register = async (
 
     const token = await generateJwtToken(createdUser.getUserID(), createdUser.getRole());
 
-    return <LoginResponse>{
+    return <AuthenticationResponse>{
         username: createdUser.getUsername(),
         role: createdUser.getRole(),
         token,
     };
 };
 
-const login = async (usernameOrEmail: string, password: string): Promise<LoginResponse> => {
+const login = async (
+    usernameOrEmail: string,
+    password: string
+): Promise<AuthenticationResponse> => {
     const user = usernameOrEmail.includes('@')
         ? await userDB.getUserByEmail({ email: usernameOrEmail })
         : await userDB.getUserByUsername({ username: usernameOrEmail });
 
-    if (!user)
-        throw new Error(
-            `User with ${
-                usernameOrEmail.includes('@') ? 'email' : 'username'
-            } '${usernameOrEmail}' does not exist.`
-        );
-    if (!(await bcrypt.compare(password, user.getPassword())))
+    //TODO: remove?
+    // if (!user)
+    //     throw new Error(
+    //         `User with ${
+    //             usernameOrEmail.includes('@') ? 'email' : 'username'
+    //         } '${usernameOrEmail}' does not exist.`
+    //     );
+    if (!user || !(await bcrypt.compare(password, user.getPassword())))
         throw new Error(
             `${usernameOrEmail.includes('@') ? 'Email' : 'Username'} or password incorrect.`
         );
 
     const token = await generateJwtToken(user.getUserID(), user.getRole());
 
-    return <LoginResponse>{
+    return <AuthenticationResponse>{
         username: user.getUsername(),
         role: user.getRole(),
         token,
     };
 };
 
-const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
+const checkEmailInUse = async (email: string | undefined): Promise<Boolean> => {
     if (email) {
         const user = await userDB.getUserByEmail({ email });
         return user ? true : false;
@@ -61,7 +65,7 @@ const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
     return false;
 };
 
-const checkUsernameInUse = async (username: string | undefined): Promise<boolean> => {
+const checkUsernameInUse = async (username: string | undefined): Promise<Boolean> => {
     if (username) {
         const user = await userDB.getUserByUsername({ username });
         return user ? true : false;

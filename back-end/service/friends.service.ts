@@ -1,12 +1,9 @@
 import { FriendRequest } from '../model/friendRequest';
-import { Friends } from '../model/friends';
 import friendsDB from '../repository/friends.db';
 import userDB from '../repository/user.db';
 import { FriendsInfoResponse, FriendInfoResponse } from '../types';
 
 const getFriendsInfoForUser = async (userID: number): Promise<FriendsInfoResponse> => {
-    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
-
     const friends = await friendsDB.getAllFriendsForUser({ userID });
     const incomingFriendRequests = await friendsDB.getAllIncomingFriendRequestsForUser({ userID });
     const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsForUser({ userID });
@@ -52,23 +49,20 @@ const getFriendsInfoForUser = async (userID: number): Promise<FriendsInfoRespons
 };
 
 const getFriendsByUsername = async (
-    loggedInUserID: number,
+    userID: number,
     username: string
 ): Promise<Array<FriendInfoResponse>> => {
-    if (!username) throw new Error('username is required.');
+    if (!username) throw new Error('Username is required.');
 
-    const friends = await friendsDB.getFriendsByUsername({ userID: loggedInUserID, username });
-    if (!friends) throw new Error(`No friends with username containing '${username}' found.`);
+    const friends = await friendsDB.getFriendsByUsername({ userID, username });
+    if (!friends) throw new Error(`No friends found with username containing '${username}'.`);
 
     return friends.map(
         (friend) =>
             <FriendInfoResponse>{
-                userID:
-                    friend.getUser1ID() === loggedInUserID
-                        ? friend.getUser2ID()
-                        : friend.getUser1ID(),
+                userID: friend.getUser1ID() === userID ? friend.getUser2ID() : friend.getUser1ID(),
                 username:
-                    friend.getUser1ID() === loggedInUserID
+                    friend.getUser1ID() === userID
                         ? friend.getUser2()?.getUsername()
                         : friend.getUser1()?.getUsername(),
             }
@@ -76,20 +70,18 @@ const getFriendsByUsername = async (
 };
 
 const sendFriendRequest = async (
-    loggedInUserID: number,
+    senderID: number,
     receiverID: number
 ): Promise<FriendInfoResponse> => {
-    if (isNaN(receiverID)) throw new Error('receiverID is required and must be a number.');
+    if (isNaN(receiverID)) throw new Error('ReceiverID is required and must be a number.');
 
     const receiverExists = await userDB.getUserByID({ userID: receiverID });
     if (!receiverExists)
-        throw new Error('The user you want to send the friendrequest to does not exist.');
+        throw new Error('The user you want to send a friendrequest to, does not exist.');
 
-    const friendRequestToSend = new FriendRequest({ senderID: loggedInUserID, receiverID });
-    const friendRequestAllowed = await friendsDB.sendFriendRequestAllowed(friendRequestToSend);
-    if (friendRequestAllowed) {
-        throw new Error(friendRequestAllowed);
-    }
+    const friendRequestToSend = new FriendRequest({ senderID, receiverID });
+    const friendRequestAllowed = await friendsDB.isSendingFriendRequestAllowed(friendRequestToSend);
+    if (friendRequestAllowed) throw new Error(friendRequestAllowed);
 
     const sentFriendRequest = await friendsDB.sendFriendRequest(friendRequestToSend);
     if (!sentFriendRequest) throw new Error('Error occured sending friend request.');
@@ -101,10 +93,10 @@ const sendFriendRequest = async (
 };
 
 const cancelFriendRequest = async (loggedInUserID: number, receiverID: number): Promise<String> => {
-    if (isNaN(receiverID)) throw new Error('receiverID is required and must be a number.');
+    if (isNaN(receiverID)) throw new Error('ReceiverID is required and must be a number.');
 
     const receiverExists = await userDB.getUserByID({ userID: receiverID });
-    if (!receiverExists) throw new Error('The user you sent the friendrequest to does not exist.');
+    if (!receiverExists) throw new Error('The user you sent a friendrequest to does not exist.');
 
     const friendRequestToCancel = await friendsDB.getFriendRequest({
         senderID: loggedInUserID,
@@ -121,7 +113,7 @@ const acceptFriendRequest = async (
     senderID: number,
     loggedInUserID: number
 ): Promise<FriendInfoResponse> => {
-    if (isNaN(senderID)) throw new Error('senderID is required and must be a number.');
+    if (isNaN(senderID)) throw new Error('SenderID is required and must be a number.');
 
     const senderExists = await userDB.getUserByID({ userID: senderID });
     if (!senderExists)
@@ -142,7 +134,7 @@ const acceptFriendRequest = async (
 };
 
 const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Promise<String> => {
-    if (isNaN(senderID)) throw new Error('senderID is required and must be a number.');
+    if (isNaN(senderID)) throw new Error('SenderID is required and must be a number.');
 
     const senderExists = await userDB.getUserByID({ userID: senderID });
     if (!senderExists)

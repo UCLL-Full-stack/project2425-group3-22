@@ -1,8 +1,7 @@
 import { Poop } from '../model/poop';
 import database from '../util/database';
-import { ReturnPoop, ReturnPoopForMap } from '../types';
 
-const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
+const getAllPoops = async (): Promise<Array<Poop> | null> => {
     try {
         const poopsPrisma = await database.poop.findMany({
             include: { user: true },
@@ -10,21 +9,7 @@ const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
         });
 
         if (poopsPrisma.length < 1) return null;
-        return poopsPrisma.map(
-            (poopPrisma) =>
-                <ReturnPoop>{
-                    poopID: poopPrisma.poopID,
-                    dateTime: poopPrisma.dateTime,
-                    type: poopPrisma.type,
-                    size: poopPrisma.size,
-                    rating: poopPrisma.rating,
-                    user: { userID: poopPrisma.user.userID, username: poopPrisma.user.username },
-                    colorID: poopPrisma.colorID,
-                    title: poopPrisma.title,
-                    latitude: poopPrisma.latitude,
-                    longitude: poopPrisma.longitude,
-                }
-        );
+        return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
         console.log(err);
         throw new Error('Database error, check log for more information.');
@@ -98,7 +83,7 @@ const getPoopsForMapByUser = async ({
     userID,
 }: {
     userID: number;
-}): Promise<Array<ReturnPoopForMap> | null> => {
+}): Promise<Array<Poop> | null> => {
     try {
         const poopsPrisma = await database.poop.findMany({
             where: { userID: userID, latitude: { not: null }, longitude: { not: null } },
@@ -106,21 +91,14 @@ const getPoopsForMapByUser = async ({
         });
 
         if (poopsPrisma.length < 1) return null;
-        return poopsPrisma.map(
-            (poopPrisma) =>
-                <ReturnPoopForMap>{
-                    poopID: poopPrisma.poopID,
-                    latitude: Number(poopPrisma.latitude),
-                    longitude: Number(poopPrisma.longitude),
-                }
-        );
+        return poopsPrisma.map((poopPrisma) => Poop.from(poopPrisma));
     } catch (err: any) {
         console.log(err);
         throw new Error('Database error, check log for more information.');
     }
 };
 
-const createPoop = async (poop: Poop): Promise<Poop | null> => {
+const createPoop = async (userID: number, poop: Poop): Promise<Poop | null> => {
     try {
         const poopPrisma = await database.poop.create({
             data: {
@@ -128,7 +106,7 @@ const createPoop = async (poop: Poop): Promise<Poop | null> => {
                 type: poop.getType(),
                 size: poop.getSize(),
                 rating: poop.getRating(),
-                user: { connect: { userID: poop.getUser().userID } },
+                user: { connect: { userID } },
                 colorID: poop.getColorID(),
                 title: poop.getTitle(),
                 latitude: poop.getLatitude(),

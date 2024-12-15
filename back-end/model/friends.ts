@@ -18,6 +18,7 @@ export class Friends {
         user1?: User;
         user2?: User;
     }) {
+        this.validate({ user1ID, user2ID });
         this.user1ID = user1ID;
         this.user2ID = user2ID;
         this.user1 = user1;
@@ -54,6 +55,10 @@ export class Friends {
 
     setUser2(user2: User) {
         this.user2 = user2;
+    }
+
+    private validate({ user1ID, user2ID }: { user1ID: number; user2ID: number }) {
+        if (!user1ID || !user2ID) throw new Error("Both userID's are required");
     }
 
     static from({

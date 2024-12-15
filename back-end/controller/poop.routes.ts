@@ -7,7 +7,31 @@
  *              scheme: bearer
  *              bearerFormat: jwt
  *      schemas:
- *        Poop:
+ *        PoopRequest:
+ *          type: object
+ *          properties:
+ *              dateTime:
+ *                  type: string
+ *                  format: date-time
+ *              type:
+ *                  type: number
+ *              size:
+ *                  type: number
+ *              rating:
+ *                  type: number
+ *              colorID:
+ *                  type: number
+ *                  required: false
+ *              title:
+ *                  type: string
+ *                  required: false
+ *              latitude:
+ *                  type: number
+ *                  required: false
+ *              longitude:
+ *                  type: number
+ *                  required: false
+ *        PoopResponse:
  *          type: object
  *          properties:
  *              poopID:
@@ -37,30 +61,6 @@
  *                  type: number
  *              longitude:
  *                  type: number
- *        PoopRequest:
- *          type: object
- *          properties:
- *              dateTime:
- *                  type: string
- *                  format: date-time
- *              type:
- *                  type: number
- *              size:
- *                  type: number
- *              rating:
- *                  type: number
- *              colorID:
- *                  type: number
- *                  required: false
- *              title:
- *                  type: string
- *                  required: false
- *              latitude:
- *                  type: number
- *                  required: false
- *              longitude:
- *                  type: number
- *                  required: false
  */
 import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
@@ -79,13 +79,13 @@ const poopRouter = express.Router();
  *      summary: Get all poops
  *      responses:
  *         200:
- *            description: The poops
+ *            description: All poops
  *            content:
  *              application/json:
  *                poops:
  *                  type: array
  *                  items:
- *                      $ref: '#/components/schemas/Poop'
+ *                      $ref: '#/components/schemas/PoopResponse'
  */
 poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -102,7 +102,7 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get all poops for a user by its ID
+ *      summary: Get all poops for a user by their ID
  *      parameters:
  *        - in: path
  *          name: userID
@@ -119,7 +119,7 @@ poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunct
  *                poops:
  *                  type: array
  *                  items:
- *                      $ref: '#/components/schemas/Poop'
+ *                      $ref: '#/components/schemas/PoopResponse'
  */
 poopRouter.get('/id/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -146,7 +146,7 @@ poopRouter.get('/id/:userID', async (req: Request, res: Response, next: NextFunc
  *                poops:
  *                  type: array
  *                  items:
- *                      $ref: '#/components/schemas/Poop'
+ *                      $ref: '#/components/schemas/PoopResponse'
  */
 poopRouter.get('/friends', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -178,7 +178,7 @@ poopRouter.get('/friends', async (req: Request, res: Response, next: NextFunctio
  *            content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/Poop'
+ *                      $ref: '#/components/schemas/PoopResponse'
  */
 poopRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -227,7 +227,7 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
  *            content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/Poop'
+ *                      $ref: '#/components/schemas/PoopResponse'
  */
 poopRouter.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
     try {
