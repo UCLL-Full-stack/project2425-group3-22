@@ -17,9 +17,11 @@ import {
     faAngleRight,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { appWithTranslation } from "next-i18next";
+
 library.add(faAngleUp, faAngleDown, faAngleLeft, faAngleRight, faPlus, faEllipsisV);
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
@@ -32,3 +34,5 @@ export default function App({ Component, pageProps }: AppProps) {
         </>
     );
 }
+
+export default appWithTranslation(App);

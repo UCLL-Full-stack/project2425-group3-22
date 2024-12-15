@@ -1,0 +1,12 @@
+{
+    "title": {
+        "index": "Poopedia | Home",
+        "login": "Poopedia | Login",
+        "register": "Poopedia | Register",
+        "add": "Poopedia | Add",
+        "profile": "Poopedia | Profile",
+        "profile-activity": "Poopedia | Profile - Activity",
+        "profile-map": "Poopedia | Profile - Map",
+        "admin": "Poopedia | Admin"
+    }
+}

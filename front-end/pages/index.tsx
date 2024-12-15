@@ -9,8 +9,13 @@ import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
 import { poopItem } from '@types';
 import PoopService from '@services/poopService';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from 'next-i18next';
+import { GetServerSideProps } from 'next';
 
 const Home: React.FC = () => {
+    const { t } = useTranslation(); 
+
     const router = useRouter();
     const [isValidated, setIsValidated] = useState(false);
     const [poops, setPoops] = useState([]);
@@ -47,7 +52,7 @@ const Home: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Poopedia | Home</title>
+                <title>{t("title.index")}</title>
             </Head>
             <MainNavigation />
             <main>
@@ -63,6 +68,16 @@ const Home: React.FC = () => {
             <ScrollToTopButton />
         </>
     );
+};
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { locale } = context;
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Home;

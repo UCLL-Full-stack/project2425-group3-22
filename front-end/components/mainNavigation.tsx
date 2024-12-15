@@ -5,10 +5,15 @@ import { useEffect, useRef, useState } from 'react';
 import Helper from 'utils/helper';
 import ProfileActionMenu from './ActionMenus/profileActionMenu';
 import LanguageActionMenu from './ActionMenus/languageActionMenu';
+import { useRouter } from 'next/router';
 
 const MainNavigation: React.FC = () => {
+    const router = useRouter();
+    const { locale } = router;
+
     const [showLanguageActionMenu, setShowLanguageActionMenu] = useState<boolean>(false);
     const [showProfileActionMenu, setShowProfileActionMenu] = useState<boolean>(false);
+    const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
     const [isRendered, setIsRendered] = useState<boolean>(false);
 
     const languageButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -18,12 +23,32 @@ const MainNavigation: React.FC = () => {
         setIsRendered(true);
     }, []);
 
+    useEffect(() => {
+        setSelectedLanguage(locale ?? 'en');
+    }, [router.locale]);
+
     const handleLanguageButtonClick = () => {
         setShowLanguageActionMenu((prev) => !prev);
     };
 
     const handleProfileButtonClick = () => {
         setShowProfileActionMenu((prev) => !prev);
+    };
+
+    const handleLanguageChange = (language: string) => {
+        const { asPath, pathname, query } = router;
+        
+        router.push(
+            {
+                pathname,
+                query,
+            },
+            asPath,
+            { locale: language }
+        );
+
+        setSelectedLanguage(language);
+        setShowLanguageActionMenu(false);
     };
 
     return (
@@ -39,7 +64,7 @@ const MainNavigation: React.FC = () => {
                         className={styles.languageButton}
                         onClick={handleLanguageButtonClick}
                     >
-                        <span>NL</span>
+                        <span>{selectedLanguage.toUpperCase()}</span>
                         <FontAwesomeIcon
                             icon={showLanguageActionMenu ? 'angle-down' : 'angle-up'}
                         />
@@ -60,6 +85,7 @@ const MainNavigation: React.FC = () => {
                 <LanguageActionMenu
                     languageButtonRef={languageButtonRef}
                     setShowActionMenu={setShowLanguageActionMenu}
+                    onLanguageChange={handleLanguageChange}
                 />
             )}
             {showProfileActionMenu && (

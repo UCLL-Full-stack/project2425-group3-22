@@ -10,9 +10,13 @@ import Helper from 'utils/helper';
 import SelectPoopData from '@components/AddPoop/selectPoopData';
 import SelectPoopLocation from '@components/AddPoop/selectPoopLocation';
 import PoopService from '@services/poopService';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 const Add: React.FC = () => {
     const router = useRouter();
+    const { t } = useTranslation(); 
 
     const pageAmount = 4; // Number of pages
 
@@ -72,7 +76,7 @@ const Add: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Poopedia | Add poop</title>
+                <title>{t("title.add")}</title>
             </Head>
             <MainNavigation />
             <main>
@@ -119,6 +123,15 @@ const Add: React.FC = () => {
             </main>
         </>
     );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { locale } = context;
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Add;

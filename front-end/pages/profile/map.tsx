@@ -7,9 +7,14 @@ import MainNavigation from '@components/mainNavigation';
 import ProfileService from '@services/profileService';
 import { poopItem } from '@types';
 import Helper from 'utils/helper';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 const Map: React.FC = () => {
     const router = useRouter();
+    const { t } = useTranslation(); 
+
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const [poops, setPoops] = useState<poopItem[]>([]);
     const [isValidated, setIsValidated] = useState(false);
@@ -78,7 +83,7 @@ const Map: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Poopedia | Profile - Map</title>
+                <title>{t("title.profile-map")}</title>
             </Head>
             <MainNavigation />
             <main>
@@ -87,6 +92,15 @@ const Map: React.FC = () => {
             </main>
         </>
     );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { locale } = context;
+    return {
+        props: {
+            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+        },
+    };
 };
 
 export default Map;
