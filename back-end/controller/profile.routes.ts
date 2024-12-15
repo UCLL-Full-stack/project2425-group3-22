@@ -55,6 +55,21 @@
  *              updatedAt:
  *                  type: string
  *                  format: date
+ *        UserProfileResponse:
+ *          type: object
+ *          properties:
+ *              userID:
+ *                  type: number
+ *              username:
+ *                  type: string
+ *              email:
+ *                  type: string
+ *              role:
+ *                  type: string
+ *              friends:
+ *                  type: number
+ *              friendRequests:
+ *                  type: number
  */
 import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
@@ -77,7 +92,7 @@ const profileRouter = express.Router();
  *            content:
  *              application/json:
  *                schema:
- *                  $ref: '#/components/schemas/ReturnUser'
+ *                  $ref: '#/components/schemas/UserProfileResponse'
  */
 profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
