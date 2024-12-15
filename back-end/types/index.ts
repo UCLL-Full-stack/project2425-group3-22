@@ -1,6 +1,17 @@
 type Role = 'USER' | 'MODERATOR' | 'ADMIN';
 type StatUpdate = 'INCREASE' | 'DECREASE';
 
+//#region ACHIEVEMENT types
+type UserAchievementResponse = {
+    achievementID: number;
+    achievementCode: string;
+    name: string;
+    description: string;
+    achievedLevel: number;
+    achievedAt: Date;
+};
+//#endregion
+
 //#region AUTH types
 type RegisterRequest = {
     username: string;
@@ -129,6 +140,7 @@ type UserStatResponse = {
 export {
     Role,
     StatUpdate,
+    UserAchievementResponse,
     RegisterRequest,
     LoginRequest,
     AuthenticationResponse,

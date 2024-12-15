@@ -6,12 +6,13 @@ import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { expressjwt } from 'express-jwt';
+import { achievementRouter } from './controller/achievement.routes';
 import { authRouter } from './controller/auth.routes';
-import { poopRouter } from './controller/poop.routes';
-import { userRouter } from './controller/user.routes';
 import { friendsRouter } from './controller/friends.routes';
+import { poopRouter } from './controller/poop.routes';
 import { profileRouter } from './controller/profile.routes';
 import { statRouter } from './controller/stat.routes';
+import { userRouter } from './controller/user.routes';
 
 dotenv.config();
 const app = express();
@@ -48,12 +49,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //#endregion
 
 //#region Routers
+app.use('/achievement', achievementRouter);
 app.use('/auth', authRouter);
-app.use('/poop', poopRouter);
-app.use('/user', userRouter);
 app.use('/friends', friendsRouter);
+app.use('/poop', poopRouter);
 app.use('/profile', profileRouter);
 app.use('/stat', statRouter);
+app.use('/user', userRouter);
 //#endregion
 
 //#region Error handling

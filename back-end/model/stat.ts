@@ -52,8 +52,8 @@ export class Stat {
         if (!statCode) throw new Error('Stat code is required.');
         if (!name || name.length > 100)
             throw new Error('Name is required and cannot be longer than 100 characters.');
-        if (!description || description.length > 100)
-            throw new Error('Description is required and cannot be longer than 100 characters.');
+        if (!description || description.length > 255)
+            throw new Error('Description is required and cannot be longer than 255 characters.');
     }
 
     static from({ statID, statCode, name, description }: StatPrisma) {

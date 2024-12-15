@@ -91,18 +91,18 @@ export class Achievement {
         if (!achievementCode) throw new Error('Achievement code is required.');
         if (!name || name.length > 100)
             throw new Error('Name is required and cannot be longer than 100 characters.');
-        if (!description || description.length > 100)
-            throw new Error('Description is required and cannot be longer than 100 characters.');
+        if (!description || description.length > 255)
+            throw new Error('Description is required and cannot be longer than 255 characters.');
         if (
             !Array.isArray(levels) ||
-            levels.every((level) => Number.isInteger(level)) ||
+            levels.every((level) => typeof level !== 'number') ||
             levels.length > 10
         )
             throw new Error('Levels is required and must be an array of maximum 10 whole numbers.');
         if (
             !Array.isArray(levelsCriteria) ||
-            levelsCriteria.every((levelCriteria) => Number.isInteger(levelCriteria)) ||
-            levelsCriteria.length === levels.length
+            levelsCriteria.every((levelCriteria) => typeof levelCriteria !== 'number') ||
+            levelsCriteria.length !== levels.length
         )
             throw new Error(
                 'Levels criteria is required and must be an array the same lenght as levels, containing only whole numbers.'
@@ -119,7 +119,7 @@ export class Achievement {
         levelsCriteria,
         statID,
         stat,
-    }: AchievementPrisma & { stat: StatPrisma }) {
+    }: AchievementPrisma & { stat?: StatPrisma }) {
         return new Achievement({
             achievementID,
             achievementCode,

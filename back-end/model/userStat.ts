@@ -2,7 +2,7 @@ import { User } from './user';
 import { Stat } from './stat';
 import {
     UserStats as UserStatPrisma,
-    User as userPrisma,
+    User as UserPrisma,
     Stat as StatPrisma,
 } from '@prisma/client';
 
@@ -29,6 +29,7 @@ export class UserStat {
         user?: User;
         stat?: Stat;
     }) {
+        this.validate({ userID, statID, statValue });
         this.userID = userID;
         this.statID = statID;
         this.statValue = statValue;
@@ -75,7 +76,7 @@ export class UserStat {
         statValue: number;
     }) {
         if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
-        if (isNaN(statID)) throw new Error('StatID is required qnd must be a number.');
+        if (isNaN(statID)) throw new Error('StatID is required and must be a number.');
         if (isNaN(statValue) || statValue < 0)
             throw new Error('Stat value is required and must be a positive number.');
     }
@@ -87,7 +88,7 @@ export class UserStat {
         updatedAt,
         user,
         stat,
-    }: UserStatPrisma & { user?: userPrisma } & { stat?: StatPrisma }) {
+    }: UserStatPrisma & { user?: UserPrisma } & { stat?: StatPrisma }) {
         return new UserStat({
             userID: userID,
             statID: statID,

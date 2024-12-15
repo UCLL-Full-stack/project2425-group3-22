@@ -133,6 +133,7 @@ const main = async () => {
             stat: { connect: { statID: amountOfPoopsWithLocation.statID } },
         },
     });
+    const achievements = [poopfluencer, highClass, desperate, poopLord, perfecation, publicPooper];
     //#endregion
 
     //#region USERS
@@ -359,6 +360,19 @@ const main = async () => {
             user1: { connect: { userID: user5.userID } },
             user2: { connect: { userID: user1.userID } },
         },
+    });
+    //#endregion
+
+    //#region  CONNECT ACHIEVEMENT <-> USER
+    users.forEach(async (user) => {
+        achievements.forEach(async (achievement) => {
+            await prisma.userAchievements.create({
+                data: {
+                    userID: user.userID,
+                    achievementID: achievement.achievementID,
+                },
+            });
+        });
     });
     //#endregion
 

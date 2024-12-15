@@ -7,85 +7,89 @@
  *              scheme: bearer
  *              bearerFormat: jwt
  *      schemas:
- *        UserStatResponse:
+ *        UserAchievementResponse:
  *          type: object
  *          properties:
- *              statID:
+ *              achievementID:
  *                  type: number
- *              statCode:
+ *              achievementCode:
  *                  type: string
  *              name:
  *                  type: string
  *              description:
  *                  type: string
- *              statValue:
+ *              achievedLevel:
  *                  type: number
- *              updatedAt:
+ *              achievedAt:
  *                  type: string
  *                  format: date
  */
 import express, { NextFunction, Request, Response } from 'express';
-import statService from '../service/stat.service';
+import achievementService from '../service/achievement.service';
 import { isAdminOrModerator } from '../middleware/authMiddleware';
 
-const statRouter = express.Router();
+const achievementRouter = express.Router();
 
 /**
  * @swagger
- * /stat:
+ * /achievement:
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get all stats
+ *      summary: Get all achievements
  *      responses:
  *         200:
- *            description: The stats
+ *            description: The achievements
  *            content:
  *              application/json:
  *                users:
  *                  type: array
  *                  items:
- *                      $ref: '#/components/schemas/UserStatResponse'
+ *                      $ref: '#/components/schemas/UserAchievementResponse'
  */
-statRouter.get('/', isAdminOrModerator, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await statService.getAllStats();
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
+achievementRouter.get(
+    '/',
+    isAdminOrModerator,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const result = await achievementService.getAllAchievements();
+            return res.status(200).json(result);
+        } catch (err: any) {
+            next(err);
+        }
     }
-});
+);
 
 /**
  * @swagger
- * /stat/id/{statID}:
+ * /achievement/id/{achievementID}:
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get a stat by ID
+ *      summary: Get an achievement by ID
  *      parameters:
  *        - in: path
- *          name: statID
+ *          name: achievementID
  *          schema:
  *              type: integer
  *              minimum: 1
  *          required: true
- *          description: ID of the stat to get
+ *          description: ID of the achievement to get
  *      responses:
  *         200:
- *            description: The stat for the given ID
+ *            description: The achievement for the given ID
  *            content:
  *              application/json:
  *                schema:
- *                      $ref: '#/components/schemas/UserStatResponse'
+ *                      $ref: '#/components/schemas/UserAchievementResponse'
  */
-statRouter.get(
-    '/id/:statID',
+achievementRouter.get(
+    '/id/:achievementID',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const statID = req.params['statID'];
-            const result = await statService.getStatByID(Number(statID));
+            const achievementID = req.params['achievementID'];
+            const result = await achievementService.getAchievementByID(Number(achievementID));
             return res.status(200).json(result);
         } catch (err: any) {
             next(err);
@@ -95,33 +99,35 @@ statRouter.get(
 
 /**
  * @swagger
- * /stat/code/{statCode}:
+ * /achievement/code/{achievementCode}:
  *   get:
  *      security:
  *          - bearerAuth: []
- *      summary: Get a stat by Code
+ *      summary: Get an achievement by Code
  *      parameters:
  *        - in: path
- *          name: statCode
+ *          name: achievementCode
  *          schema:
  *              type: string
  *          required: true
- *          description: Code of the stat to get
+ *          description: Code of the achievement to get
  *      responses:
  *         200:
- *            description: The stat for the given Code
+ *            description: The achievement for the given Code
  *            content:
  *              application/json:
  *                schema:
- *                      $ref: '#/components/schemas/UserStatResponse'
+ *                      $ref: '#/components/schemas/UserAchievementResponse'
  */
-statRouter.get(
-    '/code/:statCode',
+achievementRouter.get(
+    '/code/:achievementCode',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const statCode = req.params['statCode'];
-            const result = await statService.getStatByStatCode(statCode);
+            const achievementCode = req.params['achievementCode'];
+            const result = await achievementService.getAchievementByAchievementCode(
+                achievementCode
+            );
             return res.status(200).json(result);
         } catch (err: any) {
             next(err);
@@ -129,4 +135,4 @@ statRouter.get(
     }
 );
 
-export { statRouter };
+export { achievementRouter };

@@ -7,7 +7,22 @@
  *              scheme: bearer
  *              bearerFormat: jwt
  *      schemas:
- *        Poop:
+ *        UserProfileResponse:
+ *          type: object
+ *          properties:
+ *              userID:
+ *                  type: number
+ *              username:
+ *                  type: string
+ *              email:
+ *                  type: string
+ *              role:
+ *                  type: string
+ *              friends:
+ *                  type: number
+ *              friendRequests:
+ *                  type: number
+ *        PoopResponse:
  *          type: object
  *          properties:
  *              poopID:
@@ -55,27 +70,29 @@
  *              updatedAt:
  *                  type: string
  *                  format: date
- *        UserProfileResponse:
+ *        UserAchievementResponse:
  *          type: object
  *          properties:
- *              userID:
+ *              achievementID:
  *                  type: number
- *              username:
+ *              achievementCode:
  *                  type: string
- *              email:
+ *              name:
  *                  type: string
- *              role:
+ *              description:
  *                  type: string
- *              friends:
+ *              achievedLevel:
  *                  type: number
- *              friendRequests:
- *                  type: number
+ *              achievedAt:
+ *                  type: string
+ *                  format: date
  */
 import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
 import userService from '../service/user.service';
 import poopService from '../service/poop.service';
 import statService from '../service/stat.service';
+import achievementService from '../service/achievement.service';
 
 const profileRouter = express.Router();
 
@@ -120,7 +137,7 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
  *                  poops:
  *                      type: array
  *                      items:
- *                          $ref: '#/components/schemas/Poop'
+ *                          $ref: '#/components/schemas/PoopResponse'
  */
 profileRouter.get('/poops', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -183,6 +200,33 @@ profileRouter.get('/stats', async (req: Request, res: Response, next: NextFuncti
         const userID = request.auth?.userID;
 
         const result = await statService.getStatsByUser(userID);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
+/**
+ * @swagger
+ * /profile/achievements:
+ *   get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all achievements for logged in user
+ *      responses:
+ *         200:
+ *            description: The achievements for the logged in user
+ *            content:
+ *              application/json:
+ *                schema:
+ *                      $ref: '#/components/schemas/UserAchievementResponse'
+ */
+profileRouter.get('/achievements', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const userID = request.auth?.userID;
+
+        const result = await achievementService.getAchievementsByUser(userID);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);
