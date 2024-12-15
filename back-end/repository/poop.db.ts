@@ -72,7 +72,6 @@ const getPoopsFromUserAndFriendsByUser = async ({
             where: { OR: [{ user1ID: userID }, { user2ID: userID }] },
             include: { user1: true, user2: true },
         });
-        if (friendsPrisma.length < 1) return null;
 
         const friendIDs = friendsPrisma.map((friendPrisma) =>
             friendPrisma.user1ID === userID ? friendPrisma.user2ID : friendPrisma.user1ID
