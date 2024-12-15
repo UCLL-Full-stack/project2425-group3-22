@@ -67,48 +67,55 @@ const SelectPoopData: React.FC<Props> = ({
 
     return (
         <div className={styles.poopDataContainer}>
-            <label htmlFor="title">Title</label>
-            <input
-                name="title"
-                type="text"
-                value={selectedPoopTitle}
-                onChange={(e) => onTitleChange(e.target.value)}
-            />
+            <div className={styles.poopDataMainContainer}>
+                <form>
+                    <label htmlFor="title">Title</label>
+                    <input
+                        name="title"
+                        type="text"
+                        value={selectedPoopTitle}
+                        onChange={(e) => onTitleChange(e.target.value)}
+                    />
 
-            <label>Rating</label>
-            <Rate
-                count={5}
-                allowHalf={true}
-                className={styles.rating}
-                onChange={onRatingChange}
-                value={selectedPoopRating}
-            />
+                    <label>Rating</label>
+                    <Rate
+                        count={5}
+                        allowHalf={true}
+                        className={styles.rating}
+                        onChange={onRatingChange}
+                        value={selectedPoopRating}
+                    />
 
-            <label>Size</label>
-            <Slider
-                min={0}
-                max={100}
-                defaultValue={selectedPoopSize}
-                onChange={(value) => {
-                    if (typeof value === 'number') {
-                        // check that the slider doesn't return an array (for range sliders)
-                        onSizeChange(value);
-                    }
-                }}
-            />
-
-            <p>type: {selectedPoopType ?? 'null'}</p>
-            <p>color: {selectedPoopColorID ?? 'null'}</p>
-            <p>
-                location:{' '}
-                {selectedPoopLocation?.lat && selectedPoopLocation?.lng
-                    ? `${selectedPoopLocation.lat} ${selectedPoopLocation.lng}`
-                    : 'null'}
-            </p>
-            <div className={styles.svgContainer}>
-                <TypeSVG color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined} />
+                    <label>Size</label>
+                    <Slider
+                        min={0}
+                        max={100}
+                        className={styles.sizeSlider}
+                        trackStyle={{ backgroundColor: 'var(--accent)' }}
+                        handleStyle={{
+                            backgroundColor: 'var(--accent)',
+                            borderColor: 'var(--accent)',
+                        }}
+                        defaultValue={selectedPoopSize}
+                        onChange={(value) => {
+                            if (typeof value === 'number') {
+                                // check that the slider doesn't return an array (for range sliders)
+                                onSizeChange(value);
+                            }
+                        }}
+                    />
+                </form>
+                <div>
+                    <p className={styles.exampleText}>example:</p>
+                    <div className={styles.svgContainer}>
+                        <TypeSVG
+                            color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined}
+                        />
+                    </div>
+                </div>
             </div>
-            <button onClick={onSave}>Save</button>
+
+            <button onClick={onSave} className={styles.saveButton}>Save</button>
         </div>
     );
 };

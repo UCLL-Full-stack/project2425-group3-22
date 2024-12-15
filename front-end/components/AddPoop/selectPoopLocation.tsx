@@ -26,6 +26,7 @@ const SelectPoopLocation: React.FC<Props> = ({
                 center: [selectedPoopLocation?.lng ?? 4.7025, selectedPoopLocation?.lat ?? 50.8791], // Set default position if needed (Leuven)
                 zoom: 10,
                 attributionControl: false,
+                logoPosition: 'top-left',
             });
 
             // Create a marker if a location is already selected

@@ -1,7 +1,7 @@
 import Helper from 'utils/helper';
 
 const getPoops = async () => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/poop', {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/poop/friends', {
         method: 'GET',
         headers: {
             authorization: 'Bearer ' + Helper.getJWT(),

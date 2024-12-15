@@ -1,16 +1,13 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import styles from '@styles/actionMenu.module.css';
-import Helper from 'utils/helper';
 
 type Props = {
     setShowActionMenu: (show: boolean) => void;
     languageButtonRef: React.RefObject<HTMLButtonElement | null>;
+    onLanguageChange: (language: string) => void;
 };
 
-const LanguageActionMenu: React.FC<Props> = ({ setShowActionMenu, languageButtonRef }: Props) => {
-    const router = useRouter();
+const LanguageActionMenu: React.FC<Props> = ({ setShowActionMenu, languageButtonRef, onLanguageChange }: Props) => {
     const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
 
     const actionMenuRef = useRef<HTMLDivElement | null>(null);
@@ -69,8 +66,8 @@ const LanguageActionMenu: React.FC<Props> = ({ setShowActionMenu, languageButton
                     : {}
             }
         >
-            <button>NL</button>
-            <button>EN</button>
+            <button onClick={() => onLanguageChange("nl")}>NL</button>
+            <button onClick={() => onLanguageChange("en")}>EN</button>
         </div>
     );
 };

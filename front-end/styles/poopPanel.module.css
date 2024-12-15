@@ -38,13 +38,28 @@
     font-size: 1.2rem;
 }
 
+.poopItem .mainDataContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: start;
+}
+
+.poopItem .mainDataContainer .svgContainer {
+    width: 150px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.poopItem .mainDataContainer .rating {
+    font-size: 30px;
+}
+
 .poopItem .map {
+    margin-top: 20px;
     position: relative;
     height: 300px;
     width: 100%;
     border-radius: 5px;
-}
-
-.poopItem .rating {
-    font-size: 30px;
 }
