@@ -1,9 +1,9 @@
 .container {
     display: flex;
-    flex-direction: column;       
-    height: 100vh;               
-    margin: auto;                
-    width: 65%;  
+    flex-direction: column;
+    height: 100vh;
+    margin: auto;
+    width: 65%;
     align-items: center;
     justify-content: center;
 }
@@ -14,7 +14,7 @@
 
 .container h1 {
     color: var(--accent);
-    font-family: "Chakra Petch", sans-serif;
+    font-family: 'Chakra Petch', sans-serif;
     letter-spacing: -1px;
     font-size: 4rem;
 }
@@ -25,11 +25,11 @@
     gap: 20px;
     padding: 20px;
     background-color: var(--background);
-    border-radius: 8px; 
+    border-radius: 8px;
     align-items: center;
     width: 300px;
     margin: 40px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .container .loginForm input {
@@ -57,6 +57,22 @@
 .container .loginForm .error {
     color: var(--error);
     margin-bottom: 0;
+}
+
+.loginData {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 3px;
+}
+
+.loginData table {
+    border-collapse: separate;
+    border-spacing: 20px 5px;
 }
 
 @media (min-width: 769px) {

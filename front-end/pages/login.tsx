@@ -7,10 +7,10 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 
 const Login: React.FC = () => {
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
 
     const [slogan, setSlogan] = useState('');
-    const fullSlogan = "Because every poop tells a story.";
+    const fullSlogan = 'Because every poop tells a story.';
 
     useEffect(() => {
         typeSlogan();
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     return (
         <>
             <Head>
-                <title>{t("title.login")}</title>
+                <title>{t('title.login')}</title>
             </Head>
             <main>
                 <div className={styles.container}>
@@ -39,6 +39,30 @@ const Login: React.FC = () => {
                         <h3>{slogan}</h3>
                     </div>
                     <LoginForm />
+                </div>
+                <div className={styles.loginData}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Password</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Admin</td>
+                                <td>admin!123</td>
+                            </tr>
+                            <tr>
+                                <td>Moderator</td>
+                                <td>moderator!123</td>
+                            </tr>
+                            <tr>
+                                <td>User1</td>
+                                <td>user1!123</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </>
@@ -49,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { locale } = context;
     return {
         props: {
-            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+            ...(await serverSideTranslations(locale ?? 'en', ['common'])),
         },
     };
 };
