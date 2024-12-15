@@ -6,6 +6,7 @@ const getAllPoops = async (): Promise<Array<ReturnPoop> | null> => {
     try {
         const poopsPrisma = await database.poop.findMany({
             include: { user: true },
+            orderBy: { dateTime: 'desc' },
         });
 
         if (poopsPrisma.length < 1) return null;
@@ -102,6 +103,7 @@ const getPoopsForMapByUser = async ({
     try {
         const poopsPrisma = await database.poop.findMany({
             where: { userID: userID, latitude: { not: null }, longitude: { not: null } },
+            orderBy: { dateTime: 'desc' },
         });
 
         if (poopsPrisma.length < 1) return null;
