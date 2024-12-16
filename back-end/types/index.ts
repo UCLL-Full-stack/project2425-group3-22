@@ -1,5 +1,5 @@
 type Role = 'USER' | 'MODERATOR' | 'ADMIN';
-type StatUpdate = 'INCREASE' | 'DECREASE';
+type StatUpdate = 'INCREASE' | 'DECREASE' | 'CHANGE';
 
 //#region ACHIEVEMENT types
 type UserAchievementResponse = {

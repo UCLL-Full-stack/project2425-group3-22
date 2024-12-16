@@ -1,6 +1,7 @@
 import { FriendRequest } from '../model/friendRequest';
 import friendsDB from '../repository/friends.db';
 import userDB from '../repository/user.db';
+import statService from './stat.service';
 import { FriendsInfoResponse, FriendInfoResponse } from '../types';
 
 const getFriendsInfoByUser = async (userID: number): Promise<FriendsInfoResponse> => {
@@ -41,6 +42,12 @@ const getFriendsInfoByUser = async (userID: number): Promise<FriendsInfoResponse
                       username: outgoingFriendRequest.getReceiver()?.getUsername(),
                   }
           );
+
+    //TODO: update STATS
+    await statService.updateStat(userID, 'S1', 'CHANGE', friendsInfo.length);
+    await statService.updateStat(userID, 'S2', 'CHANGE', incomingFriendRequestsInfo.length);
+    await statService.updateStat(userID, 'S3', 'CHANGE', outgoingFriendRequestsInfo.length);
+
     return <FriendsInfoResponse>{
         friends: friendsInfo,
         incoming: incomingFriendRequestsInfo,
@@ -92,20 +99,21 @@ const sendFriendRequest = async (
     };
 };
 
-const cancelFriendRequest = async (loggedInUserID: number, receiverID: number): Promise<String> => {
+const cancelFriendRequest = async (senderID: number, receiverID: number): Promise<String> => {
     if (isNaN(receiverID)) throw new Error('ReceiverID is required and must be a number.');
 
     const receiverExists = await userDB.getUserByID({ userID: receiverID });
     if (!receiverExists) throw new Error('The user you sent a friendrequest to does not exist.');
 
     const friendRequestToCancel = await friendsDB.getFriendRequest({
-        senderID: loggedInUserID,
+        senderID,
         receiverID,
     });
     if (!friendRequestToCancel) throw new Error('Friendrequest does not exist.');
 
     const cancelledFriendRequest = await friendsDB.cancelFriendRequest(friendRequestToCancel);
     if (!cancelledFriendRequest) throw new Error('Error occured cancelling friendrequest.');
+
     return 'Friendrequest successfully cancelled.';
 };
 
@@ -127,6 +135,7 @@ const acceptFriendRequest = async (
 
     const acceptedFriendRequest = await friendsDB.acceptFriendRequest(friendRequestToAccept);
     if (!acceptedFriendRequest) throw new Error('Error occured accepting friendrequest.');
+
     return <FriendInfoResponse>{
         userID: acceptedFriendRequest.getUser1ID(),
         username: acceptedFriendRequest.getUser1()?.getUsername(),
@@ -148,6 +157,10 @@ const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Pr
 
     const refusedFriendRequest = await friendsDB.refuseFriendRequest(friendRequestToRefuse);
     if (!refusedFriendRequest) throw new Error('Error occured refusing friendrequest.');
+
+    //TODO: update STATS
+    await statService.updateStat(senderID, 'S4', 'INCREASE');
+
     return 'Friendrequest successfully refused.';
 };
 
@@ -162,6 +175,7 @@ const removeFriend = async (userID: number, friendID: number): Promise<FriendInf
 
     const removedFriends = await friendsDB.removeFriend(friendToRemove);
     if (!removedFriends) throw new Error('Error occured removing friend.');
+
     return <FriendInfoResponse>{
         userID:
             removedFriends.getUser1ID() === userID

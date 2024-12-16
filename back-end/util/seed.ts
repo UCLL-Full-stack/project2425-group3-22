@@ -24,35 +24,42 @@ const main = async () => {
     });
     const amountOfIncomingFriendRequests = await prisma.stat.create({
         data: {
-            statCode: 'S3',
+            statCode: 'S2',
             name: 'Amount of incoming friendrequests',
             description: 'The amount of incoming friendrequests a user has.',
         },
     });
     const amountOfOutgoingFriendRequests = await prisma.stat.create({
         data: {
-            statCode: 'S4',
+            statCode: 'S3',
             name: 'Amount of outgoing friendrequests',
             description: 'The amount of outgoing friendrequests a user has.',
         },
     });
+    const amountOfRefusedFriendRequests = await prisma.stat.create({
+        data: {
+            statCode: 'S4',
+            name: 'Amount of refused friendrequests',
+            description: 'The amount of refused friendrequests a user has.',
+        },
+    });
     const amountOfPoops = await prisma.stat.create({
         data: {
-            statCode: 'S2',
+            statCode: 'S5',
             name: 'Amount of poops',
             description: 'The amount of poops a user has.',
         },
     });
     const amountOfPerfectPoops = await prisma.stat.create({
         data: {
-            statCode: 'S5',
+            statCode: 'S6',
             name: 'Amount of perfect poops',
             description: 'The amount of poops with a max rating of 5 the user has.',
         },
     });
     const amountOfPoopsWithLocation = await prisma.stat.create({
         data: {
-            statCode: 'S6',
+            statCode: 'S7',
             name: 'Amount of poops with location',
             description: 'The amount of poops of which the location is known.',
         },
@@ -61,6 +68,7 @@ const main = async () => {
         amountOfFriends,
         amountOfIncomingFriendRequests,
         amountOfOutgoingFriendRequests,
+        amountOfRefusedFriendRequests,
         amountOfPoops,
         amountOfPerfectPoops,
         amountOfPoopsWithLocation,
@@ -73,7 +81,7 @@ const main = async () => {
             achievementCode: 'A1',
             name: 'Poopfluencer',
             description:
-                'An achievement exlusively for those who have many friends.\n(have a certain amount of friends)',
+                'You may know me from Poop-Tok, Poopstagram or FacePoop. (have a certain amount of friends)',
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfFriends.statID } },
@@ -84,7 +92,7 @@ const main = async () => {
             achievementCode: 'A2',
             name: 'High Class',
             description:
-                "I'm so popular, so many people want to be my friend.\n(have a certain amount of incoming friendrequests)",
+                "I'm stronger, I'm smarter, I'm better, I am better! (have a certain amount of refused friendrequests)",
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfIncomingFriendRequests.statID } },
@@ -95,17 +103,28 @@ const main = async () => {
             achievementCode: 'A3',
             name: 'Desperate',
             description:
-                "You want to be friends with lots of people, but they don't want to be friends with you.\n(have a certain amount of outgoing friendrequests)",
+                'I keep pooping on my own ~ Calum Poops-a-lot. (have a certain amount of outgoing friendrequests)',
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfOutgoingFriendRequests.statID } },
         },
     });
-    const poopLord = await prisma.achievement.create({
+    const pooplander = await prisma.achievement.create({
         data: {
             achievementCode: 'A4',
+            name: 'Pooplander',
+            description:
+                "I'm stronger, I'm smarter, I'm better, I am better! (have a certain amount of refused friendrequests)",
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfRefusedFriendRequests.statID } },
+        },
+    });
+    const poopLord = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A5',
             name: 'Poop Lord',
-            description: 'Veni, Vidi, Cacavi.\n(have a certain amount of poops)',
+            description: 'Veni, Vidi, Cacavi. (have a certain amount of poops)',
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPoops.statID } },
@@ -113,10 +132,10 @@ const main = async () => {
     });
     const perfecation = await prisma.achievement.create({
         data: {
-            achievementCode: 'A5',
+            achievementCode: 'A6',
             name: 'Perfecation',
             description:
-                'I see no one up here, other than me.\n(have a certain amount of perfect poops)',
+                'I see no one up here, other than me. (have a certain amount of perfect poops)',
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPerfectPoops.statID } },
@@ -124,16 +143,24 @@ const main = async () => {
     });
     const publicPooper = await prisma.achievement.create({
         data: {
-            achievementCode: 'A6',
+            achievementCode: 'A7',
             name: 'Public Pooper',
             description:
-                'Everyone shall know where you have pooped.\n(have a certain amount of poops with known location)',
+                'Everyone shall know where I have pooped. (have a certain amount of poops with known location)',
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPoopsWithLocation.statID } },
         },
     });
-    const achievements = [poopfluencer, highClass, desperate, poopLord, perfecation, publicPooper];
+    const achievements = [
+        poopfluencer,
+        highClass,
+        desperate,
+        pooplander,
+        poopLord,
+        perfecation,
+        publicPooper,
+    ];
     //#endregion
 
     //#region USERS
@@ -364,25 +391,29 @@ const main = async () => {
     //#endregion
 
     //#region  CONNECT ACHIEVEMENT <-> USER
-    users.forEach(async (user) => {
-        achievements.forEach(async (achievement) => {
-            await prisma.userAchievements.create({
-                data: {
-                    userID: user.userID,
-                    achievementID: achievement.achievementID,
-                },
-            });
-        });
-    });
+    // users.forEach(async (user) => {
+    //     achievements.forEach(async (achievement) => {
+    //         await prisma.userAchievements.create({
+    //             data: {
+    //                 userID: user.userID,
+    //                 achievementID: achievement.achievementID,
+    //             },
+    //         });
+    //     });
+    // });
     //#endregion
 
     //#region  CONNECT STAT <-> USER
+    const values = [5, 15, 25, 55];
     users.forEach(async (user) => {
         stats.forEach(async (stat) => {
+            const randomIndex = Math.floor(Math.random() * 4);
+
             await prisma.userStats.create({
                 data: {
                     userID: user.userID,
                     statID: stat.statID,
+                    statValue: values[randomIndex],
                 },
             });
         });

@@ -11,7 +11,7 @@ export class UserAchievement {
     private userID: number;
     private achievementID: number;
     private achievedLevel: number;
-    private achievedAt: Date;
+    private achievedAt?: Date;
     private user?: User;
     private achievement?: Achievement;
 
@@ -26,7 +26,7 @@ export class UserAchievement {
         userID: number;
         achievementID: number;
         achievedLevel: number;
-        achievedAt: Date;
+        achievedAt?: Date;
         user?: User;
         achievement?: Achievement;
     }) {
@@ -55,7 +55,7 @@ export class UserAchievement {
         this.achievedLevel = achievedLevel;
     }
 
-    getAchievedAt(): Date {
+    getAchievedAt(): Date | undefined {
         return this.achievedAt;
     }
 

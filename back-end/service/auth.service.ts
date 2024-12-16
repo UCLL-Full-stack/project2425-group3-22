@@ -36,13 +36,6 @@ const login = async (
         ? await userDB.getUserByEmail({ email: usernameOrEmail })
         : await userDB.getUserByUsername({ username: usernameOrEmail });
 
-    //TODO: remove?
-    // if (!user)
-    //     throw new Error(
-    //         `User with ${
-    //             usernameOrEmail.includes('@') ? 'email' : 'username'
-    //         } '${usernameOrEmail}' does not exist.`
-    //     );
     if (!user || !(await bcrypt.compare(password, user.getPassword())))
         throw new Error(
             `${usernameOrEmail.includes('@') ? 'Email' : 'Username'} or password incorrect.`

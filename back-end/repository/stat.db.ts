@@ -4,7 +4,9 @@ import database from '../util/database';
 
 const getAllStats = async (): Promise<Array<Stat> | null> => {
     try {
-        const statsPrisma = await database.stat.findMany();
+        const statsPrisma = await database.stat.findMany({
+            orderBy: { statID: 'asc' },
+        });
 
         if (statsPrisma.length < 1) return null;
         return statsPrisma.map((statPrisma) => Stat.from(statPrisma));
@@ -47,6 +49,7 @@ const getStatsByUser = async ({ userID }: { userID: number }): Promise<Array<Use
         const userStatsPrisma = await database.userStats.findMany({
             where: { userID: userID },
             include: { stat: true },
+            orderBy: { statID: 'asc' },
         });
 
         if (userStatsPrisma.length < 1) return null;

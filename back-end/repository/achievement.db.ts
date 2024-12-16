@@ -4,7 +4,10 @@ import database from '../util/database';
 
 const getAllAchievements = async (): Promise<Array<Achievement> | null> => {
     try {
-        const achievementsPrisma = await database.achievement.findMany();
+        const achievementsPrisma = await database.achievement.findMany({
+            include: { stat: true },
+            orderBy: { achievementID: 'asc' },
+        });
 
         if (achievementsPrisma.length < 1) return null;
         return achievementsPrisma.map((achievementPrisma) => Achievement.from(achievementPrisma));
@@ -59,6 +62,7 @@ const getAchievementsByUser = async ({
         const userAchievementsPrisma = await database.userAchievements.findMany({
             where: { userID: userID },
             include: { achievement: true },
+            orderBy: { achievementID: 'asc' },
         });
 
         if (userAchievementsPrisma.length < 1) return null;
@@ -94,7 +98,9 @@ const getUserAchievementByUserAndCode = async ({
     }
 };
 
-const updateAchievement = async (userAchievement: UserAchievement): Promise<Boolean | null> => {
+const updateAchievementLevel = async (
+    userAchievement: UserAchievement
+): Promise<Boolean | null> => {
     try {
         const achievementPrisma = await database.userAchievements.updateMany({
             where: {
@@ -105,8 +111,24 @@ const updateAchievement = async (userAchievement: UserAchievement): Promise<Bool
             },
             data: { achievedLevel: userAchievement.getAchievedLevel() },
         });
-        //TODO: remove logging
-        console.log(achievementPrisma);
+
+        if (!achievementPrisma) return false;
+        return true;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
+const giveAchievement = async (userAchievement: UserAchievement): Promise<Boolean | null> => {
+    try {
+        const achievementPrisma = await database.userAchievements.create({
+            data: {
+                userID: userAchievement.getUserID(),
+                achievementID: userAchievement.getAchievementID(),
+                achievedLevel: userAchievement.getAchievedLevel(),
+            },
+        });
 
         if (!achievementPrisma) return false;
         return true;
@@ -122,5 +144,6 @@ export default {
     getAchievementByAchievementCode,
     getAchievementsByUser,
     getUserAchievementByUserAndCode,
-    updateAchievement,
+    updateAchievementLevel,
+    giveAchievement,
 };

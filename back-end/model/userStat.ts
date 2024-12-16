@@ -10,22 +10,22 @@ export class UserStat {
     private userID: number;
     private statID: number;
     private statValue: number;
-    private updatedAt: Date;
+    private updatedAt?: Date;
     private user?: User;
     private stat?: Stat;
 
     constructor({
         userID,
         statID,
-        updatedAt,
         statValue,
+        updatedAt,
         user,
         stat,
     }: {
         userID: number;
         statID: number;
-        updatedAt: Date;
         statValue: number;
+        updatedAt?: Date;
         user?: User;
         stat?: Stat;
     }) {
@@ -54,7 +54,7 @@ export class UserStat {
         this.statValue = statValue;
     }
 
-    getUpdatedAt(): Date {
+    getUpdatedAt(): Date | undefined {
         return this.updatedAt;
     }
 
