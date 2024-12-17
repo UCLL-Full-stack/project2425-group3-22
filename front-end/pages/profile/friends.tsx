@@ -11,8 +11,7 @@ import FriendsService from '@services/friendsService';
 import styles from '@styles/Friends.module.css';
 import FriendList from '@components/Friends/friendList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import IncomingRequestList from '@components/Friends/incomingRequestList';
-import OutgoingRequestList from '@components/Friends/outgoingRequestList';
+import FriendRequestList from '@components/Friends/friendRequestList';
 
 const Profile: React.FC = () => {
     const router = useRouter();
@@ -61,11 +60,14 @@ const Profile: React.FC = () => {
                 <title>{t('title.profile-friends')}</title>
             </Head>
             <MainNavigation />
-            <Link href="/profile" className={styles.backButton}><FontAwesomeIcon icon="angle-left" /></Link>
+            <Link href="/profile" className={styles.backButton}>
+                <FontAwesomeIcon icon="angle-left" />
+            </Link>
             <main>
-                <FriendList users={friends}/>
-                <IncomingRequestList users={incoming}/>
-                <OutgoingRequestList users={outgoing}/>
+                <div className={styles.friendListsContainer}>
+                    <FriendList users={friends} />
+                    <FriendRequestList incomingRequests={incoming} outgoingRequests={outgoing} />
+                </div>
             </main>
         </>
     );

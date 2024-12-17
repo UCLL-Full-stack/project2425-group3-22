@@ -20,13 +20,26 @@
     color: var(--background);
 }
 
+.friendListsContainer {
+    display: flex;
+    margin: auto;
+}
+
 .friendsList {
+    display: flex;
+    flex-direction: column;
     background-color: white;
     border-radius: 5px;
-    height: fit-content;
     padding: 20px;
-    margin: 100px 20px;
+    margin: 40px 20px;
     min-width: 400px;
+    height: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.friendsList .scrollable {
+    flex: 1;
+    overflow-y: auto;
 }
 
 .friendItem {
