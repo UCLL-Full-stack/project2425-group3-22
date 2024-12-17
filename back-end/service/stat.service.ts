@@ -58,7 +58,7 @@ const updateStat = async (
             userStatToUpdate.setStatValue(currentStatValue - 1);
             break;
         case 'CHANGE':
-            if (!changedValue)
+            if (changedValue === null || changedValue === undefined)
                 throw new Error('In case of stat change, a changed value is required.');
             userStatToUpdate.setStatValue(changedValue);
             break;

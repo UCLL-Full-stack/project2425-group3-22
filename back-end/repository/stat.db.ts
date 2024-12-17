@@ -87,8 +87,6 @@ const updateStat = async (userStat: UserStat): Promise<Boolean | null> => {
             where: { AND: [{ userID: userStat.getUserID() }, { statID: userStat.getStatID() }] },
             data: { statValue: userStat.getStatValue() },
         });
-        //TODO: remove logging
-        console.log(statPrisma);
 
         if (!statPrisma) return false;
         return true;
