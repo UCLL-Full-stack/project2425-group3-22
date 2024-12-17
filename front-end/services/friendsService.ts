@@ -1,7 +1,7 @@
 import Helper from "utils/helper";
 
 const getFriends = async () => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/profile/friends', {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends', {
         method: 'GET',
         headers: {
             authorization: 'Bearer ' + Helper.getJWT(),
@@ -12,7 +12,7 @@ const getFriends = async () => {
 
 
 const searchFriends = async (username: string) => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/' + username, {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/search?username=' + encodeURIComponent(username), {
         method: 'GET',
         headers: {
             authorization: 'Bearer ' + Helper.getJWT(),
@@ -20,6 +20,16 @@ const searchFriends = async (username: string) => {
         },
     });
 };
+
+const searchUsers = async (username: string) => {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/users/search?username=' + encodeURIComponent(username), {
+        method: 'GET',
+        headers: {
+            authorization: 'Bearer ' + Helper.getJWT(),
+            'Content-Type': 'application/json',
+        },
+    });
+}
 
 const sendFriendRequest = async (receiverID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/add', {
@@ -89,6 +99,7 @@ const removeFriend = async (userID: number) => {
 const FriendsService = {
     getFriends,
     searchFriends,
+    searchUsers,
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,

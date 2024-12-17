@@ -8,8 +8,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import FriendsService from '@services/friendsService';
-import IncomingRequestItem from '@components/Friends/incomingRequestItem';
-import OutgoingRequestItem from '@components/Friends/outgoingRequestItem';
 import styles from '@styles/Friends.module.css';
 import FriendList from '@components/Friends/friendList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,7 +34,7 @@ const Profile: React.FC = () => {
                     const response = await FriendsService.getFriends();
 
                     if (!response.ok) {
-                        throw new Error('Failed to fetch poops');
+                        throw new Error('Failed to fetch friends');
                     }
 
                     const result = await response.json();

@@ -51,15 +51,15 @@ const Login: React.FC = () => {
                         <tbody>
                             <tr>
                                 <td>Admin</td>
-                                <td>admin!123</td>
+                                <td>Admin!123</td>
                             </tr>
                             <tr>
                                 <td>Moderator</td>
-                                <td>moderator!123</td>
+                                <td>Moderator!123</td>
                             </tr>
                             <tr>
                                 <td>User1</td>
-                                <td>user1!123</td>
+                                <td>User1!123</td>
                             </tr>
                         </tbody>
                     </table>

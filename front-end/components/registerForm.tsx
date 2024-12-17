@@ -39,7 +39,7 @@ const RegisterForm: React.FC = () => {
                     name="username"
                     placeholder="Username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value.trim())}
                     required
                 />
                 <input
@@ -47,7 +47,7 @@ const RegisterForm: React.FC = () => {
                     name="email"
                     placeholder="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value.trim())}
                     required
                 />
                 <input
@@ -55,7 +55,7 @@ const RegisterForm: React.FC = () => {
                     name="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value.trim())}
                     required
                 />
                 <button type="submit">REGISTER</button>

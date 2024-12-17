@@ -38,7 +38,7 @@ const LoginForm: React.FC = () => {
                     name="text"
                     placeholder="Username / email"
                     value={usernameOrEmail}
-                    onChange={(e) => setUsernameOrEmail(e.target.value)}
+                    onChange={(e) => setUsernameOrEmail(e.target.value.trim())}
                     required
                 />
                 <input
@@ -46,7 +46,7 @@ const LoginForm: React.FC = () => {
                     name="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value.trim())}
                     required
                 />
                 <button type="submit">LOGIN</button>
