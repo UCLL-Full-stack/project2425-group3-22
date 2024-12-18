@@ -78,7 +78,6 @@ const main = async () => {
             description: 'The amount of poops of which the colorID corresponds with red.',
         },
     });
-    //TODO: stat update on colorID = (6,7,8,9) AND type = (3,4,5)
     const amountOfNormalPoops = await prisma.stat.create({
         data: {
             statCode: 'S10',
@@ -87,7 +86,6 @@ const main = async () => {
                 'The amount of poops of which the colorID corresponds with brown-ish and the type is normal.',
         },
     });
-    //TODO: stat update on type = 1
     const amountOfType1Poops = await prisma.stat.create({
         data: {
             statCode: 'S11',
@@ -95,7 +93,6 @@ const main = async () => {
             description: 'The amount of poops of which the type is separate hard lumps.',
         },
     });
-    //TODO: stat update on type = 7
     const amountOfType7Poops = await prisma.stat.create({
         data: {
             statCode: 'S12',
@@ -555,16 +552,15 @@ const main = async () => {
     //#endregion
 
     //#region  CONNECT STAT <-> USER
-    const values = [5, 15, 25, 55];
     users.forEach(async (user) => {
         stats.forEach(async (stat) => {
-            const randomIndex = Math.floor(Math.random() * 4);
+            const randomValue = Math.floor(Math.random() * 100);
 
             await prisma.userStats.create({
                 data: {
                     userID: user.userID,
                     statID: stat.statID,
-                    statValue: values[randomIndex],
+                    statValue: randomValue,
                 },
             });
         });

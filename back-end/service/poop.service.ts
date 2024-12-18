@@ -132,7 +132,7 @@ const createPoop = async (
     );
     if (!poop) throw new Error('Error occured creating poop.');
 
-    if (poop.getRating() === 5) await statService.updateStat(userID, 'S6', 'INCREASE');
+    await statUpdate({ userID, type, rating, color: colorID });
 
     return <PoopResponse>{
         poopID: poop.getPoopID(),
@@ -163,6 +163,26 @@ const deletePoop = async (userID: number, poopID: number, role: Role): Promise<S
     const deletedPoop = await poopDB.deletePoop({ poopID });
     if (!deletedPoop) throw new Error('Error occured deleting poop.');
     return 'Poop successfully deleted.';
+};
+
+const statUpdate = async ({
+    userID,
+    type,
+    rating,
+    color,
+}: {
+    userID: number;
+    type: number;
+    rating: number;
+    color?: number;
+}): Promise<void> => {
+    if (rating === 5) await statService.updateStat(userID, 'S6', 'INCREASE');
+    if (color === 3) await statService.updateStat(userID, 'S8', 'INCREASE');
+    if (color === 15) await statService.updateStat(userID, 'S9', 'INCREASE');
+    if (color && [6, 7, 8, 9].includes(color) && [3, 4, 5].includes(type))
+        await statService.updateStat(userID, 'S10', 'INCREASE');
+    if (type === 1) await statService.updateStat(userID, 'S11', 'INCREASE');
+    if (type === 7) await statService.updateStat(userID, 'S12', 'INCREASE');
 };
 
 export default {
