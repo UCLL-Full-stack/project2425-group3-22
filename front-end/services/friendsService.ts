@@ -1,4 +1,4 @@
-import Helper from "utils/helper";
+import Helper from 'utils/helper';
 
 const getFriends = async () => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends', {
@@ -10,26 +10,31 @@ const getFriends = async () => {
     });
 };
 
-
-const searchFriends = async (username: string) => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/search?username=' + encodeURIComponent(username), {
-        method: 'GET',
-        headers: {
-            authorization: 'Bearer ' + Helper.getJWT(),
-            'Content-Type': 'application/json',
-        },
-    });
+const searchUsers = async (username: string) => {
+    return await fetch(
+        process.env.NEXT_PUBLIC_API_URL + '/user/search?username=' + encodeURIComponent(username),
+        {
+            method: 'GET',
+            headers: {
+                authorization: 'Bearer ' + Helper.getJWT(),
+                'Content-Type': 'application/json',
+            },
+        }
+    );
 };
 
-const searchUsers = async (username: string) => {
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/users/search?username=' + encodeURIComponent(username), {
-        method: 'GET',
+const addFriend = async (receiverID: number) => {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/add', {
+        method: 'POST',
         headers: {
             authorization: 'Bearer ' + Helper.getJWT(),
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+            receiverID,
+        }),
     });
-}
+};
 
 const sendFriendRequest = async (receiverID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/add', {
@@ -42,7 +47,7 @@ const sendFriendRequest = async (receiverID: number) => {
             receiverID,
         }),
     });
-}
+};
 
 const cancelFriendRequest = async (receiverID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/cancel', {
@@ -55,7 +60,7 @@ const cancelFriendRequest = async (receiverID: number) => {
             receiverID,
         }),
     });
-}
+};
 
 const acceptFriendRequest = async (senderID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/accept', {
@@ -68,7 +73,7 @@ const acceptFriendRequest = async (senderID: number) => {
             senderID,
         }),
     });
-}
+};
 
 const refuseFriendRequest = async (senderID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/refuse', {
@@ -81,7 +86,7 @@ const refuseFriendRequest = async (senderID: number) => {
             senderID,
         }),
     });
-}
+};
 
 const removeFriend = async (userID: number) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/friends/remove', {
@@ -94,12 +99,12 @@ const removeFriend = async (userID: number) => {
             userID,
         }),
     });
-}
+};
 
 const FriendsService = {
     getFriends,
-    searchFriends,
     searchUsers,
+    addFriend,
     sendFriendRequest,
     cancelFriendRequest,
     acceptFriendRequest,

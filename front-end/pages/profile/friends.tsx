@@ -21,6 +21,7 @@ const Profile: React.FC = () => {
     const [friends, setFriends] = useState([]);
     const [incoming, setIncoming] = useState([]);
     const [outgoing, setOutgoing] = useState([]);
+    const [foundUsers, setFoundUsers] = useState([]);
 
     useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
@@ -50,6 +51,19 @@ const Profile: React.FC = () => {
         }
     }, [isValidated]);
 
+    const searchUsers = async (searchTerm: string) => {
+        const response = await FriendsService.searchUsers(searchTerm);
+
+        if (!response.ok) {
+            console.error('Failed to search users');
+            return;
+        }
+
+        const result = await response.json();
+        console.log(result);
+        setFoundUsers(result);
+    }
+
     if (!isValidated) {
         return null;
     }
@@ -66,7 +80,7 @@ const Profile: React.FC = () => {
             <main>
                 <div className={styles.friendListsContainer}>
                     <FriendList users={friends} />
-                    <FriendRequestList incomingRequests={incoming} outgoingRequests={outgoing} />
+                    <FriendRequestList incomingRequests={incoming} outgoingRequests={outgoing} searchUsers={searchUsers} foundUserData={foundUsers} />
                 </div>
             </main>
         </>

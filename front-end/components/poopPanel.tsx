@@ -13,6 +13,7 @@ import Type5SVG from './PoopTypes/type5SVG';
 import Type6SVG from './PoopTypes/type6SVG';
 import Type7SVG from './PoopTypes/type7SVG';
 import PoopSVG from './PoopTypes/poopSVG';
+import PoopHelper from 'utils/poopHelper';
 
 type Props = {
     poop: poopItem;
@@ -53,6 +54,8 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
         default:
             TypeSVG = PoopSVG;
     }
+
+    console.log(poop.size + ': ' + PoopHelper.calculatePoopSizePercentage(poop.size));
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
@@ -120,7 +123,9 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                 />
                 <p>size: {poop.size}</p>
                 <div className={styles.svgContainer}>
-                    <TypeSVG color={poop.colorID ? colorMap[poop.colorID] : undefined} />
+                    <div style={{ width: PoopHelper.calculatePoopSizePercentage(poop.size) }}>
+                        <TypeSVG color={poop.colorID ? colorMap[poop.colorID] : undefined} />
+                    </div>
                 </div>
             </div>
             {poop.latitude && poop.longitude && (

@@ -155,10 +155,13 @@
 }
 
 .poopDataContainer .svgContainer {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 8px;
+    display: flex;
     width: 250px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    aspect-ratio: 1/1;
+    align-items: center;
+    justify-content: center;
 }
 
 .poopDataContainer .saveButton {

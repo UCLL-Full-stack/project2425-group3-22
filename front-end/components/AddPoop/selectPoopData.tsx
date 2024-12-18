@@ -10,7 +10,8 @@ import PoopSVG from '../PoopTypes/poopSVG';
 import { colorMap } from '@types';
 import Rate from 'rc-rate';
 import Slider from 'rc-slider';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import PoopHelper from 'utils/poopHelper';
 
 type Props = {
     selectedPoopType: number;
@@ -37,6 +38,8 @@ const SelectPoopData: React.FC<Props> = ({
     onSizeChange,
     onSave,
 }: Props) => {
+    const svgRef = useRef<HTMLDivElement>(null);
+
     let TypeSVG;
 
     switch (selectedPoopType) {
@@ -64,6 +67,13 @@ const SelectPoopData: React.FC<Props> = ({
         default:
             TypeSVG = PoopSVG;
     }
+
+    useEffect(() => {
+        if (svgRef.current) {
+            svgRef.current.style.width =
+                PoopHelper.calculatePoopSizePercentage(selectedPoopSize);
+        }
+    }, [selectedPoopSize]);
 
     return (
         <div className={styles.poopDataContainer}>
@@ -107,15 +117,21 @@ const SelectPoopData: React.FC<Props> = ({
                 </form>
                 <div>
                     <p className={styles.exampleText}>example:</p>
-                    <div className={styles.svgContainer}>
-                        <TypeSVG
-                            color={selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined}
-                        />
+                    <div className={styles.svgContainer} >
+                        <div ref={svgRef}>
+                            <TypeSVG
+                                color={
+                                    selectedPoopColorID ? colorMap[selectedPoopColorID] : undefined
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button onClick={onSave} className={styles.saveButton}>Save</button>
+            <button onClick={onSave} className={styles.saveButton}>
+                Save
+            </button>
         </div>
     );
 };

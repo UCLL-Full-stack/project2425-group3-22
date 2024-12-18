@@ -12,4 +12,8 @@ export default class PoopHelper {
     static darken = (color: string): string => {
         return darken(0.1, color);
     };
+
+    static calculatePoopSizePercentage = (poopSize: number): string => {
+        return (poopSize * 0.8 + 20) + '%';
+    }
 }
