@@ -64,23 +64,25 @@ const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievem
     if (!userStats) throw new Error('No stats found.');
 
     return userAchievements.map((userAchievement) => {
-        const nextLevel = userAchievement.getAchievedLevel();
-        const inBounds = userAchievement.getAchievement()?.getLevelsCriteria().length;
+        const levelsCriteria = userAchievement.getAchievement()?.getLevelsCriteria();
+        if (!levelsCriteria) throw new Error('Levels criteria are not defined.');
+
+        const nextLevel = userAchievement.getAchievedLevel() + 1;
+        const inBounds = levelsCriteria.length;
 
         let nextLevelString = '';
-        if (inBounds && nextLevel <= inBounds - 1) {
-            const nextLevelCriteria = userAchievement.getAchievement()?.getLevelsCriteria()[
-                nextLevel
-            ];
+        userStats.forEach((userStat) => {
+            if (userStat.getStatID() === userAchievement.getAchievement()?.getStatID()) {
+                const statValue = userStat.getStatValue();
 
-            let statValue = 0;
-            userStats.forEach((userStat) => {
-                if (userStat.getStatID() === userAchievement.getAchievement()?.getStatID()) {
-                    statValue = userStat.getStatValue();
+                if (inBounds && nextLevel > inBounds) {
+                    nextLevelString = `${statValue}/${levelsCriteria[levelsCriteria.length - 1]}`;
+                } else {
+                    const nextLevelCriteria = levelsCriteria[nextLevel - 1];
+                    nextLevelString = `${statValue}/${nextLevelCriteria}`;
                 }
-            });
-            nextLevelString = `${statValue}/${nextLevelCriteria}`;
-        }
+            }
+        });
 
         return <UserAchievementResponse>{
             achievementID: userAchievement.getAchievementID(),
@@ -109,8 +111,8 @@ const checkStats = async (userID: number): Promise<void> => {
                 const levelsCriteria = achievement.getLevelsCriteria();
 
                 for (let i = 0; i < levelsCriteria.length; i++) {
-                    if (userStat.getStatValue() >= levelsCriteria[i - 1]) {
-                        level = levels[i - 1];
+                    if (userStat.getStatValue() >= levelsCriteria[i]) {
+                        level = levels[i];
                     }
                 }
 

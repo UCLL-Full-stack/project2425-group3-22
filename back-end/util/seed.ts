@@ -64,6 +64,45 @@ const main = async () => {
             description: 'The amount of poops of which the location is known.',
         },
     });
+    const amountOfYellowPoops = await prisma.stat.create({
+        data: {
+            statCode: 'S8',
+            name: 'Amount of yellow poops',
+            description: 'The amount of poops of which the colorID corresponds with yellow.',
+        },
+    });
+    const amountOfRedPoops = await prisma.stat.create({
+        data: {
+            statCode: 'S9',
+            name: 'Amount of red poops',
+            description: 'The amount of poops of which the colorID corresponds with red.',
+        },
+    });
+    //TODO: stat update on colorID = (6,7,8,9) AND type = (3,4,5)
+    const amountOfNormalPoops = await prisma.stat.create({
+        data: {
+            statCode: 'S10',
+            name: 'Amount of normal poops',
+            description:
+                'The amount of poops of which the colorID corresponds with brown-ish and the type is normal.',
+        },
+    });
+    //TODO: stat update on type = 1
+    const amountOfType1Poops = await prisma.stat.create({
+        data: {
+            statCode: 'S11',
+            name: 'Amount of type 1 poops',
+            description: 'The amount of poops of which the type is separate hard lumps.',
+        },
+    });
+    //TODO: stat update on type = 7
+    const amountOfType7Poops = await prisma.stat.create({
+        data: {
+            statCode: 'S12',
+            name: 'Amount of type 7 poops',
+            description: 'The amount of poops of which the type is diarrhea.',
+        },
+    });
     const stats = [
         amountOfFriends,
         amountOfIncomingFriendRequests,
@@ -72,6 +111,11 @@ const main = async () => {
         amountOfPoops,
         amountOfPerfectPoops,
         amountOfPoopsWithLocation,
+        amountOfYellowPoops,
+        amountOfRedPoops,
+        amountOfNormalPoops,
+        amountOfType1Poops,
+        amountOfType7Poops,
     ];
     //#endregion
 
@@ -179,6 +223,81 @@ const main = async () => {
             stat: { connect: { statID: amountOfPoopsWithLocation.statID } },
         },
     });
+    const peepeePoopoo = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A8',
+            name: 'Peepee Poopoo',
+            description: JSON.stringify({
+                english:
+                    'Why is my poop the same color as my pee?. (have a certain amount of yellow poops)',
+                nederlands:
+                    'Waarom is mij kaka dezelfde kleur als mij pipi?. (heb een bepaald aantal gele kakas)',
+            }),
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfYellowPoops.statID } },
+        },
+    });
+    const poopingBlood = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A9',
+            name: 'Pooping Blood',
+            description: JSON.stringify({
+                english:
+                    'I think something is wrong with my digestion. (have a certain amount of red poops)',
+                nederlands:
+                    'Ik denk dat er iets mis is met mijn spijsvertering. (heb een bepaald aantal rode kakas)',
+            }),
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfRedPoops.statID } },
+        },
+    });
+    const healthyPooper = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A10',
+            name: 'Healthy Pooper',
+            description: JSON.stringify({
+                english:
+                    'I eat and drink well, my poop is as it should be. (have a certain amount of heathy poops)',
+                nederlands:
+                    'Ik eet en drink goed, mijn kaka is zoals die zou moeten zijn. (heb een bepaald aantal gezonde kakas)',
+            }),
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfNormalPoops.statID } },
+        },
+    });
+    const rabbitMan = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A11',
+            name: 'Pooping Blood',
+            description: JSON.stringify({
+                english:
+                    'I might be turning in a rabbit. (have a certain amount of poops of the type separate hard lumps)',
+                nederlands:
+                    'Ik denk dat ik in een konijn aan het veranderen ben. (heb een bepaald kakas van het type keutels)',
+            }),
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfType1Poops.statID } },
+        },
+    });
+    const fluidProblem = await prisma.achievement.create({
+        data: {
+            achievementCode: 'A12',
+            name: 'Fluid Problem',
+            description: JSON.stringify({
+                english:
+                    "I dont't think is should look like that. (have a certain amount of poops of the type diarrhea)",
+                nederlands:
+                    'Ik denk niet dat het er zou moeten uitzien. (heb een bepaald aantal kakas van het type diarree)',
+            }),
+            levels: [1, 2, 3],
+            levelsCriteria: [10, 20, 50],
+            stat: { connect: { statID: amountOfType7Poops.statID } },
+        },
+    });
     const achievements = [
         poopfluencer,
         highClass,
@@ -187,6 +306,11 @@ const main = async () => {
         poopLord,
         perfecation,
         publicPooper,
+        peepeePoopoo,
+        poopingBlood,
+        healthyPooper,
+        rabbitMan,
+        fluidProblem,
     ];
     //#endregion
 

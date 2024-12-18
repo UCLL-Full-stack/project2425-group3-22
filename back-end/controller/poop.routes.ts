@@ -66,6 +66,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
 import poopService from '../service/poop.service';
 import { PoopRequest } from '../types';
+import { isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
 
 const poopRouter = express.Router();
 
@@ -127,15 +128,19 @@ const poopRouter = express.Router();
  *                  items:
  *                      $ref: '#/components/schemas/PoopResponse'
  */
-poopRouter.get('/user/:userID', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const userID = req.params['userID'];
-        const result = await poopService.getPoopsByUser(Number(userID));
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
+poopRouter.get(
+    '/user/:userID',
+    isAdminOrModeratorOrFriends,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userID = req.params['userID'];
+            const result = await poopService.getPoopsByUser(Number(userID));
+            return res.status(200).json(result);
+        } catch (err: any) {
+            next(err);
+        }
     }
-});
+);
 
 /**
  * @swagger
