@@ -1,13 +1,16 @@
 import styles from '@styles/Login.module.css';
+import { useTranslation } from 'next-i18next';
 
 const LoginData: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <div className={styles.loginData}>
             <table>
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Password</th>
+                        <th>{t('login.username')}</th>
+                        <th>{t('login.password')}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -34,28 +34,6 @@ export default class Helper {
         return this.getUserData().role;
     };
 
-    static setLanguage = (language: string, router: NextRouter): void => {
-        console.log('setLanguage', language);
-
-        const newLocale = language;
-        const { asPath, pathname, query } = router;
-
-        router.push(
-            {
-                pathname,
-                query,
-            },
-            asPath,
-            { locale: newLocale }
-        );
-    };
-
-    static getLanguage = (router: NextRouter): string => {
-        console.log('getLanguage', router.locale);
-
-        return router.locale || 'en';
-    };
-
     static authorizeUser = (router: NextRouter): boolean => {
         if (Helper.getJWT()) {
             return true;

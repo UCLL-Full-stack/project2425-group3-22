@@ -7,32 +7,15 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import LoginData from '@components/loginData';
 import LanguageSelector from '@components/languageSelector';
+import Slogan from '@components/slogan';
 
 const Login: React.FC = () => {
     const { t } = useTranslation();
     const [isRendered, setIsRendered] = useState<boolean>(false);
 
-    const [slogan, setSlogan] = useState('');
-    const fullSlogan = t('login.slogan');
-
     useEffect(() => {
         setIsRendered(true);
     }, []);
-
-    useEffect(() => {
-        typeSlogan();
-
-        return () => {
-            setSlogan('');
-        };
-    }, []);
-
-    const typeSlogan = async () => {
-        for (let i = 0; i < fullSlogan.length; i++) {
-            setSlogan((prev) => prev + fullSlogan.charAt(i));
-            await new Promise((resolve) => setTimeout(resolve, 40));
-        }
-    };
 
     return (
         <>
@@ -48,7 +31,7 @@ const Login: React.FC = () => {
                 <div className={styles.container}>
                     <div className={styles.titleContainer}>
                         <h1>{t('poopedia')}</h1>
-                        <h3>{slogan}</h3>
+                        <Slogan />
                     </div>
                     <LoginForm />
                 </div>

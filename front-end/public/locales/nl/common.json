@@ -20,8 +20,9 @@
         "loginHere": "Log hier in"
     },
     "login": {
-        "slogan": "Omdat elke drol een verhaal verteld",
+        "slogan": "Omdat elke drol een verhaal vertelt",
         "login": "Login",
+        "username": "Gebruikersnaam",
         "usernameOrEmail": "Gebruikersnaam / email",
         "password": "Wachtwoord",
         "dontHaveAccount": "Nog geen account?",

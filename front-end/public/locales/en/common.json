@@ -22,6 +22,7 @@
     "login": {
         "slogan": "Because every poop tells a story",
         "login": "Login",
+        "username": "Username",
         "usernameOrEmail": "Username / email",
         "password": "Password",
         "dontHaveAccount": "Don't have an account?",
