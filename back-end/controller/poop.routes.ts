@@ -238,10 +238,11 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
 poopRouter.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const request = <jwtRequest>req;
-        const loggedInUserID = request.auth?.userID;
+        const userID = request.auth?.userID;
+        const role = request.auth?.role;
         const { poopID } = req.body;
 
-        const result = await poopService.deletePoop(loggedInUserID, poopID);
+        const result = await poopService.deletePoop(userID, poopID, role);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

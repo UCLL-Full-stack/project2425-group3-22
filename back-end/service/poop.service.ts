@@ -2,6 +2,7 @@ import { Poop } from '../model/poop';
 import { PoopResponse, PoopForMapResponse, PoopForDisplayResponse } from '../types';
 import poopDB from '../repository/poop.db';
 import statService from './stat.service';
+import { Role } from '@prisma/client';
 
 const getAllPoops = async (): Promise<Array<PoopResponse>> => {
     const poops = await poopDB.getAllPoops();
@@ -153,13 +154,13 @@ const createPoop = async (
     };
 };
 
-const deletePoop = async (userID: number, poopID: number): Promise<String> => {
+const deletePoop = async (userID: number, poopID: number, role: Role): Promise<String> => {
     if (isNaN(poopID)) throw new Error('poopID is required and must be a number.');
 
     const poopExists = await poopDB.getPoopByID({ poopID });
     if (!poopExists) throw new Error('Poop does not exists');
 
-    if (poopExists.getUser()?.getUserID() !== userID)
+    if (poopExists.getUser()?.getUserID() !== userID && role !== 'MODERATOR' && role !== 'ADMIN')
         throw new Error('You are not authorized to delete this poop');
 
     const deletedPoop = await poopDB.deletePoop({ poopID });
