@@ -33,7 +33,6 @@ const Map: React.FC = () => {
                 }
 
                 const result = await response.json();
-                console.log(result);
                 setPoops(result);
             } catch (error: any) {
                 console.error(error.message);

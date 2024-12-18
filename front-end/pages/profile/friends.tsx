@@ -59,7 +59,6 @@ const Profile: React.FC = () => {
         }
 
         const result = await response.json();
-        console.log(result);
         setFoundUsers(result);
     }
 

@@ -64,7 +64,6 @@ const Add: React.FC = () => {
             console.error('Failed to create poop:', errorMessage);
         } else {
             const responseData = await response.json();
-            console.log('Poop created successfully:', responseData);
             router.replace('/');
         }
     };

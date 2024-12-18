@@ -5,14 +5,13 @@ import { useTranslation } from 'next-i18next';
 const Slogan: React.FC = () => {
     const router = useRouter();
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [slogan, setSlogan] = useState('');
     const [fullSlogan, setFullSlogan] = useState(t('login.slogan'));
 
     useEffect(() => {
         const handleRouteChange = (url: string) => {
-            console.log('Language changed to:', i18n.language);
             setFullSlogan(t('login.slogan'));
         };
 
@@ -21,7 +20,7 @@ const Slogan: React.FC = () => {
         return () => {
             router.events.off('routeChangeComplete', handleRouteChange);
         };
-    }, [router.events, i18n]);
+    }, [router.events]);
 
     useEffect(() => {
         const typeSlogan = async () => {
