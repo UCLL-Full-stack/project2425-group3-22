@@ -36,13 +36,25 @@ const getUserByID = async (userID: number): Promise<UserProfileResponse> => {
 };
 
 const getUsersByUsername = async (
-    loggedInUserID: number,
+    userID: number,
     username: string
 ): Promise<Array<UserInfoResponse>> => {
     if (!username) throw new Error('Username is required.');
 
-    const users = await userDB.getUsersByUsername({ loggedInUserID, username });
-    if (!users) throw new Error(`No users with username containing '${username}' found.`);
+    const notIDs = [userID];
+    const friends = await friendsDB.getAllFriendsByUser({ userID });
+    const incomingFriendRequests = await friendsDB.getAllIncomingFriendRequestsByUser({ userID });
+    const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsByUser({ userID });
+    if (friends)
+        friends.map((friend) =>
+            notIDs.push(friend.getUser1ID() === userID ? friend.getUser2ID() : friend.getUser1ID())
+        );
+    if (incomingFriendRequests) incomingFriendRequests.map((ifr) => notIDs.push(ifr.getSenderID()));
+    if (outgoingFriendRequests)
+        outgoingFriendRequests.map((ofr) => notIDs.push(ofr.getReceiverID()));
+
+    const users = await userDB.getUsersByUsername({ notIDs, username });
+    if (!users) return [];
 
     return users.map(
         (user) =>
@@ -67,6 +79,7 @@ const createUser = async (
 
     const createdUser = await userDB.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
+
     return <UserResponse>{
         userID: createdUser.getUserID(),
         username: createdUser.getUsername(),

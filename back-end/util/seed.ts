@@ -80,8 +80,12 @@ const main = async () => {
         data: {
             achievementCode: 'A1',
             name: 'Poopfluencer',
-            description:
-                'You may know me from Poop-Tok, Poopstagram or FacePoop. (have a certain amount of friends)',
+            description: JSON.stringify({
+                english:
+                    'You may know me from Poop-Tok, Poopstagram or FacePoop. (have a certain amount of friends)',
+                nederlands:
+                    'Je kent mij misschien van Tik-Kak, Kakstagram of KakBook. (heb een bepaald aantal vrienden)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfFriends.statID } },
@@ -91,8 +95,12 @@ const main = async () => {
         data: {
             achievementCode: 'A2',
             name: 'High Class',
-            description:
-                "I'm stronger, I'm smarter, I'm better, I am better! (have a certain amount of refused friendrequests)",
+            description: JSON.stringify({
+                english:
+                    "I'm so popular, everyone wants to be my friend. (have a certain amount of incoming friendrequests)",
+                nederlands:
+                    'Ik ben zo populair, iedereen wil mijn vriend zijn. (heb een bepaald aantal inkomende vriendschapsverzoeken)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfIncomingFriendRequests.statID } },
@@ -102,8 +110,12 @@ const main = async () => {
         data: {
             achievementCode: 'A3',
             name: 'Desperate',
-            description:
-                'I keep pooping on my own ~ Calum Poops-a-lot. (have a certain amount of outgoing friendrequests)',
+            description: JSON.stringify({
+                english:
+                    'I keep pooping on my own ~ Calum Poops-a-lot. (have a certain amount of outgoing friendrequests)',
+                nederlands:
+                    'Ik blijf kakken op mijn eentje ~ Kaka Scott. (heb een bepaald aantal niet-geaccepteerde vriendschapsverzoeken)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfOutgoingFriendRequests.statID } },
@@ -113,8 +125,12 @@ const main = async () => {
         data: {
             achievementCode: 'A4',
             name: 'Pooplander',
-            description:
-                "I'm stronger, I'm smarter, I'm better, I am better! (have a certain amount of refused friendrequests)",
+            description: JSON.stringify({
+                english:
+                    "I'm stronger, I'm smarter, I'm better, I am better! (have a certain amount of refused friendrequests)",
+                nederlands:
+                    'Ik ben sterker, ik ben slimmer, ik ben beter, IK BEN BETER!. (heb een bepaald aantal afgewezen vriendschapsverzoeken)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfRefusedFriendRequests.statID } },
@@ -124,7 +140,10 @@ const main = async () => {
         data: {
             achievementCode: 'A5',
             name: 'Poop Lord',
-            description: 'Veni, Vidi, Cacavi. (have a certain amount of poops)',
+            description: JSON.stringify({
+                english: 'Veni, Vidi, Cacavi. (have a certain amount of poops)',
+                nederlands: 'Veni, Vidi, Cacavi. (heb een bepaald aantal kakas)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPoops.statID } },
@@ -134,8 +153,12 @@ const main = async () => {
         data: {
             achievementCode: 'A6',
             name: 'Perfecation',
-            description:
-                'I see no one up here, other than me. (have a certain amount of perfect poops)',
+            description: JSON.stringify({
+                english:
+                    'I see no one up here, other than me. (have a certain amount of perfect poops)',
+                nederlands:
+                    'Ik zie niemand hierboven, behalve ik. (heb een bepaald aantal perfecte kakas)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPerfectPoops.statID } },
@@ -145,8 +168,12 @@ const main = async () => {
         data: {
             achievementCode: 'A7',
             name: 'Public Pooper',
-            description:
-                'Everyone shall know where I have pooped. (have a certain amount of poops with known location)',
+            description: JSON.stringify({
+                english:
+                    'Everyone shall know where I have pooped. (have a certain amount of poops with known location)',
+                nederlands:
+                    'Iedereen zal weten waar ik kaka heb gedaan. (heb een bepaald aantal kakas met locatie)',
+            }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
             stat: { connect: { statID: amountOfPoopsWithLocation.statID } },

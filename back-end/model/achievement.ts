@@ -5,7 +5,7 @@ export class Achievement {
     private achievementID: number;
     private achievementCode: string;
     private name: string;
-    private description: string;
+    private description: any;
     private levels: Array<number>;
     private levelsCriteria: Array<number>;
     private statID: number;
@@ -24,7 +24,7 @@ export class Achievement {
         achievementID: number;
         achievementCode: string;
         name: string;
-        description: string;
+        description: any;
         levels: Array<number>;
         levelsCriteria: Array<number>;
         statID: number;
@@ -53,7 +53,7 @@ export class Achievement {
         return this.name;
     }
 
-    getDescription(): string {
+    getDescription(): any {
         return this.description;
     }
 
@@ -91,8 +91,7 @@ export class Achievement {
         if (!achievementCode) throw new Error('Achievement code is required.');
         if (!name || name.length > 100)
             throw new Error('Name is required and cannot be longer than 100 characters.');
-        if (!description || description.length > 255)
-            throw new Error('Description is required and cannot be longer than 255 characters.');
+        if (!description) throw new Error('Description is required.');
         if (
             !Array.isArray(levels) ||
             levels.every((level) => typeof level !== 'number') ||
@@ -124,7 +123,7 @@ export class Achievement {
             achievementID,
             achievementCode,
             name,
-            description,
+            description: JSON.parse(description),
             levels,
             levelsCriteria,
             statID,

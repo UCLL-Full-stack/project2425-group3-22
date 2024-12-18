@@ -33,6 +33,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
 import friendsService from '../service/friends.service';
+import userService from '../service/user.service';
 
 const friendsRouter = express.Router();
 
@@ -91,7 +92,7 @@ friendsRouter.get('/search', async (req: Request, res: Response, next: NextFunct
         const userID = request.auth?.userID;
         const username = <string>req.query?.username;
 
-        const result = await friendsService.getFriendsByUsername(userID, username);
+        const result = await userService.getUsersByUsername(userID, username);
         return res.status(200).json(result);
     } catch (err: any) {
         next(err);

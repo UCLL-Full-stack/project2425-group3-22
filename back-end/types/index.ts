@@ -2,13 +2,29 @@ type Role = 'USER' | 'MODERATOR' | 'ADMIN';
 type StatUpdate = 'INCREASE' | 'DECREASE' | 'CHANGE';
 
 //#region ACHIEVEMENT types
+type AchievementDescription = {
+    english: string;
+    nederlands: string;
+};
+
+type AchievementResponse = {
+    achievementID: number;
+    achievementCode: string;
+    name: string;
+    description: AchievementDescription;
+    levels: Array<number>;
+    levelsCriteria: Array<number>;
+    statID: number;
+};
+
 type UserAchievementResponse = {
     achievementID: number;
     achievementCode: string;
     name: string;
-    description: string;
+    description: AchievementDescription;
     achievedLevel: number;
     achievedAt: Date;
+    nextLevel: string;
 };
 //#endregion
 
@@ -95,6 +111,15 @@ type PoopForDisplayResponse = {
 };
 //#endregion
 
+//#region STAT types
+type StatResponse = {
+    statID: number;
+    statCode: string;
+    name: string;
+    description: string;
+};
+//#endregion
+
 //#region User types
 type UpdateUserInput = {
     userID: number;
@@ -140,6 +165,8 @@ type UserStatResponse = {
 export {
     Role,
     StatUpdate,
+    AchievementDescription,
+    AchievementResponse,
     UserAchievementResponse,
     RegisterRequest,
     LoginRequest,
@@ -151,6 +178,7 @@ export {
     PoopResponse,
     PoopForMapResponse,
     PoopForDisplayResponse,
+    StatResponse,
     UpdateUserInput,
     UserResponse,
     UserProfileResponse,

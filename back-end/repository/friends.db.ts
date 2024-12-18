@@ -157,20 +157,6 @@ const getFriendsByUsername = async ({
         });
         if (friendsPrisma.length < 1) return null;
 
-        // const filteredFriendsPrisma: Array<any> = [];
-        // friendsPrisma.forEach((friendPrisma) => {
-        //     if (
-        //         (friendPrisma.user1ID === userID &&
-        //             friendPrisma.user2.username.includes(username)) ||
-        //         (friendPrisma.user2ID === userID && friendPrisma.user1.username.includes(username))
-        //     ) {
-        //         filteredFriendsPrisma.push(friendPrisma);
-        //     }
-        // });
-
-        // const friends = filteredFriendsPrisma.map((filteredFriendPrisma) =>
-        //     Friends.from(filteredFriendPrisma)
-        // );
         return friendsPrisma.map((friendPrisma) => Friends.from(friendPrisma));
     } catch (err: any) {
         console.log(err);
