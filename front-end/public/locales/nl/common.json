@@ -66,5 +66,20 @@
         "size": "Grootte",
         "example": "Voorbeeld",
         "save": "Opslaan"
+    },
+    "friends": {
+        "friends": "Vrienden",
+        "friendRequests": "Vriendschapsverzoeken",
+        "incomingRequests": "Binnenkomende verzoeken",
+        "outgoingRequests": "Uitgaande verzoeken",
+        "searchFriend": "Vriend zoeken ...",
+        "addUser": "Gebruiker toevoegen ...",
+        "add": "Toevoegen",
+        "remove": "Verwijder",
+        "accept": "Accepteer",
+        "deny": "Weiger",
+        "cancel": "Annuleer",
+        "noFriends": "Geen vrienden gevonden.",
+        "noIncomingRequests": "Geen binnenkomende Vriendschapsverzoeken."
     }
 }
