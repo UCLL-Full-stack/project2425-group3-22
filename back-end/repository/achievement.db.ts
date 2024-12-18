@@ -10,6 +10,7 @@ const getAllAchievements = async (): Promise<Array<Achievement> | null> => {
         });
 
         if (achievementsPrisma.length < 1) return null;
+
         return achievementsPrisma.map((achievementPrisma) => Achievement.from(achievementPrisma));
     } catch (err: any) {
         console.log(err);

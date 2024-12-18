@@ -2,26 +2,56 @@ import { Achievement } from '../model/achievement';
 import { UserAchievement } from '../model/userAchievement';
 import achievementDB from '../repository/achievement.db';
 import statDB from '../repository/stat.db';
-import { UserAchievementResponse } from '../types';
+import { AchievementResponse, StatResponse, UserAchievementResponse } from '../types';
 
-const getAllAchievements = async (): Promise<Array<Achievement>> => {
+const getAllAchievements = async (): Promise<Array<AchievementResponse>> => {
     const achievements = await achievementDB.getAllAchievements();
     if (!achievements) return [];
-    return achievements;
+
+    return achievements.map(
+        (achievement) =>
+            <AchievementResponse>{
+                achievementID: achievement.getAchievementID(),
+                achievementCode: achievement.getAchievementCode(),
+                name: achievement.getName(),
+                description: achievement.getDescription(),
+                levels: achievement.getLevels(),
+                levelsCriteria: achievement.getLevelsCriteria(),
+                statID: achievement.getStatID(),
+            }
+    );
 };
 
-const getAchievementByID = async (achievementID: number): Promise<Achievement> => {
+const getAchievementByID = async (achievementID: number): Promise<AchievementResponse> => {
     const achievement = await achievementDB.getAchievementByID({ achievementID });
     if (!achievement) throw new Error('Achievement not found.');
 
-    return achievement;
+    return <AchievementResponse>{
+        achievementID: achievement.getAchievementID(),
+        achievementCode: achievement.getAchievementCode(),
+        name: achievement.getName(),
+        description: achievement.getDescription(),
+        levels: achievement.getLevels(),
+        levelsCriteria: achievement.getLevelsCriteria(),
+        statID: achievement.getStatID(),
+    };
 };
 
-const getAchievementByAchievementCode = async (achievementCode: string): Promise<Achievement> => {
+const getAchievementByAchievementCode = async (
+    achievementCode: string
+): Promise<AchievementResponse> => {
     const achievement = await achievementDB.getAchievementByAchievementCode({ achievementCode });
     if (!achievement) throw new Error('Achievement not found.');
 
-    return achievement;
+    return <AchievementResponse>{
+        achievementID: achievement.getAchievementID(),
+        achievementCode: achievement.getAchievementCode(),
+        name: achievement.getName(),
+        description: achievement.getDescription(),
+        levels: achievement.getLevels(),
+        levelsCriteria: achievement.getLevelsCriteria(),
+        statID: achievement.getStatID(),
+    };
 };
 
 const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievementResponse>> => {
@@ -30,17 +60,40 @@ const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievem
     const userAchievements = await achievementDB.getAchievementsByUser({ userID });
     if (!userAchievements) throw new Error('No achievements found.');
 
-    return userAchievements.map(
-        (userAchievement) =>
-            <UserAchievementResponse>{
-                achievementID: userAchievement.getAchievementID(),
-                achievementCode: userAchievement.getAchievement()?.getAchievementCode(),
-                name: userAchievement.getAchievement()?.getName(),
-                description: userAchievement.getAchievement()?.getDescription(),
-                achievedLevel: userAchievement.getAchievedLevel(),
-                achievedAt: userAchievement.getAchievedAt(),
-            }
-    );
+    const userStats = await statDB.getStatsByUser({ userID });
+    if (!userStats) throw new Error('No stats found.');
+
+    return userAchievements.map((userAchievement) => {
+        const nextLevel = userAchievement.getAchievedLevel();
+        const inBounds = userAchievement.getAchievement()?.getLevelsCriteria().length;
+
+        let nextLevelString = '';
+        if (inBounds && nextLevel > inBounds - 1) {
+            nextLevelString = 'max';
+        } else {
+            const nextLevelCriteria = userAchievement.getAchievement()?.getLevelsCriteria()[
+                nextLevel
+            ];
+
+            let statValue = 0;
+            userStats.forEach((userStat) => {
+                if (userStat.getStatID() === userAchievement.getAchievement()?.getStatID()) {
+                    statValue = userStat.getStatValue();
+                }
+            });
+            nextLevelString = `${statValue}/${nextLevelCriteria}`;
+        }
+
+        return <UserAchievementResponse>{
+            achievementID: userAchievement.getAchievementID(),
+            achievementCode: userAchievement.getAchievement()?.getAchievementCode(),
+            name: userAchievement.getAchievement()?.getName(),
+            description: userAchievement.getAchievement()?.getDescription(),
+            achievedLevel: userAchievement.getAchievedLevel(),
+            achievedAt: userAchievement.getAchievedAt(),
+            nextLevel: nextLevelString,
+        };
+    });
 };
 
 const checkStats = async (userID: number): Promise<void> => {

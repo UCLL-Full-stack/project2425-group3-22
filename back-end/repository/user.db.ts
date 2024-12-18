@@ -42,16 +42,17 @@ const getUserByUsername = async ({ username }: { username: string }): Promise<Us
 };
 
 const getUsersByUsername = async ({
-    loggedInUserID,
+    notIDs,
     username,
 }: {
-    loggedInUserID: number;
+    notIDs: Array<number>;
     username: string;
 }): Promise<Array<User> | null> => {
     try {
         const usersPrisma = await database.user.findMany({
             where: {
-                AND: [{ username: { contains: username } }, { NOT: { userID: loggedInUserID } }],
+                username: { contains: username, mode: 'insensitive' },
+                userID: { notIn: notIDs },
             },
         });
 
@@ -79,12 +80,26 @@ const getUserByEmail = async ({ email }: { email: string }): Promise<User | null
 
 const createUser = async (user: User): Promise<User | null> => {
     try {
+        const statsPrisma = await database.stat.findMany();
+        const achievementsPrisma = await database.achievement.findMany();
+
+        const statIDs = statsPrisma.map((statPrisma) => ({ statID: statPrisma.statID }));
+        const achievementIDs = achievementsPrisma.map((achievementPrisma) => ({
+            achievementID: achievementPrisma.achievementID,
+        }));
+
         const userPrisma = await database.user.create({
             data: {
                 username: user.getUsername(),
                 email: user.getEmail(),
                 password: user.getPassword(),
                 role: user.getRole(),
+                stats: {
+                    create: statIDs,
+                },
+                achievements: {
+                    create: achievementIDs,
+                },
             },
         });
         if (!userPrisma) return null;
