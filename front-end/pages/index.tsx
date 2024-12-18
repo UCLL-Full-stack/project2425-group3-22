@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (isValidated) {
-            const fetchProfilePoopsData = async () => {
+            const fetchPoopsData = async () => {
                 try {
                     const response = await PoopService.getPoops();
 
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
                 }
             };
 
-            fetchProfilePoopsData();
+            fetchPoopsData();
         }
     }, [isValidated]);
 

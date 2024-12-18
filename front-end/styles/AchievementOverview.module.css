@@ -1,0 +1,47 @@
+.achievementsContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 20px;
+    gap: 20px;
+}
+
+.achievement {
+    display: flex;
+    width: 100%;
+    max-height: fit-content;
+    aspect-ratio: 1/1;
+    padding: 5px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--background);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    overflow-y: auto;
+}
+
+.achievement .achievementIcon {
+    width: 50%;
+}
+
+.achievement h3 {
+    font-size: 1.6rem;
+}
+
+.achievement p {
+    margin: 0;
+}
+
+.achievement .description {
+    font-size: 0.9rem;
+}
+
+.achievement .nextLevel {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.achievement .spacer {
+    flex-grow: 1;
+}

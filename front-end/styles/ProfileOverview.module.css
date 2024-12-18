@@ -1,8 +1,9 @@
 .profileOverviewContainer {
-    background-color: white;
     width: 100%;
     height: fit-content;
     padding: 30px 40px 20px 40px;
+    background-color: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .userData {
@@ -55,6 +56,11 @@
     color: black;
     text-decoration: none;
     font-weight: bold;
+    transition: 0.2s;
+}
+
+.friendsContainer .friendsButton:hover {
+    background-color: white;
 }
 
 .friendsContainer .newRequestsButton {
@@ -62,6 +68,10 @@
     text-decoration: none;
     position: relative;
     margin: 10px 0;
+}
+
+.friendsContainer .newRequestsButton:hover {
+    text-decoration: underline;
 }
 
 .friendsContainer .newRequestsButton::after {

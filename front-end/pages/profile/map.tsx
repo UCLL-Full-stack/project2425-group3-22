@@ -24,7 +24,7 @@ const Map: React.FC = () => {
     }, [router]);
 
     useEffect(() => {
-        const fetchProfilePoopsData = async () => {
+        const fetchProfileMapData = async () => {
             try {
                 const response = await ProfileService.getProfileMap();
 
@@ -39,7 +39,7 @@ const Map: React.FC = () => {
             }
         };
 
-        fetchProfilePoopsData();
+        fetchProfileMapData();
     }, []);
 
     useEffect(() => {

@@ -20,9 +20,20 @@ const getProfileMap = async () => {
     });
 };
 
+const getProfileAchievements = async () => {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/profile/achievements', {
+        method: 'GET',
+        headers: {
+            'authorization': 'Bearer ' + Helper.getJWT(),
+            'Content-Type': 'application/json',
+        },
+    });
+}
+
 const ProfileService = {
     getProfilePoops,
     getProfileMap,
+    getProfileAchievements,
 };
 
 export default ProfileService;

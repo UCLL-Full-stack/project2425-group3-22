@@ -12,7 +12,7 @@ const getFriends = async () => {
 
 const searchUsers = async (username: string) => {
     return await fetch(
-        process.env.NEXT_PUBLIC_API_URL + '/user/search?username=' + encodeURIComponent(username),
+        process.env.NEXT_PUBLIC_API_URL + '/friends/search?username=' + encodeURIComponent(username),
         {
             method: 'GET',
             headers: {
