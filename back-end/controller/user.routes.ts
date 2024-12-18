@@ -7,7 +7,7 @@
  *              scheme: bearer
  *              bearerFormat: jwt
  *      schemas:
- *        ReturnUser:
+ *        UserResponse:
  *          type: object
  *          properties:
  *              userID:
@@ -45,35 +45,9 @@ import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
 import userService from '../service/user.service';
 import { UpdateUserInput } from '../types';
-import { isAdmin, isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
+import { isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
 
 const userRouter = express.Router();
-
-/**
- * @swagger
- * /user:
- *   get:
- *      security:
- *          - bearerAuth: []
- *      summary: Get all users
- *      responses:
- *         200:
- *            description: The users
- *            content:
- *              application/json:
- *                users:
- *                  type: array
- *                  items:
- *                      $ref: '#/components/schemas/ReturnUser'
- */
-userRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await userService.getAllUsers();
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
-    }
-});
 
 /**
  * @swagger
@@ -131,7 +105,7 @@ userRouter.get('/search', async (req: Request, res: Response, next: NextFunction
  *            content:
  *              application/json:
  *                schema:
- *                      $ref: '#/components/schemas/ReturnUser'
+ *                      $ref: '#/components/schemas/UserResponse'
  */
 userRouter.get(
     '/id/:userID',
@@ -166,7 +140,7 @@ userRouter.get(
  *            content:
  *              application/json:
  *                schema:
- *                  $ref: '#/components/schemas/ReturnUser'
+ *                  $ref: '#/components/schemas/UserResponse'
  */
 userRouter.put('/update', async (req: Request, res: Response, next: NextFunction) => {
     try {

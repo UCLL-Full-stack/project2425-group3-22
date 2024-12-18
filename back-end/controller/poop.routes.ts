@@ -66,35 +66,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import { Request as jwtRequest } from 'express-jwt';
 import poopService from '../service/poop.service';
 import { PoopRequest } from '../types';
-import { isAdmin } from '../middleware/authMiddleware';
 
 const poopRouter = express.Router();
-
-/**
- * @swagger
- * /poop:
- *   get:
- *      security:
- *          - bearerAuth: []
- *      summary: Get all poops
- *      responses:
- *         200:
- *            description: All poops
- *            content:
- *              application/json:
- *                poops:
- *                  type: array
- *                  items:
- *                      $ref: '#/components/schemas/PoopResponse'
- */
-poopRouter.get('/', isAdmin, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await poopService.getAllPoops();
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
-    }
-});
 
 /**
  * @swagger
