@@ -6,7 +6,6 @@ import {
     Achievement as AchievementPrisma,
 } from '@prisma/client';
 
-//TODO: add validation
 export class UserAchievement {
     private userID: number;
     private achievementID: number;

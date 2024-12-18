@@ -1,4 +1,3 @@
-//TODO: when creating/updating/deleting a user check wether or not the user that performs the action is allowed to do so (from jwt)
 import bcrypt from 'bcrypt';
 import { Role } from '@prisma/client';
 import { User } from '../model/user';
@@ -39,7 +38,8 @@ const getUsersByUsername = async (
     userID: number,
     username: string
 ): Promise<Array<UserInfoResponse>> => {
-    if (!username) throw new Error('Username is required.');
+    if (!username || username.length < 3)
+        throw new Error('Username is required and must be at least 3 characters.');
 
     const notIDs = [userID];
     const friends = await friendsDB.getAllFriendsByUser({ userID });

@@ -49,40 +49,40 @@ import { isAdminOrModeratorOrFriends } from '../middleware/authMiddleware';
 
 const userRouter = express.Router();
 
-/**
- * @swagger
- * /user/search:
- *   get:
- *      security:
- *          - bearerAuth: []
- *      summary: Get users whose username contains given username
- *      parameters:
- *        - in: query
- *          name: username
- *          schema:
- *              type: string
- *          required: true
- *          description: Username of the user to find
- *      responses:
- *         200:
- *            description: The users whose usernames contain the given username
- *            content:
- *              application/json:
- *                schema:
- *                  $ref: '#/components/schemas/UserInfoResponse'
- */
-userRouter.get('/search', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const request = <jwtRequest>req;
-        const userID = request.auth?.userID;
-        const username = <string>req.query?.username;
+// /**
+//  * @swagger
+//  * /user/search:
+//  *   get:
+//  *      security:
+//  *          - bearerAuth: []
+//  *      summary: Get users whose username contains given username
+//  *      parameters:
+//  *        - in: query
+//  *          name: username
+//  *          schema:
+//  *              type: string
+//  *          required: true
+//  *          description: Username of the user to find
+//  *      responses:
+//  *         200:
+//  *            description: The users whose usernames contain the given username
+//  *            content:
+//  *              application/json:
+//  *                schema:
+//  *                  $ref: '#/components/schemas/UserInfoResponse'
+//  */
+// userRouter.get('/search', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const request = <jwtRequest>req;
+//         const userID = request.auth?.userID;
+//         const username = <string>req.query?.username;
 
-        const result = await userService.getUsersByUsername(userID, username);
-        return res.status(200).json(result);
-    } catch (err: any) {
-        next(err);
-    }
-});
+//         const result = await userService.getUsersByUsername(userID, username);
+//         return res.status(200).json(result);
+//     } catch (err: any) {
+//         next(err);
+//     }
+// });
 
 /**
  * @swagger

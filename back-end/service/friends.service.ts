@@ -43,7 +43,6 @@ const getFriendsInfoByUser = async (userID: number): Promise<FriendsInfoResponse
                   }
           );
 
-    //TODO: update STATS
     await statService.updateStat(userID, 'S1', 'CHANGE', friendsInfo.length);
     await statService.updateStat(userID, 'S2', 'CHANGE', incomingFriendRequestsInfo.length);
     await statService.updateStat(userID, 'S3', 'CHANGE', outgoingFriendRequestsInfo.length);
@@ -158,7 +157,6 @@ const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Pr
     const refusedFriendRequest = await friendsDB.refuseFriendRequest(friendRequestToRefuse);
     if (!refusedFriendRequest) throw new Error('Error occured refusing friendrequest.');
 
-    //TODO: update STATS
     await statService.updateStat(senderID, 'S4', 'INCREASE');
 
     return 'Friendrequest successfully refused.';

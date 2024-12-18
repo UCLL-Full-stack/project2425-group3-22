@@ -150,7 +150,6 @@ profileRouter.get('/poops', async (req: Request, res: Response, next: NextFuncti
     }
 });
 
-// TODO: should be admin, moderator? or a friend of said user?
 /**
  * @swagger
  * /profile/map:

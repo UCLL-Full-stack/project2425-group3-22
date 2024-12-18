@@ -80,7 +80,7 @@ model UserAchievements {
     userID        Int
     achievement   Achievement @relation(fields: [achievementID], references: [achievementID], onDelete: Cascade)
     achievementID Int
-    achievedLevel Int         @default(1)
+    achievedLevel Int         @default(0)
     achievedAt    DateTime    @default(now())
 
     @@id([userID, achievementID])

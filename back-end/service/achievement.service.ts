@@ -68,9 +68,7 @@ const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievem
         const inBounds = userAchievement.getAchievement()?.getLevelsCriteria().length;
 
         let nextLevelString = '';
-        if (inBounds && nextLevel > inBounds - 1) {
-            nextLevelString = 'max';
-        } else {
+        if (inBounds && nextLevel <= inBounds - 1) {
             const nextLevelCriteria = userAchievement.getAchievement()?.getLevelsCriteria()[
                 nextLevel
             ];
@@ -97,22 +95,22 @@ const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievem
 };
 
 const checkStats = async (userID: number): Promise<void> => {
-    const stats = await statDB.getStatsByUser({ userID });
+    const userStats = await statDB.getStatsByUser({ userID });
     const achievements = await achievementDB.getAllAchievements();
     const userAchievements = await achievementDB.getAchievementsByUser({ userID });
 
-    if (!stats || !achievements) throw new Error('Error occured checking stats.');
+    if (!userStats || !achievements) throw new Error('Error occured checking stats.');
 
-    stats.forEach(async (stat) => {
+    userStats.forEach(async (userStat) => {
         achievements.forEach(async (achievement) => {
-            if (stat.getStat()?.getStatCode() === achievement.getStat()?.getStatCode()) {
+            if (userStat.getStat()?.getStatCode() === achievement.getStat()?.getStatCode()) {
                 let level = 0;
-                const levelsCriteria = achievement.getLevelsCriteria();
                 const levels = achievement.getLevels();
+                const levelsCriteria = achievement.getLevelsCriteria();
 
                 for (let i = 0; i < levelsCriteria.length; i++) {
-                    if (stat.getStatValue() > levelsCriteria[i - 1]) {
-                        level = levels[i];
+                    if (userStat.getStatValue() >= levelsCriteria[i - 1]) {
+                        level = levels[i - 1];
                     }
                 }
 

@@ -1,14 +1,19 @@
-import { User as UserPrisma, Stat as StatPrisma } from '@prisma/client';
+import {
+    User as UserPrisma,
+    Stat as StatPrisma,
+    Achievement as AchievementPrisma,
+} from '@prisma/client';
 import { Role } from '../types';
 import { Stat } from './stat';
+import { Achievement } from './achievement';
 
-//TODO: add other necessary validation
 export class User {
     private userID: number;
     private username: string;
     private email: string;
     private password: string;
     private role: Role;
+    private achievements?: Array<Achievement>;
     private stats?: Array<Stat>;
 
     constructor({
@@ -17,6 +22,7 @@ export class User {
         email,
         password,
         role,
+        achievements,
         stats,
     }: {
         userID: number;
@@ -24,6 +30,7 @@ export class User {
         email: string;
         password: string;
         role?: Role;
+        achievements?: Array<Achievement>;
         stats?: Array<Stat>;
     }) {
         this.validate({ username, email, password });
@@ -39,6 +46,7 @@ export class User {
             this.role = 'USER';
         }
 
+        this.achievements = achievements;
         this.stats = stats;
     }
 
@@ -93,6 +101,10 @@ export class User {
         if (role !== this.role) this.role = role;
     }
 
+    getAchievements(): Array<Achievement> | undefined {
+        return this.achievements;
+    }
+
     getStats(): Array<Stat> | undefined {
         return this.stats;
     }
@@ -139,14 +151,18 @@ export class User {
         email,
         password,
         role,
+        achievements,
         stats,
-    }: UserPrisma & { stats?: Array<StatPrisma> }) {
+    }: UserPrisma & { achievements?: Array<AchievementPrisma> } & { stats?: Array<StatPrisma> }) {
         return new User({
             userID,
             username,
             email,
             password,
             role: <Role>role,
+            achievements: achievements
+                ? achievements.map((achievement) => Achievement.from(achievement))
+                : undefined,
             stats: stats ? stats.map((stat) => Stat.from(stat)) : undefined,
         });
     }

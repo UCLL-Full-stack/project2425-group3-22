@@ -418,16 +418,16 @@ const main = async () => {
     //#endregion
 
     //#region  CONNECT ACHIEVEMENT <-> USER
-    // users.forEach(async (user) => {
-    //     achievements.forEach(async (achievement) => {
-    //         await prisma.userAchievements.create({
-    //             data: {
-    //                 userID: user.userID,
-    //                 achievementID: achievement.achievementID,
-    //             },
-    //         });
-    //     });
-    // });
+    users.forEach(async (user) => {
+        achievements.forEach(async (achievement) => {
+            await prisma.userAchievements.create({
+                data: {
+                    userID: user.userID,
+                    achievementID: achievement.achievementID,
+                },
+            });
+        });
+    });
     //#endregion
 
     //#region  CONNECT STAT <-> USER

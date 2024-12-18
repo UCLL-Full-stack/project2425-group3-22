@@ -34,7 +34,6 @@ const getPoopsByUser = async (userID: number): Promise<Array<PoopResponse>> => {
     const poops = await poopDB.getPoopsByUser({ userID });
     if (!poops) return [];
 
-    //TODO: update STATS
     await statService.updateStat(userID, 'S5', 'CHANGE', poops.length);
 
     return poops.map(
@@ -89,7 +88,6 @@ const getPoopsForMapByUser = async (userID: number): Promise<Array<PoopForMapRes
     const poops = await poopDB.getPoopsForMapByUser({ userID });
     if (!poops) return [];
 
-    //TODO: update STATS
     await statService.updateStat(userID, 'S7', 'CHANGE', poops.length);
 
     return poops.map(
@@ -134,7 +132,6 @@ const createPoop = async (
     );
     if (!poop) throw new Error('Error occured creating poop.');
 
-    //TODO: update STATS
     if (poop.getRating() === 5) await statService.updateStat(userID, 'S6', 'INCREASE');
 
     return <PoopResponse>{

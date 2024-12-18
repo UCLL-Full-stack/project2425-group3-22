@@ -71,7 +71,7 @@ CREATE TABLE "User" (
 CREATE TABLE "UserAchievements" (
     "userID" INTEGER NOT NULL,
     "achievementID" INTEGER NOT NULL,
-    "achievedLevel" INTEGER NOT NULL DEFAULT 1,
+    "achievedLevel" INTEGER NOT NULL DEFAULT 0,
     "achievedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "UserAchievements_pkey" PRIMARY KEY ("userID","achievementID")

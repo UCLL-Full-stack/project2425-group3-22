@@ -164,7 +164,6 @@ export class Poop {
         if (rating < 0 || rating > 5 || (rating % 1 !== 0 && rating % 1 !== 0.5))
             throw new Error('Rating must be a number from 0 to 5 (whole or ending in .5).');
 
-        //TODO: implement correct ColorID validation after deciding what exactly it'll be
         if (colorID !== null && (colorID < 0 || colorID > 15))
             throw new Error('ColorID must be a number from 0 to 15.');
 

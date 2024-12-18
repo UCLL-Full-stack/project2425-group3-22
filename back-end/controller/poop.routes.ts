@@ -209,7 +209,6 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-// TODO: only if autorized by role, or if it's the user's poop
 /**
  * @swagger
  * /poop/delete:
