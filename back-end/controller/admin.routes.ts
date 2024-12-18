@@ -110,7 +110,7 @@ const adminRouter = express.Router();
  *                      $ref: '#/components/schemas/UserAchievementResponse'
  */
 adminRouter.get(
-    '/',
+    '/achievement',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -201,7 +201,7 @@ adminRouter.get(
 //#region POOP endpoints
 /**
  * @swagger
- * /admin/poops:
+ * /admin/poop:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -217,7 +217,7 @@ adminRouter.get(
  *                      $ref: '#/components/schemas/PoopResponse'
  */
 adminRouter.get(
-    '/poops',
+    '/poop',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -233,7 +233,7 @@ adminRouter.get(
 //#region STAT endpoints
 /**
  * @swagger
- * /admin/stats:
+ * /admin/stat:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -249,7 +249,7 @@ adminRouter.get(
  *                      $ref: '#/components/schemas/UserStatResponse'
  */
 adminRouter.get(
-    '/stats',
+    '/stat',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -338,7 +338,7 @@ adminRouter.get(
 //#region USER endpoints
 /**
  * @swagger
- * /admin/users:
+ * /admin/user:
  *   get:
  *      security:
  *          - bearerAuth: []
@@ -354,7 +354,7 @@ adminRouter.get(
  *                      $ref: '#/components/schemas/UserResponse'
  */
 adminRouter.get(
-    '/users',
+    '/user',
     isAdminOrModerator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
