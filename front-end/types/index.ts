@@ -8,7 +8,8 @@ export type poopItem = {
     type: number,
     latitude: number,
     longitude: number,
-    user: userItem
+    user: userItem,
+    isOwner: boolean
 };
 
 export type userItem = { 

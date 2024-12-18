@@ -1,14 +1,24 @@
 import { useEffect, useRef } from 'react';
 import styles from '@styles/actionMenu.module.css';
 import PoopService from '@services/poopService';
+import Helper from 'utils/helper';
+import FriendsService from '@services/friendsService';
 
 type Props = {
     position: { x: number; y: number };
     setShowActionMenu: (show: boolean) => void;
     poopID: number;
+    userID: number;
+    isOwner: boolean;
 };
 
-const EditPoopActionMenu: React.FC<Props> = ({ position, setShowActionMenu, poopID }: Props) => {
+const EditPoopActionMenu: React.FC<Props> = ({
+    position,
+    setShowActionMenu,
+    poopID,
+    userID,
+    isOwner,
+}: Props) => {
     const actionMenuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -39,17 +49,34 @@ const EditPoopActionMenu: React.FC<Props> = ({ position, setShowActionMenu, poop
     }, [setShowActionMenu]);
 
     const deletePoop = async () => {
-        try {
-            const response = await PoopService.deletePoop(poopID);
+        const isConfirmed = window.confirm('Are you sure you want to delete this poop?');
 
-            if (!response.ok) {
-                throw new Error('Failed to delete poop');
-            }
+        if (!isConfirmed) {
+            return;
+        }
 
-            await response.json();
+        const response = await PoopService.deletePoop(poopID);
+
+        if (response.ok) {
             window.location.reload();
-        } catch (error: any) {
-            console.error(error.message);
+        } else {
+            console.error('Failed to delete poop');
+        }
+    };
+
+    const removeFriend = async () => {
+        const isConfirmed = window.confirm('Are you sure you want to remove this friend?');
+
+        if (!isConfirmed) {
+            return;
+        }
+
+        const response = await FriendsService.removeFriend(userID);
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('Failed to remove friend');
         }
     };
 
@@ -62,10 +89,8 @@ const EditPoopActionMenu: React.FC<Props> = ({ position, setShowActionMenu, poop
                 top: `${position.y}px`,
             }}
         >
-            <button>Edit</button>
-            <button onClick={deletePoop}>Delete</button>
-            <button>Remove Friend</button>
-            <button>Another thing</button>
+            {(isOwner || Helper.isModerator()) && <button onClick={deletePoop}>Delete</button>}
+            {!isOwner && <button onClick={removeFriend}>Remove Friend</button>}
         </div>
     );
 };

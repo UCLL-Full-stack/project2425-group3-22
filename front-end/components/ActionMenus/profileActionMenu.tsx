@@ -71,7 +71,7 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRe
                     : {}
             }
         >
-            {Helper.authorizeAdmin(router) && (
+            {Helper.isAdmin() && (
                 <Link href="/admin" className={styles.actionMenuLink}>
                     Admin
                 </Link>

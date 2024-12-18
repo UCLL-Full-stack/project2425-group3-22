@@ -57,7 +57,7 @@ const FriendRequestList: React.FC<Props> = ({
                 {foundUsers.length > 0 && (
                     <>
                         {foundUsers.map((user: any) => (
-                            <AddUserItem user={user}/>
+                            <AddUserItem key={user.userID} user={user}/>
                         ))}
                         <hr />
                     </>

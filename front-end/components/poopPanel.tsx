@@ -55,8 +55,6 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
             TypeSVG = PoopSVG;
     }
 
-    console.log(poop.size + ': ' + PoopHelper.calculatePoopSizePercentage(poop.size));
-
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOXGL_ACCESS_TOKEN ?? '';
 
@@ -136,6 +134,8 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                     position={actionMenuPosition}
                     setShowActionMenu={setShowActionMenu}
                     poopID={poop.poopID}
+                    userID={poop.user.userID}
+                    isOwner={poop.isOwner}
                 />
             )}
         </div>

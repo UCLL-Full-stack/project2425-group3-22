@@ -38,7 +38,6 @@ const Profile: React.FC = () => {
                     }
 
                     const result = await response.json();
-                    console.log(result);
                     setFriends(result.friends);
                     setIncoming(result.incoming);
                     setOutgoing(result.outgoing);

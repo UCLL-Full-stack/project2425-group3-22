@@ -84,4 +84,12 @@ export default class Helper {
         }
         return false;
     };
+
+    static isModerator = (): boolean => {
+        return Helper.getRole() === Roles.MODERATOR;
+    }
+
+    static isAdmin = (): boolean => {
+        return Helper.getRole() === Roles.MODERATOR ||  Helper.getRole() === Roles.ADMIN;
+    }
 }
