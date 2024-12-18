@@ -27,5 +27,20 @@
         "password": "Wachtwoord",
         "dontHaveAccount": "Nog geen account?",
         "registerHere": "Registreer hier"
+    },
+    "profile": {
+        "profile": "Profiel",
+        "activity": "Activiteit",
+        "map": "Kaart",
+        "role": "Rol",
+        "friends": "Vrienden",
+        "newRequests": "Nieuwe verzoek(en)"
+    },
+    "actionMenu": {
+        "delete": "Verwijder",
+        "removeFriend": "Verwijder vriend",
+        "admin": "Admin",
+        "profile": "Profiel",
+        "logout": "Log uit"
     }
 }

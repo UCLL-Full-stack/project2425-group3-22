@@ -3,8 +3,10 @@ import styles from '@styles/MainNavigation.module.css';
 import { useEffect, useRef, useState } from 'react';
 import LanguageSelector from './languageSelector';
 import ProfileSelector from './profileSelector';
+import { useTranslation } from 'next-i18next';
 
 const MainNavigation: React.FC = () => {
+    const { t } = useTranslation();
     const [isRendered, setIsRendered] = useState<boolean>(false);
 
     useEffect(() => {
@@ -14,7 +16,7 @@ const MainNavigation: React.FC = () => {
     return (
         <div className={styles.mainNavigation}>
             <Link className={styles.logo} href="/">
-                Poopedia
+                {t('poopedia')}
             </Link>
             <div className={styles.spacer}></div>
             {isRendered && (

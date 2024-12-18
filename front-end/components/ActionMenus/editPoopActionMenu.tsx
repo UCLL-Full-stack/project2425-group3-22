@@ -3,6 +3,7 @@ import styles from '@styles/actionMenu.module.css';
 import PoopService from '@services/poopService';
 import Helper from 'utils/helper';
 import FriendsService from '@services/friendsService';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     position: { x: number; y: number };
@@ -19,6 +20,7 @@ const EditPoopActionMenu: React.FC<Props> = ({
     userID,
     isOwner,
 }: Props) => {
+    const { t } = useTranslation();
     const actionMenuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -89,8 +91,8 @@ const EditPoopActionMenu: React.FC<Props> = ({
                 top: `${position.y}px`,
             }}
         >
-            {(isOwner || Helper.isModerator()) && <button onClick={deletePoop}>Delete</button>}
-            {!isOwner && <button onClick={removeFriend}>Remove Friend</button>}
+            {(isOwner || Helper.isModerator()) && <button onClick={deletePoop}>{t('actionMenu.delete')}</button>}
+            {!isOwner && <button onClick={removeFriend}>{t('actionMenu.removeFriend')}</button>}
         </div>
     );
 };

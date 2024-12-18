@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import styles from '@styles/actionMenu.module.css';
 import Helper from 'utils/helper';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     setShowActionMenu: (show: boolean) => void;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRef }: Props) => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
 
@@ -73,13 +76,13 @@ const ProfileActionMenu: React.FC<Props> = ({ setShowActionMenu, profileButtonRe
         >
             {Helper.isAdmin() && (
                 <Link href="/admin" className={styles.actionMenuLink}>
-                    Admin
+                    {t('actionMenu.admin')}
                 </Link>
             )}
             <Link href="/profile" className={styles.actionMenuLink}>
-                Profile
+                {t('actionMenu.profile')}
             </Link>
-            <button onClick={handleLogout}>Log out</button>
+            <button onClick={handleLogout}>{t('actionMenu.logout')}</button>
         </div>
     );
 };

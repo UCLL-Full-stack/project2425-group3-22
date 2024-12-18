@@ -1,15 +1,11 @@
 import Link from 'next/link';
 import styles from '@styles/ProfileOverview.module.css';
-import { useRouter } from 'next/router';
 import Helper from 'utils/helper';
-import { useState } from 'react';
 import { Roles } from '@types';
+import { useTranslation } from 'next-i18next';
 
 const ProfileOverview: React.FC = () => {
-    const router = useRouter();
-
-    const [username, setUsername] = useState<string>(Helper.getUsername() ?? '');
-    const [role, setRole] = useState<string>(Helper.getRole() ?? '');
+    const { t } = useTranslation();
 
     return (
         <div className={styles.profileOverviewContainer}>
@@ -19,17 +15,16 @@ const ProfileOverview: React.FC = () => {
                 </div>
                 <p className={styles.username}>
                     <span>@</span>
-                    {username}
+                    {Helper.getUsername()}
                 </p>
-                <button>Edit account</button>
             </div>
-            {role != Roles.USER && <p className={styles.role}>Role: {role.toLowerCase()}</p>}
+            {Helper.getRole() != Roles.USER && <p className={styles.role}>{t('profile.role')}: {Helper.getRole()?.toLowerCase()}</p>}
             <div className={styles.friendsContainer}>
-                <Link href="/profile/friends">
-                    <p>Friends:</p>
+                <Link href="/profile/friends" className={styles.friendsButton}>
+                    <p>{t('profile.friends')}:</p>
                     <p>15</p>
                 </Link>
-                <button>New Request(s)</button>
+                <button>{t('profile.newRequests')}</button>
             </div>
         </div>
     );

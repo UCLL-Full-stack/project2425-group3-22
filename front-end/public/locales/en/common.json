@@ -27,5 +27,20 @@
         "password": "Password",
         "dontHaveAccount": "Don't have an account?",
         "registerHere": "Register here"
+    },
+    "profile": {
+        "profile": "Profile",
+        "activity": "Activity",
+        "map": "Map",
+        "role": "Role",
+        "friends": "Friends",
+        "newRequests": "New request(s)"
+    },
+    "actionMenu": {
+        "delete": "Delete",
+        "removeFriend": "Remove friend",
+        "admin": "Admin",
+        "profile": "Profile",
+        "logout": "Logout"
     }
 }
