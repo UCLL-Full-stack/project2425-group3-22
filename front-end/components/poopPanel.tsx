@@ -119,7 +119,6 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
                     disabled={true}
                     className={styles.rating}
                 />
-                <p>size: {poop.size}</p>
                 <div className={styles.svgContainer}>
                     <div style={{ width: PoopHelper.calculatePoopSizePercentage(poop.size) }}>
                         <TypeSVG color={poop.colorID ? colorMap[poop.colorID] : undefined} />

@@ -4,9 +4,11 @@ import styles from '@styles/Login.module.css';
 import { useRouter } from 'next/router';
 import Helper from 'utils/helper';
 import AuthService from '@services/authService';
+import { useTranslation } from 'next-i18next';
 
 
 const LoginForm: React.FC = () => {
+    const { t } = useTranslation();
     const router = useRouter();
 
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -32,11 +34,11 @@ const LoginForm: React.FC = () => {
     return (
         <div>
             <form onSubmit={login} className={styles.loginForm}>
-                <h2>Login</h2>
+                <h2>{t('login.login')}</h2>
                 <input
                     type="text"
                     name="text"
-                    placeholder="Username / email"
+                    placeholder={t('login.usernameOrEmail')}
                     value={usernameOrEmail}
                     onChange={(e) => setUsernameOrEmail(e.target.value.trim())}
                     required
@@ -44,15 +46,15 @@ const LoginForm: React.FC = () => {
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder={t('login.password')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value.trim())}
                     required
                 />
-                <button type="submit">LOGIN</button>
+                <button type="submit">{t('login.login').toUpperCase()}</button>
                 {error && <p className={styles.error}>{error}</p>}
                 <p>
-                    Don't have an account? <Link href="/register">Register here</Link>
+                {t('login.dontHaveAccount')} <Link href="/register">{t('login.registerHere')}</Link>
                 </p>
             </form>
         </div>

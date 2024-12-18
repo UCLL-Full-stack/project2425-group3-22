@@ -1,4 +1,5 @@
 {
+    "poopedia": "Poopedia",
     "title": {
         "index": "Poopedia | Home",
         "login": "Poopedia | Login",
@@ -9,5 +10,21 @@
         "profile-map": "Poopedia | Profile - Map",
         "profile-friends": "Poopedia | Profile - Friends",
         "admin": "Poopedia | Admin"
+    },
+    "register": {
+        "register": "Register",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password",
+        "alreadyHaveAccount": "Already have an account?",
+        "loginHere": "Login here"
+    },
+    "login": {
+        "slogan": "Because every poop tells a story",
+        "login": "Login",
+        "usernameOrEmail": "Username / email",
+        "password": "Password",
+        "dontHaveAccount": "Don't have an account?",
+        "registerHere": "Register here"
     }
 }

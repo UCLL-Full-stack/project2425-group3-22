@@ -54,3 +54,13 @@
     color: var(--error);
     margin-bottom: 0;
 }
+
+.languageSelectorContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    border-radius: 3px;
+}

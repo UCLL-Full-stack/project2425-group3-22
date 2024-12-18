@@ -1,4 +1,5 @@
 {
+    "poopedia": "Poopedia",
     "title": {
         "index": "Poopedia | Home",
         "login": "Poopedia | Login",
@@ -9,5 +10,21 @@
         "profile-map": "Poopedia | Profiel - Kaart",
         "profile-friends": "Poopedia | Profiel - Vrienden",
         "admin": "Poopedia | Admin"
+    },
+    "register": {
+        "register": "Registreer",
+        "username": "Gebruikersnaam",
+        "email": "Email",
+        "password": "Wachtwoord",
+        "alreadyHaveAccount": "Heb je al een account?",
+        "loginHere": "Log hier in"
+    },
+    "login": {
+        "slogan": "Omdat elke drol een verhaal verteld",
+        "login": "Login",
+        "usernameOrEmail": "Gebruikersnaam / email",
+        "password": "Wachtwoord",
+        "dontHaveAccount": "Nog geen account?",
+        "registerHere": "Registreer hier"
     }
 }

@@ -5,12 +5,19 @@ import LoginForm from '@components/loginForm';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import LoginData from '@components/loginData';
+import LanguageSelector from '@components/languageSelector';
 
 const Login: React.FC = () => {
     const { t } = useTranslation();
+    const [isRendered, setIsRendered] = useState<boolean>(false);
 
     const [slogan, setSlogan] = useState('');
-    const fullSlogan = 'Because every poop tells a story.';
+    const fullSlogan = t('login.slogan');
+
+    useEffect(() => {
+        setIsRendered(true);
+    }, []);
 
     useEffect(() => {
         typeSlogan();
@@ -33,37 +40,19 @@ const Login: React.FC = () => {
                 <title>{t('title.login')}</title>
             </Head>
             <main>
+                {isRendered && (
+                    <div className={styles.languageSelectorContainer}>
+                        <LanguageSelector />
+                    </div>
+                )}
                 <div className={styles.container}>
                     <div className={styles.titleContainer}>
-                        <h1>Poopedia</h1>
+                        <h1>{t('poopedia')}</h1>
                         <h3>{slogan}</h3>
                     </div>
                     <LoginForm />
                 </div>
-                <div className={styles.loginData}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Password</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Admin</td>
-                                <td>Admin!123</td>
-                            </tr>
-                            <tr>
-                                <td>Moderator</td>
-                                <td>Moderator!123</td>
-                            </tr>
-                            <tr>
-                                <td>User1</td>
-                                <td>User1!123</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <LoginData />
             </main>
         </>
     );

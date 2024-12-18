@@ -29,38 +29,3 @@
     margin-left: 20px;
 }
 
-.mainNavigation .languageButton {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-}
-
-.mainNavigation .languageButton span {
-    font-size: 1.2rem;
-}
-
-.mainNavigation .profileButton {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-}
-
-.mainNavigation .profileButton .userIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--accent);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: var(--background);
-    font-weight: bold;
-    margin-right: 8px;
-    margin: 0;
-}

@@ -4,8 +4,11 @@ import styles from '@styles/Register.module.css';
 import { useRouter } from 'next/router';
 import Helper from 'utils/helper';
 import AuthService from '@services/authService';
+import { useTranslation } from 'next-i18next';
 
 const RegisterForm: React.FC = () => {
+    const { t } = useTranslation();
+
     const router = useRouter();
 
     const [username, setUsername] = useState('');
@@ -31,13 +34,13 @@ const RegisterForm: React.FC = () => {
     };
     return (
         <div className={styles.container}>
-            <h1>Poopedia</h1>
+            <h1>{t('poopedia')}</h1>
             <form onSubmit={register} className={styles.registerForm}>
-                <h2>Register</h2>
+                <h2>{t('register.register')}</h2>
                 <input
                     type="text"
                     name="username"
-                    placeholder="Username"
+                    placeholder={t('register.username')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value.trim())}
                     required
@@ -45,7 +48,7 @@ const RegisterForm: React.FC = () => {
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder={t('register.email')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value.trim())}
                     required
@@ -53,15 +56,15 @@ const RegisterForm: React.FC = () => {
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder={t('register.password')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value.trim())}
                     required
                 />
-                <button type="submit">REGISTER</button>
+                <button type="submit">{t('register.register').toUpperCase()}</button>
                 {error && <p className={styles.error}>{error}</p>}
                 <p>
-                    Already have an account? <Link href="/login">Login here</Link>
+                {t('register.alreadyHaveAccount')} <Link href="/login">{t('register.loginHere')}</Link>
                 </p>
             </form>
         </div>
