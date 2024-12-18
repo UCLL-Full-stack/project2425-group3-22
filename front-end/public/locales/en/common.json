@@ -34,7 +34,7 @@
         "map": "Map",
         "role": "Role",
         "friends": "Friends",
-        "newRequests": "New request(s)"
+        "newRequests": "new request(s)"
     },
     "actionMenu": {
         "delete": "Delete",

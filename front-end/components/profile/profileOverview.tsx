@@ -4,7 +4,12 @@ import Helper from 'utils/helper';
 import { Roles } from '@types';
 import { useTranslation } from 'next-i18next';
 
-const ProfileOverview: React.FC = () => {
+type Props = {
+    friendCount: number;
+    newRequestCount: number;
+};
+
+const ProfileOverview: React.FC<Props> = ({ friendCount, newRequestCount }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -18,13 +23,21 @@ const ProfileOverview: React.FC = () => {
                     {Helper.getUsername()}
                 </p>
             </div>
-            {Helper.getRole() != Roles.USER && <p className={styles.role}>{t('profile.role')}: {Helper.getRole()?.toLowerCase()}</p>}
+            {Helper.getRole() != Roles.USER && (
+                <p className={styles.role}>
+                    {t('profile.role')}: {Helper.getRole()?.toLowerCase()}
+                </p>
+            )}
             <div className={styles.friendsContainer}>
                 <Link href="/profile/friends" className={styles.friendsButton}>
                     <p>{t('profile.friends')}:</p>
-                    <p>15</p>
+                    <p>{friendCount}</p>
                 </Link>
-                <button>{t('profile.newRequests')}</button>
+                {newRequestCount > 0 && (
+                    <Link href="/profile/friends" className={styles.newRequestsButton}>
+                        <p>{newRequestCount} {t('profile.newRequests')}</p>
+                    </Link>
+                )}
             </div>
         </div>
     );
