@@ -16,9 +16,19 @@ export type userItem = {
     userID: number,
     username: string,
     email: string,
-    role: string
+    role: string,
     poops: poopItem[]
 };
+
+export type achievementItem = {
+    achievedAt: Date,
+    achievedLevel: number,
+    achievementID: number,
+    achievementCode: string,
+    description: {english: string, nederlands: string},
+    name: string,
+    nextLevel: string
+}
 
 export enum Roles {
     USER = 'USER',

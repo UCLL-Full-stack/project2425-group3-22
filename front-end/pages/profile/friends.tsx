@@ -29,7 +29,7 @@ const Profile: React.FC = () => {
 
     useEffect(() => {
         if (isValidated) {
-            const fetchProfilePoopsData = async () => {
+            const fetchFriendData = async () => {
                 try {
                     const response = await FriendsService.getFriends();
 
@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
                 }
             };
 
-            fetchProfilePoopsData();
+            fetchFriendData();
         }
     }, [isValidated]);
 
