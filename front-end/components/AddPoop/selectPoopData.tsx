@@ -12,6 +12,7 @@ import Rate from 'rc-rate';
 import Slider from 'rc-slider';
 import { useEffect, useRef, useState } from 'react';
 import PoopHelper from 'utils/poopHelper';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     selectedPoopType: number;
@@ -39,6 +40,7 @@ const SelectPoopData: React.FC<Props> = ({
     onSave,
 }: Props) => {
     const svgRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation();
 
     let TypeSVG;
 
@@ -70,8 +72,7 @@ const SelectPoopData: React.FC<Props> = ({
 
     useEffect(() => {
         if (svgRef.current) {
-            svgRef.current.style.width =
-                PoopHelper.calculatePoopSizePercentage(selectedPoopSize);
+            svgRef.current.style.width = PoopHelper.calculatePoopSizePercentage(selectedPoopSize);
         }
     }, [selectedPoopSize]);
 
@@ -79,7 +80,7 @@ const SelectPoopData: React.FC<Props> = ({
         <div className={styles.poopDataContainer}>
             <div className={styles.poopDataMainContainer}>
                 <form>
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="title">{t('add.title')}</label>
                     <input
                         name="title"
                         type="text"
@@ -87,7 +88,7 @@ const SelectPoopData: React.FC<Props> = ({
                         onChange={(e) => onTitleChange(e.target.value)}
                     />
 
-                    <label>Rating</label>
+                    <label>{t('add.rating')}</label>
                     <Rate
                         count={5}
                         allowHalf={true}
@@ -96,7 +97,7 @@ const SelectPoopData: React.FC<Props> = ({
                         value={selectedPoopRating}
                     />
 
-                    <label>Size</label>
+                    <label>{t('add.size')}</label>
                     <Slider
                         min={0}
                         max={100}
@@ -116,8 +117,8 @@ const SelectPoopData: React.FC<Props> = ({
                     />
                 </form>
                 <div>
-                    <p className={styles.exampleText}>example:</p>
-                    <div className={styles.svgContainer} >
+                    <p className={styles.exampleText}>{t('add.example')}:</p>
+                    <div className={styles.svgContainer}>
                         <div ref={svgRef}>
                             <TypeSVG
                                 color={
@@ -130,7 +131,7 @@ const SelectPoopData: React.FC<Props> = ({
             </div>
 
             <button onClick={onSave} className={styles.saveButton}>
-                Save
+                {t('add.save')}
             </button>
         </div>
     );

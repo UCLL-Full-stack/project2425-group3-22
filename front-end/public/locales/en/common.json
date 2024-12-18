@@ -42,5 +42,44 @@
         "admin": "Admin",
         "profile": "Profile",
         "logout": "Logout"
+    },
+    "pooptypes": {
+        "type1": "Type 1",
+        "type1description": "Separate hard lumps (hard to pass)",
+        "type2": "Type 2",
+        "type2description": "Lumpy and sausage like",
+        "type3": "Type 3",
+        "type3description": "A sausage shape with cracks in the surface",
+        "type4": "Type 4",
+        "type4description": "Like a smooth, soft sausage or snake",
+        "type5": "Type 5",
+        "type5description": "Soft blobs with clear cut edges (passed easily)",
+        "type6": "Type 6",
+        "type6description": "Mushy consistency with ragged edges",
+        "type7": "Type 7",
+        "type7description": "Liquid consistency with no solid pieces",
+        "unknown": "Unknown"
+    },
+    "add": {
+        "title": "Title",
+        "rating": "Rating",
+        "size": "Size",
+        "example": "Example",
+        "save": "Save"
+    },
+    "friends": {
+        "friends": "Friends",
+        "friendRequests": "Friend requests",
+        "incomingRequests": "Incoming requests",
+        "outgoingRequests": "Outgoing requests",
+        "searchFriend": "Search friend ...",
+        "addUser": "Add user ...",
+        "add": "Add",
+        "remove": "Remove",
+        "accept": "Accept",
+        "deny": "Deny",
+        "cancel": "Cancel",
+        "noFriends": "No friends found.",
+        "noIncomingRequests": "No incoming friend requests."
     }
 }

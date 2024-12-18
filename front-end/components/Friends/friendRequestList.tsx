@@ -2,8 +2,8 @@ import styles from '@styles/Friends.module.css';
 import IncomingRequestItem from './incomingRequestItem';
 import OutgoingRequestItem from './outgoingRequestItem';
 import { useEffect, useState } from 'react';
-import FriendsService from '@services/friendsService';
 import AddUserItem from './addUserItem';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     incomingRequests: any[];
@@ -18,6 +18,8 @@ const FriendRequestList: React.FC<Props> = ({
     searchUsers,
     foundUserData,
 }: Props) => {
+    const { t } = useTranslation();
+
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [foundUsers, setFoundUsers] = useState<any[]>(foundUserData);
 
@@ -44,10 +46,10 @@ const FriendRequestList: React.FC<Props> = ({
 
     return (
         <div className={styles.friendsList}>
-            <h2>Friend Requests</h2>
+            <h2>{t('friends.friendRequests')}</h2>
             <input
                 type="text"
-                placeholder="Add user ..."
+                placeholder={t('friends.addUser')}
                 className={styles.search}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -57,24 +59,24 @@ const FriendRequestList: React.FC<Props> = ({
                 {foundUsers.length > 0 && (
                     <>
                         {foundUsers.map((user: any) => (
-                            <AddUserItem key={user.userID} user={user}/>
+                            <AddUserItem key={user.userID} user={user} />
                         ))}
                         <hr />
                     </>
                 )}
                 {incomingRequests.length > 0 ? (
                     <>
-                        <strong>Incoming requests:</strong>
+                        <strong>{t('friends.incomingRequests')}:</strong>
                         {incomingRequests.map((user: any) => (
                             <IncomingRequestItem key={user.userID} user={user} />
                         ))}
                     </>
                 ) : (
-                    <p>No incoming friend requests.</p>
+                    <p>{t('friends.noIncomingRequests')}</p>
                 )}
                 {outgoingRequests.length > 0 && (
                     <>
-                        <strong>Sent requests:</strong>
+                        <strong>{t('friends.outgoingRequests')}:</strong>
                         {outgoingRequests.map((user: any) => (
                             <OutgoingRequestItem key={user.userID} user={user} />
                         ))}

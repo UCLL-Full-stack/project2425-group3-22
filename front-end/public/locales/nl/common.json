@@ -42,5 +42,29 @@
         "admin": "Admin",
         "profile": "Profiel",
         "logout": "Log uit"
+    },
+    "pooptypes": {
+        "type1": "Type 1",
+        "type1description": "Gescheiden harde keutels (moeilijk door te komen)",
+        "type2": "Type 2",
+        "type2description": "Klonterig en worstvormig",
+        "type3": "Type 3",
+        "type3description": "Een worstvorm met scheuren in het oppervlak",
+        "type4": "Type 4",
+        "type4description": "Zoals een gladde, zachte worst of slang",
+        "type5": "Type 5",
+        "type5description": "Zachte stukjes met duidelijke randen (makkelijk door te komen)",
+        "type6": "Type 6",
+        "type6description": "Papachtige consistentie met gescheurde randen",
+        "type7": "Type 7",
+        "type7description": "Waterige consistentie zonder vaste stukken",
+        "unknown": "Onbekend"
+    },
+    "add": {
+        "title": "Titel",
+        "rating": "Beoordeling",
+        "size": "Grootte",
+        "example": "Voorbeeld",
+        "save": "Opslaan"
     }
 }

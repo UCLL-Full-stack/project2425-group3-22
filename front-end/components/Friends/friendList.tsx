@@ -1,12 +1,14 @@
 import styles from '@styles/Friends.module.css';
 import FriendItem from './friendItem';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     users: any[];
 };
 
 const FriendList: React.FC<Props> = ({ users }: Props) => {
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [filteredUsers, setFilteredUsers] = useState<any[]>(users);
 
@@ -24,10 +26,10 @@ const FriendList: React.FC<Props> = ({ users }: Props) => {
 
     return (
         <div className={styles.friendsList}>
-            <h2>friends</h2>
+            <h2>{t('friends.friends')}</h2>
             <input
                 type="text"
-                placeholder="Search friend ..."
+                placeholder={t('friends.searchFriend')}
                 className={styles.search}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -37,7 +39,7 @@ const FriendList: React.FC<Props> = ({ users }: Props) => {
                 {filteredUsers.length > 0 ? (
                     filteredUsers.map((user: any) => <FriendItem key={user.userID} user={user} />)
                 ) : (
-                    <p>No friends found.</p>
+                    <p>{t('friends.noFriends')}</p>
                 )}
             </div>
         </div>
