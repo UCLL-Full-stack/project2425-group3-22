@@ -1,8 +1,7 @@
-import { Achievement } from '../model/achievement';
 import { UserAchievement } from '../model/userAchievement';
 import achievementDB from '../repository/achievement.db';
 import statDB from '../repository/stat.db';
-import { AchievementResponse, StatResponse, UserAchievementResponse } from '../types';
+import { AchievementResponse, UserAchievementResponse } from '../types';
 
 const getAllAchievements = async (): Promise<Array<AchievementResponse>> => {
     const achievements = await achievementDB.getAllAchievements();

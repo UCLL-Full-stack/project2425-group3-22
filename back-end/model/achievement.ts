@@ -83,30 +83,47 @@ export class Achievement {
     }: {
         achievementCode: string;
         name: string;
-        description: string;
+        description: any;
         levels: Array<number>;
         levelsCriteria: Array<number>;
         statID: number;
     }) {
         if (!achievementCode) throw new Error('Achievement code is required.');
-        if (!name || name.length > 100)
+
+        if (!name || name.length < 1 || name.length > 100)
             throw new Error('Name is required and cannot be longer than 100 characters.');
-        if (!description) throw new Error('Description is required.');
+
+        if (!description || typeof description !== 'object' || Array.isArray(description))
+            throw new Error(
+                'Description is required and must be an object containing key value pairs, the key should be the language and the value the description in that language.'
+            );
+        for (let key in description) {
+            if (typeof description[key] !== 'string' || description[key].length > 255)
+                throw new Error(
+                    'Each description must be a string and cannot be longer than 255 characters.'
+                );
+        }
+
         if (
             !Array.isArray(levels) ||
             levels.every((level) => typeof level !== 'number') ||
             levels.length > 10
         )
-            throw new Error('Levels is required and must be an array of maximum 10 whole numbers.');
+            throw new Error(
+                'Levels is required and must be an array of maximum 10 positive and whole numbers.'
+            );
+
         if (
             !Array.isArray(levelsCriteria) ||
             levelsCriteria.every((levelCriteria) => typeof levelCriteria !== 'number') ||
             levelsCriteria.length !== levels.length
         )
             throw new Error(
-                'Levels criteria is required and must be an array the same lenght as levels, containing only whole numbers.'
+                'Levels criteria is required and must be an array the same lenght as levels, containing only positive and whole numbers.'
             );
-        if (isNaN(statID)) throw new Error('StatID is required ans must be a number.');
+
+        if (!Number.isInteger(statID) || statID <= 0)
+            throw new Error('StatID is required and must be a positive and whole number.');
     }
 
     static from({

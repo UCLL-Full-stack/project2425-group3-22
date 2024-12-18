@@ -58,8 +58,10 @@ export class FriendRequest {
     }
 
     private validate({ senderID, receiverID }: { senderID: number; receiverID: number }) {
-        if (!senderID) throw new Error('SenderID is required.');
-        if (!receiverID) throw new Error('ReceiverID is required.');
+        if (!Number.isInteger(senderID) || senderID <= 0)
+            throw new Error('SenderID is required and must be a positive and whole number.');
+        if (!Number.isInteger(receiverID) || receiverID <= 0)
+            throw new Error('ReceiverID is required and must be a positive and whole number.');
     }
 
     static from({
