@@ -36,7 +36,7 @@ const FriendList: React.FC<Props> = ({ users }: Props) => {
             />
             <hr />
             <div className={styles.scrollable}>
-                {filteredUsers.length > 0 ? (
+                {filteredUsers && filteredUsers.length > 0 ? (
                     filteredUsers.map((user: any) => <FriendItem key={user.userID} user={user} />)
                 ) : (
                     <p>{t('friends.noFriends')}</p>

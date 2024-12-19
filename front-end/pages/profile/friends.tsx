@@ -12,43 +12,35 @@ import styles from '@styles/Friends.module.css';
 import FriendList from '@components/Friends/friendList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendRequestList from '@components/Friends/friendRequestList';
+import useSWR from 'swr';
+
+const getFriends: any = async () => {
+    const response = await FriendsService.getFriends()
+
+    if (response.ok) {
+        const friends = await response.json();
+
+        return {
+            friends: friends.friends,
+            incoming: friends.incoming,
+            outgoing: friends.outgoing,
+        };
+    }
+};
 
 const Profile: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
     const [isValidated, setIsValidated] = useState(false);
-    const [friends, setFriends] = useState([]);
-    const [incoming, setIncoming] = useState([]);
-    const [outgoing, setOutgoing] = useState([]);
     const [foundUsers, setFoundUsers] = useState([]);
+
+    const { data } = useSWR('friends', getFriends);
+    const { friends, incoming, outgoing } = data || {};
 
     useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
     }, [router]);
-
-    useEffect(() => {
-        if (isValidated) {
-            const fetchFriendData = async () => {
-                try {
-                    const response = await FriendsService.getFriends();
-
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch friends');
-                    }
-
-                    const result = await response.json();
-                    setFriends(result.friends);
-                    setIncoming(result.incoming);
-                    setOutgoing(result.outgoing);
-                } catch (error: any) {
-                    console.error(error.message);
-                }
-            };
-
-            fetchFriendData();
-        }
-    }, [isValidated]);
 
     const searchUsers = async (searchTerm: string) => {
         const response = await FriendsService.searchUsers(searchTerm);

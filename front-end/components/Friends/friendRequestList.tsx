@@ -64,7 +64,7 @@ const FriendRequestList: React.FC<Props> = ({
                         <hr />
                     </>
                 )}
-                {incomingRequests.length > 0 ? (
+                {incomingRequests && incomingRequests.length > 0 ? (
                     <>
                         <strong>{t('friends.incomingRequests')}:</strong>
                         {incomingRequests.map((user: any) => (
@@ -74,7 +74,7 @@ const FriendRequestList: React.FC<Props> = ({
                 ) : (
                     <p>{t('friends.noIncomingRequests')}</p>
                 )}
-                {outgoingRequests.length > 0 && (
+                {outgoingRequests && outgoingRequests.length > 0 && (
                     <>
                         <strong>{t('friends.outgoingRequests')}:</strong>
                         {outgoingRequests.map((user: any) => (

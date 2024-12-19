@@ -28,6 +28,9 @@
         "dontHaveAccount": "Nog geen account?",
         "registerHere": "Registreer hier"
     },
+    "home": {
+        "noPoopsFound": "Geen poops gevonden."
+    },
     "profile": {
         "profile": "Profiel",
         "activity": "Activiteit",
@@ -81,5 +84,7 @@
         "cancel": "Annuleer",
         "noFriends": "Geen vrienden gevonden.",
         "noIncomingRequests": "Geen binnenkomende Vriendschapsverzoeken."
-    }
+    },
+    "loading": "Laden ...",
+    "unexpectedError": "Een onverwachte fout is opgetreden."
 }

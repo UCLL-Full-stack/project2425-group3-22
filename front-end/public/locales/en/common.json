@@ -28,6 +28,9 @@
         "dontHaveAccount": "Don't have an account?",
         "registerHere": "Register here"
     },
+    "home": {
+        "noPoopsFound": "No poops found."
+    },
     "profile": {
         "profile": "Profile",
         "activity": "Activity",
@@ -81,5 +84,7 @@
         "cancel": "Cancel",
         "noFriends": "No friends found.",
         "noIncomingRequests": "No incoming friend requests."
-    }
+    },
+    "loading": "Loading ...",
+    "unexpectedError": "An unexpected error occurred."
 }
