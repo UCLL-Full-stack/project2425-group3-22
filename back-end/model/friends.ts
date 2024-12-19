@@ -58,7 +58,15 @@ export class Friends {
     }
 
     private validate({ user1ID, user2ID }: { user1ID: number; user2ID: number }) {
-        if (!user1ID || !user2ID) throw new Error("Both userID's are required");
+        if (
+            !Number.isInteger(user1ID) ||
+            user1ID <= 0 ||
+            !Number.isInteger(user2ID) ||
+            user2ID <= 0
+        )
+            throw new Error(
+                "Both userID's are required and both must be positive and whole numbers."
+            );
     }
 
     static from({

@@ -2,21 +2,22 @@ import { User } from '../../model/user';
 
 test('given: valid values for user, when: user is created, then: user is created with those values', () => {
     // given
-
-    // when
-    const user = new User({
+    const userData = {
         userID: 1,
         username: 'test-user',
         email: 'test-user@email.com',
         password: 'Test-pass!123',
-    });
+    };
+
+    // when
+    const user = new User(userData);
 
     // then
-    expect(user.getUserID()).toEqual(1);
-    expect(user.getUsername()).toEqual('test-user');
-    expect(user.getEmail()).toEqual('test-user@email.com');
-    expect(user.getPassword()).toEqual('Test-pass!123');
-    expect(user.getRole()).toEqual('USER');
+    expect(user.getUserID()).toBe(1);
+    expect(user.getUsername()).toBe('test-user');
+    expect(user.getEmail()).toBe('test-user@email.com');
+    expect(user.getPassword()).toBe('Test-pass!123');
+    expect(user.getRole()).toBe('USER');
 });
 
 test('given: invalid username for user, when: user is created, then: error is thrown', () => {

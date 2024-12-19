@@ -87,7 +87,7 @@ export class User {
         if (password !== this.password) {
             if (!this.validatePassword(password))
                 throw new Error(
-                    'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character'
+                    'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character.'
                 );
             this.password = password;
         }
@@ -127,7 +127,7 @@ export class User {
 
         if (!this.validatePassword(password))
             throw new Error(
-                'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character'
+                'Password must be 8 characters or longer. Password must contain at least one uppercase and one lowercase letter, one number and one special character.'
             );
     }
 
