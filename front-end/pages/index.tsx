@@ -8,42 +8,30 @@ import Helper from 'utils/helper';
 import AddPoopButton from '@components/addPoopButton';
 import ScrollToTopButton from '@components/scrollToTopButton';
 import { poopItem } from '@types';
-import PoopService from '@services/poopService';
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
+import PoopService from '@services/poopService';
+import PoopContainer from '@components/poopContainer';
+
+const getPoops = async () => {
+    const response = await PoopService.getPoops();
+    if (response.ok) {
+        return response.json();
+    }
+};
 
 const Home: React.FC = () => {
-    const { t } = useTranslation(); 
+    const { t } = useTranslation();
 
     const router = useRouter();
     const [isValidated, setIsValidated] = useState(false);
-    const [poops, setPoops] = useState([]);
+    const { data: poops, isLoading, error } = useSWR<poopItem[]>('poops', getPoops);
 
     useEffect(() => {
         setIsValidated(Helper.authorizeUser(router));
     }, [router]);
-
-    useEffect(() => {
-        if (isValidated) {
-            const fetchPoopsData = async () => {
-                try {
-                    const response = await PoopService.getPoops();
-
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch poops');
-                    }
-
-                    const result = await response.json();
-                    setPoops(result);
-                } catch (error: any) {
-                    console.error(error.message);
-                }
-            };
-
-            fetchPoopsData();
-        }
-    }, [isValidated]);
 
     if (!isValidated) {
         return null;
@@ -52,30 +40,23 @@ const Home: React.FC = () => {
     return (
         <>
             <Head>
-                <title>{t("title.index")}</title>
+                <title>{t('title.index')}</title>
             </Head>
             <MainNavigation />
             <main>
-                <div className={styles.poopContainer}>
-                    {poops.length > 0 ? (
-                        poops.map((poop: poopItem) => <PoopPanel key={poop.poopID} poop={poop} />)
-                    ) : (
-                        <p>No poops available.</p>
-                    )}
-                </div>
+                <PoopContainer isLoading={isLoading} error={error} poops={poops!} />
+                <AddPoopButton />
+                <ScrollToTopButton />
             </main>
-            <AddPoopButton />
-            <ScrollToTopButton />
         </>
     );
 };
-
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { locale } = context;
     return {
         props: {
-            ...(await serverSideTranslations(locale ?? "en", ["common"])),
+            ...(await serverSideTranslations(locale ?? 'en', ['common'])),
         },
     };
 };
