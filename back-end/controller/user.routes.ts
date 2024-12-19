@@ -158,4 +158,43 @@ userRouter.put('/update', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+/**
+ * @swagger
+ * /user/delete:
+ *   delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete a user
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      userID:
+ *                          type: number
+ *                          required: true
+ *      responses:
+ *         200:
+ *            description: Error or success message.
+ *            content:
+ *              application/json:
+ *                  schema:
+ *                      type: string
+ */
+userRouter.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = <jwtRequest>req;
+        const executerID = request.auth?.userID;
+        const role = request.auth?.role;
+        const { userID } = req.body;
+
+        const result = await userService.deleteUser(executerID, userID, role);
+        return res.status(200).json(result);
+    } catch (err: any) {
+        next(err);
+    }
+});
+
 export { userRouter };

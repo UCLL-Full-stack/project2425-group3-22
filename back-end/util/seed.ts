@@ -226,9 +226,9 @@ const main = async () => {
             name: 'Peepee Poopoo',
             description: JSON.stringify({
                 english:
-                    'Why is my poop the same color as my pee?. (have a certain amount of yellow poops)',
+                    'Why is my poop the same color as my pee? (have a certain amount of yellow poops)',
                 nederlands:
-                    'Waarom is mij kaka dezelfde kleur als mij pipi?. (heb een bepaald aantal gele kakas)',
+                    'Waarom is mij kaka dezelfde kleur als mij pipi? (heb een bepaald aantal gele kakas)',
             }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
@@ -268,12 +268,12 @@ const main = async () => {
     const rabbitMan = await prisma.achievement.create({
         data: {
             achievementCode: 'A11',
-            name: 'Pooping Blood',
+            name: 'Rabbit Man',
             description: JSON.stringify({
                 english:
-                    'I might be turning in a rabbit. (have a certain amount of poops of the type separate hard lumps)',
+                    'I might be turning in a rabbit. (have a certain amount of poops of type 1)',
                 nederlands:
-                    'Ik denk dat ik in een konijn aan het veranderen ben. (heb een bepaald kakas van het type keutels)',
+                    'Ik denk dat ik in een konijn aan het veranderen ben. (heb een bepaald kakas van type 1)',
             }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],
@@ -286,9 +286,9 @@ const main = async () => {
             name: 'Fluid Problem',
             description: JSON.stringify({
                 english:
-                    "I dont't think is should look like that. (have a certain amount of poops of the type diarrhea)",
+                    "I dont't think is should look like that. (have a certain amount of poops of type 7)",
                 nederlands:
-                    'Ik denk niet dat het er zou moeten uitzien. (heb een bepaald aantal kakas van het type diarree)',
+                    'Ik denk niet dat het er zou moeten uitzien. (heb een bepaald aantal kakas van type 7)',
             }),
             levels: [1, 2, 3],
             levelsCriteria: [10, 20, 50],

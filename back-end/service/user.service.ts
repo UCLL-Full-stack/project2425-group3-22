@@ -117,6 +117,21 @@ const updateUser = async (
     };
 };
 
+const deleteUser = async (executerID: number, userID: number, role: Role): Promise<String> => {
+    if (isNaN(userID) || userID <= 0)
+        throw new Error('userToDeleteID is required and must be a positive whole number.');
+
+    const userExists = await userDB.getUserByID({ userID });
+    if (!userExists) throw new Error('User does not exists.');
+
+    if (userExists.getUserID() !== executerID && role !== 'MODERATOR' && role !== 'ADMIN')
+        throw new Error('You are not authorized to delete this user.');
+
+    const deletedUser = await userDB.deleteUser({ userID });
+    if (!deletedUser) throw new Error('Error occured deleting user.');
+    return 'User successfully deleted.';
+};
+
 const checkEmailInUse = async (email: string | undefined): Promise<boolean> => {
     if (email) {
         const user = await userDB.getUserByEmail({ email });
@@ -139,4 +154,5 @@ export default {
     getUsersByUsername,
     createUser,
     updateUser,
+    deleteUser,
 };

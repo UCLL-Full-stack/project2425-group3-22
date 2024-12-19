@@ -29,7 +29,7 @@ export class UserAchievement {
         user?: User;
         achievement?: Achievement;
     }) {
-        this.validate;
+        this.validate({ userID, achievementID, achievedLevel });
         this.userID = userID;
         this.achievementID = achievementID;
         this.achievedLevel = achievedLevel;
@@ -75,11 +75,12 @@ export class UserAchievement {
         achievementID: number;
         achievedLevel: number;
     }) {
-        if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
-        if (isNaN(achievementID))
-            throw new Error('AchievementID is required and must be a number.');
-        if (isNaN(achievedLevel) || achievedLevel < 0)
-            throw new Error('Achieved level is required and must be a positive number.');
+        if (!Number.isInteger(userID) || userID <= 0)
+            throw new Error('UserID is required and must be a positive whole number.');
+        if (!Number.isInteger(achievementID) || achievementID <= 0)
+            throw new Error('AchievementID is required and must be a positive whole number.');
+        if (!Number.isInteger(achievedLevel) || achievedLevel < 0)
+            throw new Error('Achieved level is required and must be a positive whole number.');
     }
 
     static from({

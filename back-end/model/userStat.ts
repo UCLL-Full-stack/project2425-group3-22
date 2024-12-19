@@ -75,10 +75,12 @@ export class UserStat {
         statID: number;
         statValue: number;
     }) {
-        if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
-        if (isNaN(statID)) throw new Error('StatID is required and must be a number.');
-        if (isNaN(statValue) || statValue < 0)
-            throw new Error('Stat value is required and must be a positive number.');
+        if (!Number.isInteger(userID) || userID <= 0)
+            throw new Error('UserID is required and must be a positive whole number.');
+        if (!Number.isInteger(statID) || statID <= 0)
+            throw new Error('StatID is required and must be a positive whole number.');
+        if (!Number.isInteger(statValue) || statValue < 0)
+            throw new Error('Stat value is required and must be a positive whole number.');
     }
 
     static from({
