@@ -155,10 +155,10 @@ const deletePoop = async (userID: number, poopID: number, role: Role): Promise<S
     if (isNaN(poopID)) throw new Error('poopID is required and must be a number.');
 
     const poopExists = await poopDB.getPoopByID({ poopID });
-    if (!poopExists) throw new Error('Poop does not exists');
+    if (!poopExists) throw new Error('Poop does not exists.');
 
     if (poopExists.getUser()?.getUserID() !== userID && role !== 'MODERATOR' && role !== 'ADMIN')
-        throw new Error('You are not authorized to delete this poop');
+        throw new Error('You are not authorized to delete this poop.');
 
     const deletedPoop = await poopDB.deletePoop({ poopID });
     if (!deletedPoop) throw new Error('Error occured deleting poop.');

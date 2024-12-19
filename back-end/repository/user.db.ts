@@ -129,6 +129,18 @@ const updateUser = async (user: User): Promise<User | null> => {
     }
 };
 
+const deleteUser = async ({ userID }: { userID: number }): Promise<Boolean> => {
+    try {
+        await database.user.delete({
+            where: { userID: userID },
+        });
+        return true;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error('Database error, check log for more information.');
+    }
+};
+
 export default {
     getAllUsers,
     getUserByID,
@@ -137,4 +149,5 @@ export default {
     getUserByEmail,
     createUser,
     updateUser,
+    deleteUser,
 };

@@ -233,11 +233,11 @@ poopRouter.post('/create', async (req: Request, res: Response, next: NextFunctio
  *                          required: true
  *      responses:
  *         200:
- *            description: The created poop.
+ *            description: Error or success message
  *            content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/PoopResponse'
+ *                      type: string
  */
 poopRouter.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
     try {
