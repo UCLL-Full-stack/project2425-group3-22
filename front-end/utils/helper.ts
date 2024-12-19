@@ -64,10 +64,10 @@ export default class Helper {
     };
 
     static isModerator = (): boolean => {
-        return Helper.getRole() === Roles.MODERATOR;
+        return Helper.getRole() === Roles.MODERATOR || Helper.getRole() === Roles.ADMIN;
     }
 
     static isAdmin = (): boolean => {
-        return Helper.getRole() === Roles.MODERATOR ||  Helper.getRole() === Roles.ADMIN;
+        return Helper.getRole() === Roles.ADMIN;
     }
 }

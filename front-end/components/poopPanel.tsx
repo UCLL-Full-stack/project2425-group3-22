@@ -26,7 +26,6 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
     const [showActionMenu, setShowActionMenu] = useState(false);
 
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
-    const firstLetter = poop.user.username.charAt(0).toUpperCase();
 
     let TypeSVG;
     switch (poop.type) {
@@ -93,7 +92,7 @@ const PoopPanel: React.FC<Props> = ({ poop }: Props) => {
     return (
         <div className={styles.poopItem}>
             <div className={styles.nameContainer}>
-                <div className={styles.userIcon}>{firstLetter}</div>
+                <div className={styles.userIcon}>{poop.user.username?.charAt(0).toUpperCase() || '?'}</div>
                 <div>
                     <p>{poop.user.username}</p>
                     <p>
