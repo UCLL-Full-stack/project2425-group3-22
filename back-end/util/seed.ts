@@ -268,7 +268,7 @@ const main = async () => {
     const rabbitMan = await prisma.achievement.create({
         data: {
             achievementCode: 'A11',
-            name: 'Pooping Blood',
+            name: 'Rabbit Man',
             description: JSON.stringify({
                 english:
                     'I might be turning in a rabbit. (have a certain amount of poops of the type separate hard lumps)',
