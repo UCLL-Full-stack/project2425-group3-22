@@ -20,6 +20,9 @@ const getAllUsers = async (): Promise<Array<UserResponse>> => {
 };
 
 const getUserByID = async (userID: number): Promise<UserProfileResponse> => {
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
+
     const user = await userDB.getUserByID({ userID });
     const friendsInfo = await friendsDB.getFriendStatsByUser({ userID });
 
@@ -38,8 +41,10 @@ const getUsersByUsername = async (
     userID: number,
     username: string
 ): Promise<Array<UserInfoResponse>> => {
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
     if (!username || username.length < 3)
-        throw new Error('Username is required and must be at least 3 characters.');
+        throw new Error('username is required and must be at least 3 characters.');
 
     const notIDs = [userID];
     const friends = await friendsDB.getAllFriendsByUser({ userID });

@@ -22,6 +22,9 @@ const getAllAchievements = async (): Promise<Array<AchievementResponse>> => {
 };
 
 const getAchievementByID = async (achievementID: number): Promise<AchievementResponse> => {
+    if (!Number.isInteger(achievementID) || achievementID <= 0)
+        throw new Error('achievementID is required and must be a positive whole number.');
+
     const achievement = await achievementDB.getAchievementByID({ achievementID });
     if (!achievement) throw new Error('Achievement not found.');
 
@@ -54,6 +57,9 @@ const getAchievementByAchievementCode = async (
 };
 
 const getAchievementsByUser = async (userID: number): Promise<Array<UserAchievementResponse>> => {
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
+
     await checkStats(userID);
 
     const userAchievements = await achievementDB.getAchievementsByUser({ userID });
