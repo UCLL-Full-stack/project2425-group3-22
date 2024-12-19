@@ -5,6 +5,9 @@ import statService from './stat.service';
 import { FriendsInfoResponse, FriendInfoResponse } from '../types';
 
 const getFriendsInfoByUser = async (userID: number): Promise<FriendsInfoResponse> => {
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
+
     const friends = await friendsDB.getAllFriendsByUser({ userID });
     const incomingFriendRequests = await friendsDB.getAllIncomingFriendRequestsByUser({ userID });
     const outgoingFriendRequests = await friendsDB.getAllOutgoingFriendRequestsByUser({ userID });
@@ -58,7 +61,10 @@ const getFriendsByUsername = async (
     userID: number,
     username: string
 ): Promise<Array<FriendInfoResponse>> => {
-    if (!username) throw new Error('Username is required.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
+    if (!username || username.length < 3)
+        throw new Error('username is required and must be at least 3 characters.');
 
     const friends = await friendsDB.getFriendsByUsername({ userID, username });
     if (!friends) throw new Error(`No friends found with username containing '${username}'.`);
@@ -79,13 +85,14 @@ const sendFriendRequest = async (
     senderID: number,
     receiverID: number
 ): Promise<FriendInfoResponse> => {
-    if (isNaN(receiverID)) throw new Error('ReceiverID is required and must be a number.');
+    const friendRequestToSend = new FriendRequest({ senderID, receiverID });
 
-    const receiverExists = await userDB.getUserByID({ userID: receiverID });
+    const receiverExists = await userDB.getUserByID({
+        userID: friendRequestToSend.getReceiverID(),
+    });
     if (!receiverExists)
         throw new Error('The user you want to send a friendrequest to, does not exist.');
 
-    const friendRequestToSend = new FriendRequest({ senderID, receiverID });
     const friendRequestAllowed = await friendsDB.checkIfFriendRequestAllowed(friendRequestToSend);
     if (friendRequestAllowed) throw new Error(friendRequestAllowed);
 
@@ -99,7 +106,10 @@ const sendFriendRequest = async (
 };
 
 const cancelFriendRequest = async (senderID: number, receiverID: number): Promise<String> => {
-    if (isNaN(receiverID)) throw new Error('ReceiverID is required and must be a number.');
+    if (!Number.isInteger(senderID) || senderID <= 0)
+        throw new Error('SenderID is required and must be a positive whole number.');
+    if (!Number.isInteger(receiverID) || receiverID <= 0)
+        throw new Error('ReceiverID is required and must be a positive whole number.');
 
     const receiverExists = await userDB.getUserByID({ userID: receiverID });
     if (!receiverExists) throw new Error('The user you sent a friendrequest to does not exist.');
@@ -118,9 +128,12 @@ const cancelFriendRequest = async (senderID: number, receiverID: number): Promis
 
 const acceptFriendRequest = async (
     senderID: number,
-    loggedInUserID: number
+    receiverID: number
 ): Promise<FriendInfoResponse> => {
-    if (isNaN(senderID)) throw new Error('SenderID is required and must be a number.');
+    if (!Number.isInteger(senderID) || senderID <= 0)
+        throw new Error('SenderID is required and must be a positive whole number.');
+    if (!Number.isInteger(receiverID) || receiverID <= 0)
+        throw new Error('ReceiverID is required and must be a positive whole number.');
 
     const senderExists = await userDB.getUserByID({ userID: senderID });
     if (!senderExists)
@@ -128,7 +141,7 @@ const acceptFriendRequest = async (
 
     const friendRequestToAccept = await friendsDB.getFriendRequest({
         senderID,
-        receiverID: loggedInUserID,
+        receiverID,
     });
     if (!friendRequestToAccept) throw new Error('Friendrequest does not exist.');
 
@@ -141,8 +154,11 @@ const acceptFriendRequest = async (
     };
 };
 
-const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Promise<String> => {
-    if (isNaN(senderID)) throw new Error('SenderID is required and must be a number.');
+const refuseFriendRequest = async (senderID: number, receiverID: number): Promise<String> => {
+    if (!Number.isInteger(senderID) || senderID <= 0)
+        throw new Error('SenderID is required and must be a positive whole number.');
+    if (!Number.isInteger(receiverID) || receiverID <= 0)
+        throw new Error('ReceiverID is required and must be a positive whole number.');
 
     const senderExists = await userDB.getUserByID({ userID: senderID });
     if (!senderExists)
@@ -150,7 +166,7 @@ const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Pr
 
     const friendRequestToRefuse = await friendsDB.getFriendRequest({
         senderID,
-        receiverID: loggedInUserID,
+        receiverID,
     });
     if (!friendRequestToRefuse) throw new Error('Friendrequest does not exist.');
 
@@ -163,7 +179,10 @@ const refuseFriendRequest = async (senderID: number, loggedInUserID: number): Pr
 };
 
 const removeFriend = async (userID: number, friendID: number): Promise<FriendInfoResponse> => {
-    if (isNaN(friendID)) throw new Error('UserID is required and must be a number.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('UserID is required and must be a positive whole number.');
+    if (!Number.isInteger(friendID) || friendID <= 0)
+        throw new Error('FriendID is required and must be a positive whole number.');
 
     const friendExists = await userDB.getUserByID({ userID: userID });
     if (!friendExists) throw new Error('The friend whom you want to remove does not exist.');

@@ -83,7 +83,7 @@ type PoopResponse = {
     type: number;
     size: number;
     rating: number;
-    user: any;
+    user: UserInfoResponse;
     colorID: number | null;
     title: string | null;
     latitude: number | null;
@@ -102,7 +102,7 @@ type PoopForDisplayResponse = {
     type: number;
     size: number;
     rating: number;
-    user: any;
+    user: UserInfoResponse;
     colorID: number | null;
     title: string | null;
     latitude: number | null;

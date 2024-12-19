@@ -142,7 +142,7 @@ test('given: a valid username, when: getting users by username, then: all users 
 
     //then
     expect(mockUserDbGetUsersByUsername).toHaveBeenCalledTimes(1);
-    expect(mockUserDbGetUsersByUsername).toHaveBeenCalledWith({ notIDs: [1], username: 'user' });
+    expect(mockUserDbGetUsersByUsername).toHaveBeenCalledWith({ notIDs: [1, 2], username: 'user' });
     expect(response.length).toBe(2);
     expect(response).toEqual([
         {

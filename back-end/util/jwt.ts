@@ -18,4 +18,4 @@ const generateJwtToken = async (userID: number, role: Role): Promise<string> => 
     }
 };
 
-export { generateJwtToken };
+export default { generateJwtToken };

@@ -1,5 +1,10 @@
 import { Poop } from '../model/poop';
-import { PoopResponse, PoopForMapResponse, PoopForDisplayResponse } from '../types';
+import {
+    PoopResponse,
+    PoopForMapResponse,
+    PoopForDisplayResponse,
+    UserInfoResponse,
+} from '../types';
 import poopDB from '../repository/poop.db';
 import statService from './stat.service';
 import { Role } from '@prisma/client';
@@ -16,7 +21,7 @@ const getAllPoops = async (): Promise<Array<PoopResponse>> => {
                 type: poop.getType(),
                 size: poop.getSize(),
                 rating: poop.getRating(),
-                user: {
+                user: <UserInfoResponse>{
                     userID: poop.getUser()?.getUserID(),
                     username: poop.getUser()?.getUsername(),
                 },
@@ -29,7 +34,8 @@ const getAllPoops = async (): Promise<Array<PoopResponse>> => {
 };
 
 const getPoopsByUser = async (userID: number): Promise<Array<PoopResponse>> => {
-    if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('UserID is required and must be a positive and whole number.');
 
     const poops = await poopDB.getPoopsByUser({ userID });
     if (!poops) return [];
@@ -44,7 +50,7 @@ const getPoopsByUser = async (userID: number): Promise<Array<PoopResponse>> => {
                 type: poop.getType(),
                 size: poop.getSize(),
                 rating: poop.getRating(),
-                user: {
+                user: <UserInfoResponse>{
                     userID: poop.getUser()?.getUserID(),
                     username: poop.getUser()?.getUsername(),
                 },
@@ -59,7 +65,8 @@ const getPoopsByUser = async (userID: number): Promise<Array<PoopResponse>> => {
 const getPoopsFromUserAndFriendsByUser = async (
     userID: number
 ): Promise<Array<PoopForDisplayResponse>> => {
-    if (isNaN(userID)) throw new Error('userID is required and must be a number.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('UserID is required and must be a positive and whole number.');
 
     const poops = await poopDB.getPoopsFromUserAndFriendsByUser({ userID });
     if (!poops) return [];
@@ -72,7 +79,10 @@ const getPoopsFromUserAndFriendsByUser = async (
                 type: poop.getType(),
                 size: poop.getSize(),
                 rating: poop.getRating(),
-                user: poop.getUser(),
+                user: <UserInfoResponse>{
+                    userID: poop.getUser()?.getUserID(),
+                    username: poop.getUser()?.getUsername(),
+                },
                 colorID: poop.getColorID(),
                 title: poop.getTitle(),
                 latitude: poop.getLatitude(),
@@ -140,7 +150,7 @@ const createPoop = async (
         type: poop.getType(),
         size: poop.getSize(),
         rating: poop.getRating(),
-        user: {
+        user: <UserInfoResponse>{
             userID: poop.getUser()?.getUserID(),
             username: poop.getUser()?.getUsername(),
         },

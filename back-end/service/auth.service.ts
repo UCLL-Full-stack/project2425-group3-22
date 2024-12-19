@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../model/user';
 import userDB from '../repository/user.db';
 import { AuthenticationResponse } from '../types';
-import { generateJwtToken } from '../util/jwt';
+import jwtUtil from '../util/jwt';
 
 const register = async (
     username: string,
@@ -19,7 +19,7 @@ const register = async (
     const createdUser = await userDB.createUser(userToCreate);
     if (!createdUser) throw new Error('Error occured creating user.');
 
-    const token = await generateJwtToken(createdUser.getUserID(), createdUser.getRole());
+    const token = await jwtUtil.generateJwtToken(createdUser.getUserID(), createdUser.getRole());
 
     return <AuthenticationResponse>{
         username: createdUser.getUsername(),
@@ -41,7 +41,7 @@ const login = async (
             `${usernameOrEmail.includes('@') ? 'Email' : 'Username'} or password incorrect.`
         );
 
-    const token = await generateJwtToken(user.getUserID(), user.getRole());
+    const token = await jwtUtil.generateJwtToken(user.getUserID(), user.getRole());
 
     return <AuthenticationResponse>{
         username: user.getUsername(),
