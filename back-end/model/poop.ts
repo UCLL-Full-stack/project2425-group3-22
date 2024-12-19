@@ -155,25 +155,27 @@ export class Poop {
         longitude: number | null;
     }) {
         if (!this.validateDateTime(dateTime))
-            throw new Error('DateTime must be in correct format (2024-01-01T00:00:00.000Z)');
+            throw new Error('DateTime must be in correct format (2024-01-01T00:00:00.000Z).');
 
-        if (type < 0 || type > 7) throw new Error('Type must be a number from 0 to 7.');
+        if (!Number.isInteger(type) || type < 0 || type > 7)
+            throw new Error('Type must be a whole number from 0 to 7.');
 
-        if (size < 0 || size > 100) throw new Error('Size must be a number from 0 to 100.');
+        if (!Number.isInteger(size) || size < 0 || size > 100)
+            throw new Error('Size must be a whole number from 0 to 100.');
 
-        if (rating < 0 || rating > 5 || (rating % 1 !== 0 && rating % 1 !== 0.5))
+        if (isNaN(rating) || rating < 0 || rating > 5 || (rating % 1 !== 0 && rating % 1 !== 0.5))
             throw new Error('Rating must be a number from 0 to 5 (whole or ending in .5).');
 
-        if (colorID !== null && (colorID < 0 || colorID > 15))
-            throw new Error('ColorID must be a number from 0 to 15.');
+        if (colorID !== null && (!Number.isInteger(colorID) || colorID < 0 || colorID > 15))
+            throw new Error('ColorID must be a whole number from 0 to 15.');
 
-        if (title && title.length > 100)
+        if (title !== null && (typeof title !== 'string' || title.length > 100))
             throw new Error('Title cannot be longer than 100 characters.');
 
-        if (latitude !== null && (latitude < -90 || latitude > 90))
+        if (latitude !== null && (isNaN(latitude) || latitude < -90 || latitude > 90))
             throw new Error('Latitude must be a number between -90 and 90.');
 
-        if (longitude !== null && (longitude < -180 || longitude > 180))
+        if (longitude !== null && (isNaN(longitude) || longitude < -180 || longitude > 180))
             throw new Error('Longitude must be a number between -180 and 180.');
     }
 
