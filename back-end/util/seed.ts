@@ -286,7 +286,7 @@ const main = async () => {
             name: 'Fluid Problem',
             description: JSON.stringify({
                 english:
-                    "I dont't think is should look like that. (have a certain amount of poops of type 7)",
+                    "I dont't think it should look like that. (have a certain amount of poops of type 7)",
                 nederlands:
                     'Ik denk niet dat het er zou moeten uitzien. (heb een bepaald aantal kakas van type 7)',
             }),
