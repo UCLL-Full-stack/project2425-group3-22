@@ -1,6 +1,6 @@
 import { Achievement } from '../../model/achievement';
 import achievementDb from '../../repository/achievement.db';
-import achivementService from '../../service/achievement.service';
+import achievementService from '../../service/achievement.service';
 
 //#region PREP
 const achievement1 = new Achievement({
@@ -33,14 +33,12 @@ const achievement3 = new Achievement({
 
 let mockAchievementDbGetAllAchievements: jest.Mock;
 let mockUserDbGetUserByID: jest.Mock;
-let mockUserDbGetUserByAchivementCode: jest.Mock;
-let mockUserDbGetUserByUser: jest.Mock;
+let mockUserDbGetUserByAchievementCode: jest.Mock;
 
 beforeEach(() => {
     mockAchievementDbGetAllAchievements = jest.fn();
     mockUserDbGetUserByID = jest.fn();
-    mockUserDbGetUserByAchivementCode = jest.fn();
-    mockUserDbGetUserByUser = jest.fn();
+    mockUserDbGetUserByAchievementCode = jest.fn();
 });
 
 afterEach(() => {
@@ -49,7 +47,7 @@ afterEach(() => {
 //#endregion
 
 //#region GET ALL
-test('given: at least one achivement exists, when: getting all achievements, then: all achievements are returned', async () => {
+test('given: at least one achievement exists, when: getting all achievements, then: all achievements are returned', async () => {
     //given
     achievementDb.getAllAchievements = mockAchievementDbGetAllAchievements.mockReturnValue([
         achievement1,
@@ -58,7 +56,7 @@ test('given: at least one achivement exists, when: getting all achievements, the
     ]);
 
     //when
-    const response = await achivementService.getAllAchievements();
+    const response = await achievementService.getAllAchievements();
 
     //then
     expect(mockAchievementDbGetAllAchievements).toHaveBeenCalledTimes(1);
@@ -99,7 +97,7 @@ test('given: no achievements exist, when: getting all achievements, then: empty 
     achievementDb.getAllAchievements = mockAchievementDbGetAllAchievements.mockReturnValue(null);
 
     //when
-    const response = await achivementService.getAllAchievements();
+    const response = await achievementService.getAllAchievements();
 
     //then
     expect(mockAchievementDbGetAllAchievements).toHaveBeenCalledTimes(1);
@@ -114,7 +112,7 @@ test('given: a valid achievementID, when: getting achievement by id, then: achie
     achievementDb.getAchievementByID = mockUserDbGetUserByID.mockReturnValue(achievement1);
 
     //when
-    const response = await achivementService.getAchievementByID(1);
+    const response = await achievementService.getAchievementByID(1);
 
     //then
     expect(mockUserDbGetUserByID).toHaveBeenCalledTimes(1);
@@ -136,10 +134,10 @@ test('given: an invalid achievementID, when: getting achievement by id, then: er
     //when
 
     //then
-    await expect(achivementService.getAchievementByID(-1)).rejects.toThrow(
+    await expect(achievementService.getAchievementByID(-1)).rejects.toThrow(
         'achievementID is required and must be a positive whole number.'
     );
-    await expect(achivementService.getAchievementByID(1.5)).rejects.toThrow(
+    await expect(achievementService.getAchievementByID(1.5)).rejects.toThrow(
         'achievementID is required and must be a positive whole number.'
     );
 });
@@ -149,14 +147,14 @@ test('given: an invalid achievementID, when: getting achievement by id, then: er
 test('given: a valid achievementCode, when: getting achievement by achievementCode, then: achievement with given code is returned', async () => {
     //given
     achievementDb.getAchievementByAchievementCode =
-        mockUserDbGetUserByAchivementCode.mockReturnValue(achievement1);
+        mockUserDbGetUserByAchievementCode.mockReturnValue(achievement1);
 
     //when
-    const response = await achivementService.getAchievementByAchievementCode('A1');
+    const response = await achievementService.getAchievementByAchievementCode('A1');
 
     //then
-    expect(mockUserDbGetUserByAchivementCode).toHaveBeenCalledTimes(1);
-    expect(mockUserDbGetUserByAchivementCode).toHaveBeenCalledWith({
+    expect(mockUserDbGetUserByAchievementCode).toHaveBeenCalledTimes(1);
+    expect(mockUserDbGetUserByAchievementCode).toHaveBeenCalledWith({
         achievementCode: 'A1',
     });
     expect(response).toEqual({
@@ -178,10 +176,10 @@ test('given: an invalid userID, when: getting achievement by user, then: error i
     //when
 
     //then
-    await expect(achivementService.getAchievementsByUser(-1)).rejects.toThrow(
+    await expect(achievementService.getAchievementsByUser(-1)).rejects.toThrow(
         'userID is required and must be a positive whole number.'
     );
-    await expect(achivementService.getAchievementsByUser(1.5)).rejects.toThrow(
+    await expect(achievementService.getAchievementsByUser(1.5)).rejects.toThrow(
         'userID is required and must be a positive whole number.'
     );
 });

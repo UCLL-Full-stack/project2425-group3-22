@@ -93,7 +93,8 @@ const getPoopsFromUserAndFriendsByUser = async (
 };
 
 const getPoopsForMapByUser = async (userID: number): Promise<Array<PoopForMapResponse>> => {
-    if (isNaN(userID)) throw new Error('UserID is required and must be a number.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('UserID is required and must be a positive and whole number.');
 
     const poops = await poopDB.getPoopsForMapByUser({ userID });
     if (!poops) return [];
@@ -121,10 +122,8 @@ const createPoop = async (
     latitude?: number,
     longitude?: number
 ): Promise<PoopResponse> => {
-    if (!dateTime || isNaN(type) || isNaN(size) || isNaN(rating))
-        throw new Error(
-            'dateTime, type, size and rating are required (type, size and rating must be numbers).'
-        );
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('UserID is required and must be a positive and whole number.');
 
     const poop = await poopDB.createPoop(
         userID,
@@ -162,7 +161,10 @@ const createPoop = async (
 };
 
 const deletePoop = async (userID: number, poopID: number, role: Role): Promise<String> => {
-    if (isNaN(poopID)) throw new Error('poopID is required and must be a number.');
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive and whole number.');
+    if (!Number.isInteger(poopID) || poopID <= 0)
+        throw new Error('poopID is required and must be a positive and whole number.');
 
     const poopExists = await poopDB.getPoopByID({ poopID });
     if (!poopExists) throw new Error('Poop does not exists.');

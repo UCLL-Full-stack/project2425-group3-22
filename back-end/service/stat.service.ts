@@ -1,5 +1,4 @@
 import { Stat } from '../model/stat';
-import { UserStat } from '../model/userStat';
 import statDB from '../repository/stat.db';
 import { StatUpdate, UserStatResponse } from '../types';
 
@@ -10,6 +9,9 @@ const getAllStats = async (): Promise<Array<Stat>> => {
 };
 
 const getStatByID = async (statID: number): Promise<Stat> => {
+    if (!Number.isInteger(statID) || statID <= 0)
+        throw new Error('statID is required and must be a positive whole number.');
+
     const stat = await statDB.getStatByID({ statID });
     if (!stat) throw new Error('Stat not found.');
 
@@ -24,6 +26,9 @@ const getStatByStatCode = async (statCode: string): Promise<Stat> => {
 };
 
 const getStatsByUser = async (userID: number): Promise<Array<UserStatResponse>> => {
+    if (!Number.isInteger(userID) || userID <= 0)
+        throw new Error('userID is required and must be a positive whole number.');
+
     const userStats = await statDB.getStatsByUser({ userID });
     if (!userStats) throw new Error('No stats found.');
 
