@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User } from '../model/user';
 import userDB from '../repository/user.db';
+import achievementService from './achievement.service';
 import { AuthenticationResponse } from '../types';
 import jwtUtil from '../util/jwt';
 
@@ -42,6 +43,7 @@ const login = async (
         );
 
     const token = await jwtUtil.generateJwtToken(user.getUserID(), user.getRole());
+    await achievementService.checkStats(user.getUserID());
 
     return <AuthenticationResponse>{
         username: user.getUsername(),

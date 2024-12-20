@@ -106,41 +106,41 @@ const checkStats = async (userID: number): Promise<void> => {
     const achievements = await achievementDB.getAllAchievements();
     const userAchievements = await achievementDB.getAchievementsByUser({ userID });
 
-    if (!userStats || !achievements) throw new Error('Error occured checking stats.');
+    if (userStats && achievements) {
+        userStats.forEach(async (userStat) => {
+            achievements.forEach(async (achievement) => {
+                if (userStat.getStat()?.getStatCode() === achievement.getStat()?.getStatCode()) {
+                    let level = 0;
+                    const levels = achievement.getLevels();
+                    const levelsCriteria = achievement.getLevelsCriteria();
 
-    userStats.forEach(async (userStat) => {
-        achievements.forEach(async (achievement) => {
-            if (userStat.getStat()?.getStatCode() === achievement.getStat()?.getStatCode()) {
-                let level = 0;
-                const levels = achievement.getLevels();
-                const levelsCriteria = achievement.getLevelsCriteria();
+                    for (let i = 0; i < levelsCriteria.length; i++) {
+                        if (userStat.getStatValue() >= levelsCriteria[i]) {
+                            level = levels[i];
+                        }
+                    }
 
-                for (let i = 0; i < levelsCriteria.length; i++) {
-                    if (userStat.getStatValue() >= levelsCriteria[i]) {
-                        level = levels[i];
+                    if (level > 0) {
+                        const userAchievement = userAchievements?.find(
+                            (ua) =>
+                                achievement.getAchievementCode() ===
+                                ua.getAchievement()?.getAchievementCode()
+                        );
+                        if (userAchievement) {
+                            if (userAchievement.getAchievedLevel() < level)
+                                await updateAchievementLevel(
+                                    userID,
+                                    achievement.getAchievementCode(),
+                                    level
+                                );
+                        } else {
+                            await giveAchievement(userID, achievement.getAchievementID(), level);
+                        }
                     }
                 }
-
-                if (level > 0) {
-                    const userAchievement = userAchievements?.find(
-                        (ua) =>
-                            achievement.getAchievementCode() ===
-                            ua.getAchievement()?.getAchievementCode()
-                    );
-                    if (userAchievement) {
-                        if (userAchievement.getAchievedLevel() < level)
-                            await updateAchievementLevel(
-                                userID,
-                                achievement.getAchievementCode(),
-                                level
-                            );
-                    } else {
-                        await giveAchievement(userID, achievement.getAchievementID(), level);
-                    }
-                }
-            }
+            });
         });
-    });
+    }
 };
 
 const updateAchievementLevel = async (
@@ -152,12 +152,10 @@ const updateAchievementLevel = async (
         userID,
         achievementCode,
     });
-    if (!userAchievementToUpdate) throw new Error('Achievement not found.');
-
-    userAchievementToUpdate.setAchievedLevel(achievedLevel);
-
-    const updatedAchievement = await achievementDB.updateAchievementLevel(userAchievementToUpdate);
-    if (!updatedAchievement) throw new Error('Error occured updating achievement.');
+    if (userAchievementToUpdate) {
+        userAchievementToUpdate.setAchievedLevel(achievedLevel);
+        await achievementDB.updateAchievementLevel(userAchievementToUpdate);
+    }
 };
 
 const giveAchievement = async (
@@ -180,4 +178,5 @@ export default {
     getAchievementByID,
     getAchievementByAchievementCode,
     getAchievementsByUser,
+    checkStats,
 };

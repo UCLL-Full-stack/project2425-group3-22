@@ -52,27 +52,26 @@ const updateStat = async (
     changedValue?: number
 ): Promise<void> => {
     const userStatToUpdate = await statDB.getUserStatByUserAndCode({ userID, statCode });
-    if (!userStatToUpdate) throw new Error('Stat not found.');
+    if (userStatToUpdate) {
+        const currentStatValue = userStatToUpdate.getStatValue();
+        switch (action) {
+            case 'INCREASE':
+                userStatToUpdate.setStatValue(currentStatValue + 1);
+                break;
+            case 'DECREASE':
+                userStatToUpdate.setStatValue(currentStatValue - 1);
+                break;
+            case 'CHANGE':
+                if (changedValue === null || changedValue === undefined)
+                    throw new Error('In case of stat change, a changed value is required.');
+                userStatToUpdate.setStatValue(changedValue);
+                break;
+            default:
+                throw new Error('The possible actions are: INCREASE, DECREASE and CHANGE.');
+        }
 
-    const currentStatValue = userStatToUpdate.getStatValue();
-    switch (action) {
-        case 'INCREASE':
-            userStatToUpdate.setStatValue(currentStatValue + 1);
-            break;
-        case 'DECREASE':
-            userStatToUpdate.setStatValue(currentStatValue - 1);
-            break;
-        case 'CHANGE':
-            if (changedValue === null || changedValue === undefined)
-                throw new Error('In case of stat change, a changed value is required.');
-            userStatToUpdate.setStatValue(changedValue);
-            break;
-        default:
-            throw new Error('The possible actions are: INCREASE, DECREASE and CHANGE.');
+        await statDB.updateStat(userStatToUpdate);
     }
-
-    const updatedStat = await statDB.updateStat(userStatToUpdate);
-    if (!updatedStat) throw new Error('Error occured updating stat.');
 };
 
 export default {
